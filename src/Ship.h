@@ -20,6 +20,7 @@ public:
 
 	//Movimiento
 	void move();
+	void stop();
 	bool moveTo(int x, int y);
 
 	//Renderizado
@@ -37,13 +38,21 @@ public:
 	Vector2 GetDir();
 	void SetDir(float x, float y);
 
+	//Centro
+	Vector2 GetCen();
+	void SetCen(float x, float y);
+
 	Texture tex;
 
 private:
+	float max_vel;
+	float angle;
 
 	Vector2 pos;
 	Vector2 vel;
 	Vector2 dir;
+	Vector2 cen;
+	Vector2 dest;
 
 	bool sel;
 	float sel_radius;

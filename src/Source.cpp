@@ -38,10 +38,29 @@ int main(int argc, char* args[])
 
 		//Manejo de eventos
 		SDL_Event e;
-
-		//Nave
+		
+		//Nave		
 		Ship ship;
-		ship.SetPos(100, 100);
+		ship.tex.load("nave.png", gRenderer);
+		ship.SetCen(15, 15);
+		ship.stop();
+		
+		//Nave 2
+		Ship ship2;
+		ship2.tex.load("nave.png", gRenderer);
+		ship2.SetCen(300, 15);
+		ship.stop();
+		
+
+		//Muchas naves
+		Ship naves[10][10];
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				naves[i][j].tex.load("nave1.png", gRenderer);
+				naves[i][j].SetCen(50 + 40 * i, 50 + 40 * j);
+				naves[i][j].stop();
+			}
+		}
 
 		//Bucle principal
 		while (!quit)
@@ -58,15 +77,41 @@ int main(int argc, char* args[])
 				//Eventos de la nave
 				ship.event(&e);
 				ship.render(gRenderer);
+
+				ship2.event(&e);
+				ship2.render(gRenderer);
+
+				//Eventos de muchas naves
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++) {
+						naves[i][j].event(&e);
+						naves[i][j].render(gRenderer);
+					}
+				}
+			}
+			//Movimiento
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					naves[i][j].move();
+				}
 			}
 
+			ship.move();
+			
 			//Limpiar pantalla
-			SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			SDL_SetRenderDrawColor(gRenderer, 0x0, 0x0, 0x0, 0xFF);
 			SDL_RenderClear(gRenderer);
 
 			//Renderizar nave
-			ship.tex.load("nave.png", gRenderer);
 			ship.render(gRenderer);
+			ship2.render(gRenderer);
+
+			//Renderizar muchas naves
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					naves[i][j].render(gRenderer);
+				}
+			}
 
 			//Actualizar pantalla
 			SDL_RenderPresent(gRenderer);
@@ -99,7 +144,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Age of Space - Prototype", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -117,7 +162,7 @@ bool init()
 			else
 			{
 				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				SDL_SetRenderDrawColor(gRenderer, 0x0FF, 0x0FF, 0x0FF, 0x0);
 
 				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
