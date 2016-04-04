@@ -16,3 +16,6 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Añadido movimiento en línea recta para las naves
 - Fondo negro y nueva textura neón para la nave
 
+#### P 0.3
+-Funciones globales fuera del main
+-Pantalla dividida en ViewPoints
