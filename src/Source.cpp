@@ -1,28 +1,40 @@
 //Librería básica y de imagen
-#include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
+//#include <SDL.h>
+//#include <SDL_image.h>
+//#include <stdio.h>
 #include <string>
 
-#include "Vector2.h"
-#include "Texture.h"
+//#include "Vector2.h"
+//#include "Texture.h"
 #include "Ship.h"
+#include "Asteroid.h"
+#include "Button.h"
+//#include "Global.h"
+#include "ViewPort.h"
+/*//Tamaño de la ventana
+//const int SCREEN_WIDTH = 640;
+//const int SCREEN_HEIGHT = 480;
 
-//Tamaño de la ventana
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+//Starts up SDL and creates window
+//bool init();
 
+//Frees media and shuts down SDL
+//void close();
+
+//The window we'll be rendering to
+//SDL_Window* gWindow = NULL;
+
+//The window renderer
+//SDL_Renderer* gRenderer = NULL;*/
+extern SDL_Renderer* gRenderer;
+
+extern ViewPort barra, minimapa, menu, caract;
 //Starts up SDL and creates window
 bool init();
 
 //Frees media and shuts down SDL
 void close();
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
 
 int main(int argc, char* args[])
 {
@@ -39,7 +51,50 @@ int main(int argc, char* args[])
 		//Manejo de eventos
 		SDL_Event e;
 		
-		//Nave		
+		Asteroid ast;
+		ast.tex.load("Asteroide.png", gRenderer);
+		ast.SetCen(100,200);
+		ast.render();
+		printf("imprimir imagen");
+
+		//Bucle principal
+		while (!quit)
+		{
+			//Manejo de eventos
+			while (SDL_PollEvent(&e) != 0)
+			{
+				//Cerrar?
+				if (e.type == SDL_QUIT)
+				{
+					quit = true;
+				}
+				
+				//Eventos de la nave
+				ast.event(&e);
+			}
+
+			//Limpiar pantalla
+			SDL_SetRenderDrawColor(gRenderer, 0x0, 0x0, 0x0, 0xFF);
+			SDL_RenderClear(gRenderer);
+
+			//Renderizar nave
+			ast.render();
+
+			//ViewPorts
+
+			barra.render();
+			minimapa.render();
+			caract.render();
+			menu.render();
+
+		
+
+			//Actualizar pantalla
+			SDL_RenderPresent(gRenderer);
+
+
+		//parte de mr juako
+		/*//Nave		
 		Ship ship;
 		ship.tex.load("nave.png", gRenderer);
 		ship.SetCen(15, 15);
@@ -115,16 +170,16 @@ int main(int argc, char* args[])
 
 			//Actualizar pantalla
 			SDL_RenderPresent(gRenderer);
-			}
+			}*/
 		}
 
 	//Liberar recursos y cerrar SDL
 	close();
-
+	}
 	return 0;
 }
 
-bool init()
+/*bool init()
 {
 	//Initialization flag
 	bool success = true;
@@ -192,4 +247,4 @@ void close()
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
-}
+}*/
