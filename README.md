@@ -17,5 +17,5 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Fondo negro y nueva textura neón para la nave
 
 #### P 0.3
--Funciones globales fuera del main
--Pantalla dividida en ViewPoints
+- Funciones globales fuera del main
+- Pantalla dividida en ViewPoints
