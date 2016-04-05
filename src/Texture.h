@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <cmath>
 #include "Vector2.h"
 
 class Texture
@@ -28,16 +29,23 @@ public:
 	//Alpha
 	void setAlpha(Uint8 alpha);
 
-	//Renderizado
+	//Renderizado por posición y textura
 	void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	//Renderizado por centro y rect
+	void render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip = NULL, double angle  = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 	//Dimensiones
 	Vector2 getDim();
+
+	//Diagonal
+	float getDiag();
 
 private:
 	//La propia textura
 	SDL_Texture* texture;
 	//Tamaño
 	Vector2 dim;
+	//Diagonal
+	float diag;
 };
 

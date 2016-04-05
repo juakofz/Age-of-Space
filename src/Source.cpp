@@ -1,3 +1,6 @@
+//Versión
+#define VERSION_NUM "P 0.3"
+
 //Librería básica y de imagen
 #include <SDL.h>
 #include <SDL_image.h>
@@ -7,10 +10,11 @@
 #include "Vector2.h"
 #include "Texture.h"
 #include "Ship.h"
+#include "mouse.h"
 
 //Tamaño de la ventana
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 960;
+const int SCREEN_HEIGHT = 640;
 
 //Starts up SDL and creates window
 bool init();
@@ -23,6 +27,10 @@ SDL_Window* gWindow = NULL;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
+
+//Mouse
+Mouse mouse;
+SDL_Rect mouse_selection;
 
 int main(int argc, char* args[])
 {
@@ -38,26 +46,32 @@ int main(int argc, char* args[])
 
 		//Manejo de eventos
 		SDL_Event e;
-		
+
+		//Carga de texturas
+		Texture tex[4];
+		tex[0].load("nave1.png", gRenderer);
+		tex[1].load("asteroide.png", gRenderer);
+		tex[2].load("edificio.png", gRenderer);
+		tex[3].load("markerW.png", gRenderer);
+
+		tex[3].setColor(255, 100, 0);
+
 		//Nave		
 		Ship ship;
-		ship.tex.load("nave.png", gRenderer);
-		ship.SetCen(15, 15);
+		ship.SetTex(tex);
+		ship.setSize(15);
+		ship.setMarker(&tex[3]);
+		ship.SetCen(700, 500);
 		ship.stop();
 		
-		//Nave 2
-		Ship ship2;
-		ship2.tex.load("nave.png", gRenderer);
-		ship2.SetCen(300, 15);
-		ship.stop();
-		
-
 		//Muchas naves
-		Ship naves[10][10];
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				naves[i][j].tex.load("nave1.png", gRenderer);
-				naves[i][j].SetCen(50 + 40 * i, 50 + 40 * j);
+		Ship naves[20][20];
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				naves[i][j].SetTex(tex);
+				naves[i][j].setSize(5);
+				naves[i][j].setMarker(&tex[3]);
+				naves[i][j].SetCen(50 + 30 * i, 50 + 30 * j);
 				naves[i][j].stop();
 			}
 		}
@@ -73,25 +87,24 @@ int main(int argc, char* args[])
 				{
 					quit = true;
 				}
-				
-				//Eventos de la nave
-				ship.event(&e);
-				ship.render(gRenderer);
 
-				ship2.event(&e);
-				ship2.render(gRenderer);
+				//Eventos ratón
+				mouse.update(&e);
+				mouse_selection = mouse.getSel();
+
+				//Eventos de la nave
+				ship.event(&e, mouse_selection);
 
 				//Eventos de muchas naves
-				for (int i = 0; i < 10; i++) {
-					for (int j = 0; j < 10; j++) {
-						naves[i][j].event(&e);
-						naves[i][j].render(gRenderer);
+				for (int i = 0; i < 20; i++) {
+					for (int j = 0; j < 20; j++) {
+						naves[i][j].event(&e, mouse_selection);
 					}
 				}
 			}
 			//Movimiento
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
+			for (int i = 0; i < 20; i++) {
+				for (int j = 0; j < 20; j++) {
 					naves[i][j].move();
 				}
 			}
@@ -104,11 +117,13 @@ int main(int argc, char* args[])
 
 			//Renderizar nave
 			ship.render(gRenderer);
-			ship2.render(gRenderer);
+
+			//Renderizar ratón
+			mouse.render(gRenderer);
 
 			//Renderizar muchas naves
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 10; j++) {
+			for (int i = 0; i < 20; i++) {
+				for (int j = 0; j < 20; j++) {
 					naves[i][j].render(gRenderer);
 				}
 			}
@@ -144,7 +159,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow("Age of Space - Prototype", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow(VERSION_NUM, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());

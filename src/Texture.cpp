@@ -7,6 +7,7 @@ Texture::Texture()
 	texture = NULL;
 	dim.x = 0;
 	dim.y = 0;
+	diag = 0;
 }
 
 //Destructor
@@ -33,7 +34,7 @@ bool Texture::load(std::string path, SDL_Renderer* renderer)
 	}
 	else
 	{
-		//Color keying
+		//Color keying (blanco)
 		SDL_SetColorKey(img, SDL_TRUE, SDL_MapRGB(img->format, 0xFF, 0xFF, 0xFF));
 
 		//Crear la textura desde la imagen
@@ -47,6 +48,7 @@ bool Texture::load(std::string path, SDL_Renderer* renderer)
 			//Utilizar diménsiones de la imagen
 			dim.x = img->w;
 			dim.y = img->h;
+			diag = sqrt(dim.x * dim.x + dim.y * dim.y);
 		}
 
 		//Liberar imagen
@@ -88,7 +90,7 @@ void Texture::setAlpha(Uint8 alpha)
 	SDL_SetTextureAlphaMod(texture, alpha);
 }
 
-//Renderizado
+//Renderizado por posición y textura
 void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
 
@@ -106,8 +108,33 @@ void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, doubl
 	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, center, flip);
 }
 
+//Renderizado por centro y rect
+void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip, double angle, SDL_RendererFlip flip)
+{
+
+	//Espacio de renderizado
+	SDL_Rect renderQuad = { center->x -  w/2, center->y - h/2, w, h};
+
+	//Espacio final de renderizado de renderizado
+	if (clip != NULL)
+	{
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
+	}
+
+	//Renderizado
+	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, NULL, flip);
+}
+
+
 //Dimensiones
 Vector2 Texture::getDim() 
 {
 	return dim;
+}
+
+//Diagonal
+float Texture::getDiag()
+{
+	return diag;
 }

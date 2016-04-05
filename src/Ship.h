@@ -1,6 +1,9 @@
 #pragma once
 #include "Texture.h"
 #include "Vector2.h"
+#include "Marker.h"
+
+class Texture;
 
 class Ship
 {
@@ -12,7 +15,7 @@ public:
 	~Ship();
 
 	//Manejo de eventos
-	void event(SDL_Event* e);
+	void event(SDL_Event* e, SDL_Rect selection);
 
 	//Selección
 	void select();
@@ -25,6 +28,7 @@ public:
 
 	//Renderizado
 	void render(SDL_Renderer* renderer);
+	void setMarker(Texture *m);
 
 	//Posición
 	Vector2 GetPos();
@@ -42,9 +46,25 @@ public:
 	Vector2 GetCen();
 	void SetCen(float x, float y);
 
-	Texture tex;
+	//Textura
+	void SetTex(Texture *t);
+	friend class Texture;
+
+	//Tamaño
+	void setSize(int s);
 
 private:
+
+	Texture *tex;
+	Texture *marker;
+
+	Marker sel_marker;
+	SDL_Color marker_color;
+
+	int size;
+	int width;
+	int height;
+
 	float max_vel;
 	float angle;
 
@@ -55,6 +75,7 @@ private:
 	Vector2 dest;
 
 	bool sel;
+	int sel_angle;
 	float sel_radius;
 	Texture sel_circle;
 };
