@@ -24,3 +24,6 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Funciones que imprimen en distintas partes de la pantalla
 - sin ViewPort
 - Introducimos el menu
+
+##### P 0.3.3
+- Interacción del asteroide con el menu
