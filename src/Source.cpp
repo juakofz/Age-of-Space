@@ -9,8 +9,8 @@
 #include "Ship.h"
 #include "Asteroid.h"
 #include "Button.h"
+#include "Menu.h"
 //#include "Global.h"
-#include "ViewPort.h"
 /*//Tamaño de la ventana
 //const int SCREEN_WIDTH = 640;
 //const int SCREEN_HEIGHT = 480;
@@ -26,9 +26,10 @@
 
 //The window renderer
 //SDL_Renderer* gRenderer = NULL;*/
+
 extern SDL_Renderer* gRenderer;
 
-extern ViewPort barra, minimapa, menu, caract;
+
 //Starts up SDL and creates window
 bool init();
 
@@ -50,13 +51,32 @@ int main(int argc, char* args[])
 
 		//Manejo de eventos
 		SDL_Event e;
-		
+//	printf("en el main%d", minimapQuad.x);
+
+		Texture minimapa, barra, caract;
+		Texture menu;
 		Asteroid ast;
+		Menu astmen;
+		astmen.SetBotonQuad(0,0,30,30);
+		astmen.SetBotones();
 		ast.tex.load("Asteroide.png", gRenderer);
 		ast.SetCen(100,200);
 		ast.render();
-		printf("imprimir imagen");
+		//printf("imprimir imagen");
+		minimapa.load("minimapa2.png", gRenderer);
+		minimapa.rendermini(gRenderer);
 
+		menu.load("menu.png", gRenderer);
+		menu.rendermenu(gRenderer);
+
+		barra.load("barra.png", gRenderer);
+		barra.renderbarra(gRenderer);
+
+		caract.load("caracteristicas.png", gRenderer);
+		caract.rendercaract(gRenderer);
+
+
+		astmen.render();
 		//Bucle principal
 		while (!quit)
 		{
@@ -79,16 +99,11 @@ int main(int argc, char* args[])
 
 			//Renderizar nave
 			ast.render();
-
-			//ViewPorts
-
-			barra.render();
-			minimapa.render();
-			caract.render();
-			menu.render();
-
-		
-
+			minimapa.rendermini(gRenderer);
+			barra.renderbarra(gRenderer);
+			caract.rendercaract(gRenderer);
+			menu.rendermenu(gRenderer);
+			astmen.render();
 			//Actualizar pantalla
 			SDL_RenderPresent(gRenderer);
 

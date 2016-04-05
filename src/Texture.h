@@ -5,8 +5,15 @@
 #include <string>
 #include "Vector2.h"
 
+
+extern const int SCREEN_WIDTH;
+extern const int SCREEN_HEIGHT;
+
+
+
 class Texture
 {
+
 public:
 	//Constructor
 	Texture();
@@ -31,6 +38,11 @@ public:
 	//Renderizado
 	void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
+	void rendermini(SDL_Renderer* renderer, int x=0, int y=0, SDL_Rect* clip = NULL);
+	void renderbarra(SDL_Renderer* renderer, int x=0, int y=0, SDL_Rect* clip = NULL);
+	void rendermenu(SDL_Renderer* renderer, SDL_Rect* Quad=NULL, int x=0, int y=0, SDL_Rect* clip = NULL);
+	void rendercaract(SDL_Renderer* renderer, int x=0, int y=0, SDL_Rect* clip = NULL);
+
 	//Dimensiones
 	Vector2 getDim();
 
@@ -39,5 +51,7 @@ private:
 	SDL_Texture* texture;
 	//Tamaño
 	Vector2 dim;
+	int wpantalla;
+
 };
 
