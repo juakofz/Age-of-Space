@@ -19,6 +19,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P 0.3
 - Funciones globales fuera del main
 - Pantalla dividida en ViewPoints
+
 ##### P 0.3.2
 - Funciones que imprimen en distintas partes de la pantalla
 - sin ViewPort
