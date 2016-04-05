@@ -8,8 +8,8 @@ const int NUMERO_BOTONES=3;
 class Menu
 {
 	Button botones[NUMERO_BOTONES];
-	SDL_Rect botonQuad;
-	Texture texturas[NUMERO_BOTONES];
+	Vector2 botondim;
+	//Texture texturas[NUMERO_BOTONES];
 
 public:
 
@@ -17,6 +17,6 @@ public:
 	~Menu(void);
 	void SetBotones();
 	void render();
-	void SetBotonQuad(int x, int y, int w, int h);
+	void SetBotonQuad(int w, int h);
 };
 

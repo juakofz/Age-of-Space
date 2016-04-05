@@ -44,7 +44,6 @@ void Asteroid::event(SDL_Event* e)
 		
 			case SDL_BUTTON_RIGHT:
 			//select();
-			//openMenu(gRenderer);
 			//Debug
 			printf("der\n");
 			break;
@@ -67,13 +66,15 @@ void Asteroid::deselect()
 	sel = false;
 }
 
-void Asteroid::openMenu(SDL_Renderer* renderer)
+void Asteroid::SetMenu(int w, int h)
 {
-	boton.tex.load("edificio.png", renderer);
-	int mx, my;
-	SDL_GetMouseState(&mx, &my);
-	boton.tex.render(renderer, mx, my);
-	printf("boton mostrado\n");
+	menu.SetBotonQuad(w,h);
+	menu.SetBotones();
+}
+
+void Asteroid::openMenu()
+{
+	menu.render();
 }
 
 /*void Asteroid::move()
@@ -129,6 +130,7 @@ void Asteroid::render()
 		rec_sel.w = tex.getDim().y;
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);;
 		SDL_RenderDrawRect(gRenderer, &rec_sel);
+		openMenu();
 	}
 }
 

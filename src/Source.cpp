@@ -56,9 +56,8 @@ int main(int argc, char* args[])
 		Texture minimapa, barra, caract;
 		Texture menu;
 		Asteroid ast;
-		Menu astmen;
-		astmen.SetBotonQuad(0,0,30,30);
-		astmen.SetBotones();
+		//Menu astmen;
+		ast.SetMenu(30,30);
 		ast.tex.load("Asteroide.png", gRenderer);
 		ast.SetCen(100,200);
 		ast.render();
@@ -75,8 +74,8 @@ int main(int argc, char* args[])
 		caract.load("caracteristicas.png", gRenderer);
 		caract.rendercaract(gRenderer);
 
-
-		astmen.render();
+		
+		//astmen.render();
 		//Bucle principal
 		while (!quit)
 		{
@@ -103,10 +102,11 @@ int main(int argc, char* args[])
 			barra.renderbarra(gRenderer);
 			caract.rendercaract(gRenderer);
 			menu.rendermenu(gRenderer);
-			astmen.render();
+			ast.render();
+			//astmen.render();
 			//Actualizar pantalla
 			SDL_RenderPresent(gRenderer);
-
+			
 
 		//parte de mr juako
 		/*//Nave		

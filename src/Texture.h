@@ -40,7 +40,7 @@ public:
 
 	void rendermini(SDL_Renderer* renderer, int x=0, int y=0, SDL_Rect* clip = NULL);
 	void renderbarra(SDL_Renderer* renderer, int x=0, int y=0, SDL_Rect* clip = NULL);
-	void rendermenu(SDL_Renderer* renderer, SDL_Rect* Quad=NULL, int x=0, int y=0, SDL_Rect* clip = NULL);
+	void rendermenu(SDL_Renderer* renderer, Vector2* Quad=NULL, int x=0, int y=0, SDL_Rect* clip = NULL);
 	void rendercaract(SDL_Renderer* renderer, int x=0, int y=0, SDL_Rect* clip = NULL);
 
 	//Dimensiones

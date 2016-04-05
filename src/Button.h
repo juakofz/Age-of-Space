@@ -5,7 +5,6 @@ extern SDL_Renderer* gRenderer;
 
 class Asteroid;
 class Menu;
-
 class Button
 {
 

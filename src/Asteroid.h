@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Vector2.h"
 #include "Button.h"
+#include "Menu.h"
 
 extern SDL_Renderer* gRenderer;
 
@@ -24,7 +25,8 @@ public:
 	void deselect();
 
 	//menu
-	void openMenu(SDL_Renderer* renderer);
+	void SetMenu(int w, int h);
+	void openMenu();
 
 	//Renderizado
 	void render();
@@ -40,6 +42,7 @@ public:
 	Texture tex;
 
 private:
+	Menu menu;
 	Button boton;
 	Vector2 pos;
 	Vector2 cen;
