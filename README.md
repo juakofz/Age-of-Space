@@ -27,3 +27,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 
 ##### P 0.3.3
 - Interacción del asteroide con el menu
+
+### P0.4
+-panatlla dividida en viewports(de nuevo).
+-cambio de tamaño de la pantalla y los viewports proporcionalmente.
