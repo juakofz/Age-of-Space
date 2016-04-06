@@ -1,15 +1,21 @@
 //Librería básica y de imagen
-//#include <SDL.h>
-//#include <SDL_image.h>
-//#include <stdio.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <stdio.h>
 #include <string>
+#include <sstream>
 
 //#include "Vector2.h"
-//#include "Texture.h"
+#include "Texture.h"
+#include "Vector2.h"
 #include "Ship.h"
 #include "Asteroid.h"
 #include "Button.h"
 #include "Menu.h"
+#include "ViewPort.h"
+#include "LWindow.h"
+#include "Global.h"
+
 //#include "Global.h"
 /*//Tamaño de la ventana
 //const int SCREEN_WIDTH = 640;
@@ -19,16 +25,19 @@
 //bool init();
 
 //Frees media and shuts down SDL
-//void close();
+//void close();*/
 
 //The window we'll be rendering to
 //SDL_Window* gWindow = NULL;
 
 //The window renderer
-//SDL_Renderer* gRenderer = NULL;*/
+//SDL_Renderer* gRenderer = NULL;
 
-extern SDL_Renderer* gRenderer;
+/*extern SDL_Renderer* gRenderer;
 
+extern LWindow gWindow;
+
+extern Texture gSceneTexture;
 
 //Starts up SDL and creates window
 bool init();
@@ -36,78 +45,96 @@ bool init();
 //Frees media and shuts down SDL
 void close();
 
+//Loads media
+bool loadMedia();*/
 
 int main(int argc, char* args[])
 {
-	//Iniciar SDL y crear ventana
-	if (!init())
+	//Start up SDL and create window
+	if( !init() )
 	{
-		printf("Failed to initialize!\n");
+		printf( "Failed to initialize!\n" );
 	}
 	else
 	{
-		//Flag principal
-		bool quit = false;
-
-		//Manejo de eventos
-		SDL_Event e;
-//	printf("en el main%d", minimapQuad.x);
-
-		Texture minimapa, barra, caract;
-		Texture menu;
-		Asteroid ast;
-		//Menu astmen;
-		ast.SetMenu(30,30);
-		ast.tex.load("Asteroide.png", gRenderer);
-		ast.SetCen(100,200);
-		ast.render();
-		//printf("imprimir imagen");
-		minimapa.load("minimapa2.png", gRenderer);
-		minimapa.rendermini(gRenderer);
-
-		menu.load("menu.png", gRenderer);
-		menu.rendermenu(gRenderer);
-
-		barra.load("barra.png", gRenderer);
-		barra.renderbarra(gRenderer);
-
-		caract.load("caracteristicas.png", gRenderer);
-		caract.rendercaract(gRenderer);
-
-		
-		//astmen.render();
-		//Bucle principal
-		while (!quit)
+		//Load media
+		if( !loadMedia() )
 		{
-			//Manejo de eventos
-			while (SDL_PollEvent(&e) != 0)
+			printf( "Failed to load media!\n" );
+		}
+		else
+		{	
+			//Main loop flag
+			bool quit = false;
+
+			//Event handler
+			SDL_Event e;
+			bool size;
+			ViewPort menu,barra;
+			ViewPort juego;
+			menu.Init(0,3*SCREEN_HEIGHT/4,SCREEN_WIDTH,SCREEN_HEIGHT/4, "menu.png");
+			juego.Init(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,3*SCREEN_HEIGHT/4, "asteroide.png");
+			menu.SetRel(0,0.75,1,0.25);
+			juego.SetRel(0,0.1,1,0.75);
+			barra.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "barra.png");
+			barra.SetRel(0,0,1,0.1);
+			//While application is running
+			while( !quit )
 			{
-				//Cerrar?
-				if (e.type == SDL_QUIT)
+				//Handle events on queue
+				while( SDL_PollEvent( &e ) != 0 )
 				{
-					quit = true;
+					//User requests quit
+					if( e.type == SDL_QUIT )
+					{
+						quit = true;
+					}
+
+					//Handle window events
+					size=gWindow.handleEvent( e );
+					
 				}
-				
-				//Eventos de la nave
-				ast.event(&e);
+
+				//Only draw when not minimized
+				if( !gWindow.isMinimized() )
+				{
+					//Clear screen
+					SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+					SDL_RenderClear( gRenderer );
+					//Vector2 dim=gSceneTexture.getDim;
+					//gSceneTexture.
+					//Render text textures
+					Vector2 WindowQuad;
+					WindowQuad.x=gWindow.getWidth();
+					WindowQuad.y=gWindow.getHeight();
+
+					if(size)
+					{
+						menu.ActParam();
+						juego.ActParam();
+						barra.ActParam();
+						printf("tamaño nuevo");
+						//ajustar el tamaño a la ventana.					
+						WindowQuad.x=gWindow.getWidth();
+						WindowQuad.y=gWindow.getHeight();
+						//gSceneTexture.render(gRenderer,&WindowQuad);
+						size=false;
+					}
+					//Update screen				
+					//gSceneTexture.render(gRenderer,&WindowQuad);
+					menu.render();
+					juego.render();
+					barra.render();
+					SDL_RenderPresent( gRenderer );
+				}
 			}
+		}
+	}
 
-			//Limpiar pantalla
-			SDL_SetRenderDrawColor(gRenderer, 0x0, 0x0, 0x0, 0xFF);
-			SDL_RenderClear(gRenderer);
+	//Free resources and close SDL
+	close();
 
-			//Renderizar nave
-			ast.render();
-			minimapa.rendermini(gRenderer);
-			barra.renderbarra(gRenderer);
-			caract.rendercaract(gRenderer);
-			menu.rendermenu(gRenderer);
-			ast.render();
-			//astmen.render();
-			//Actualizar pantalla
-			SDL_RenderPresent(gRenderer);
-			
-
+	return 0;
 		//parte de mr juako
 		/*//Nave		
 		Ship ship;
@@ -186,12 +213,6 @@ int main(int argc, char* args[])
 			//Actualizar pantalla
 			SDL_RenderPresent(gRenderer);
 			}*/
-		}
-
-	//Liberar recursos y cerrar SDL
-	close();
-	}
-	return 0;
 }
 
 /*bool init()

@@ -29,28 +29,55 @@ void Asteroid::event(SDL_Event* e)
 	{
 		Vector2 size = tex.getDim();
 		SDL_GetMouseState(&mx, &my);
+		if (sel) printf("seleccionado\n");
+		else printf("no seleccionado\n");
 
-
-		if((((mx >= pos.x) && (mx <= (pos.x + size.x))) && ((my >= pos.y) && (my <= (pos.y + size.y)))))
+		if(sel)
 		{
-			printf("dentro del cuadrado\n");
-			switch(e->button.button)
+			if((my >= SCREEN_HEIGHT/10) && (my <= 3*SCREEN_HEIGHT/4))
 			{
-			case SDL_BUTTON_LEFT:
-			//Debug
-			printf("izq\n", pos.x, pos.y);
-			select();
-			break;
+				printf("panatalla de huego\n");
+				switch(e->button.button)
+				{
+				case SDL_BUTTON_LEFT:
+				//Debug
+				printf("deseleccionar\n");
+				deselect();
+				break;
 		
-			case SDL_BUTTON_RIGHT:
-			//select();
-			//Debug
-			printf("der\n");
-			break;
+				case SDL_BUTTON_RIGHT:
+				//select();
+				//Debug
+				printf("objetivo\n");
+				break;
+				}
+				render();
 			}
-			render();
+			else menu.event(e);
 		}
-		else deselect();
+
+		else 
+			{
+			if((((mx >= pos.x) && (mx <= (pos.x + size.x))) && ((my >= pos.y) && (my <= (pos.y + size.y)))))
+			{
+				printf("dentro del cuadrado\n");
+				switch(e->button.button)
+				{
+				case SDL_BUTTON_LEFT:
+				//Debug
+				printf("izq\n", pos.x, pos.y);
+				select();
+				break;
+		
+				case SDL_BUTTON_RIGHT:
+				//select();
+				//Debug
+				printf("der\n");
+				break;
+				}
+				render();
+			}
+		}
 
 	}
 

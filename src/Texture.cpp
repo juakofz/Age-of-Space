@@ -122,7 +122,31 @@ void Texture::rendermini(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip)
 	//Renderizado
 	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
 }
+void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Rect* clip)
+{
+		
+	//SDL_Rect menuQuad = {0, 3*SCREEN_HEIGHT/4, SCREEN_WIDTH/3, SCREEN_HEIGHT/4};
+	SDL_Rect renderQuad;
+	renderQuad.x=x;
+	renderQuad.y=y;
 
+	if(Quad!=NULL)
+		{
+			renderQuad.w = Quad->x;
+			renderQuad.h = Quad->y;
+		}
+
+	else
+		{
+			renderQuad.w= dim.x;
+			renderQuad.h=dim.y;
+	}
+
+	//printf("%d x ",renderQuad.x);
+
+	//Renderizado
+	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
+}
 void Texture::rendermenu(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Rect* clip)
 {
 		

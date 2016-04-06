@@ -28,11 +28,11 @@ void Button::event( SDL_Event* e )
 		switch( e->type )
 		{
 			case SDL_BUTTON_LEFT:
-			
+			printf("pulsado boton izquierdo sobre el boton");
 			break;
 			
 			case SDL_BUTTON_RIGHT:
-			
+			printf("pulsado boton derecho sobre el boton");
 			break;
 				
 		}
@@ -64,7 +64,7 @@ bool Button::clickOn(SDL_Event* e)
 
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
-		printf("click\n");
+		//printf("click\n");
 		Vector2 size = tex.getDim();
 		SDL_GetMouseState(&mx, &my);
 

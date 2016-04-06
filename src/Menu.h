@@ -18,5 +18,6 @@ public:
 	void SetBotones();
 	void render();
 	void SetBotonQuad(int w, int h);
+	void event(SDL_Event* e);
 };
 

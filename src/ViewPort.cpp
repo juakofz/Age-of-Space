@@ -13,7 +13,7 @@ ViewPort::~ViewPort(void)
 }
 
 //parametros
-void ViewPort::SetParam(int x, int y, int w, int h)
+void ViewPort::SetParam(int w, int h,int x, int y)
 {
 	param.x=x;
 	param.y=y;
@@ -21,14 +21,30 @@ void ViewPort::SetParam(int x, int y, int w, int h)
 	param.w=w;
 }
 
+void ViewPort::SetRel(float x, float y, float w, float h)
+{
+	origen.x=x;
+	origen.y=y;
+	tamaño.x=w;
+	tamaño.y=h;
 
+}
+void ViewPort::ActParam()
+{
+	param.x=gWindow.getWidth()*origen.x;
+	param.y=gWindow.getHeight()*origen.y;
+	tamañofin.x=param.w=gWindow.getWidth()*tamaño.x;
+	tamañofin.y=param.h=gWindow.getHeight()*tamaño.y;
+	printf("nuevos param %d %d %d %d", param.x, param.y, param.w, param.h);
+
+}
 //renderizar
 void ViewPort::render()
 {
-	SDL_RenderSetViewport( gRenderer, &param );
-				
+
+	SDL_RenderSetViewport( gRenderer, &param );				
 	//Render texture to screen
-	SDL_RenderCopy( gRenderer, tex.texture, NULL, NULL );
+	tex.render(gRenderer,&tamañofin);
 }
 SDL_Rect ViewPort::GetParam()
 {
