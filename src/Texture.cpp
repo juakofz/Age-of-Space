@@ -1,4 +1,6 @@
 #include "Texture.h"
+#include <SDL_ttf.h>
+#include "Global.h"
 
 //Constructor
 Texture::Texture()
@@ -87,6 +89,41 @@ void Texture::setBlendMode(SDL_BlendMode blending)
 void Texture::setAlpha(Uint8 alpha)
 {
 	SDL_SetTextureAlphaMod(texture, alpha);
+}
+
+
+bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
+{
+	//Get rid of preexisting texture
+	free();
+
+	//Render text surface
+	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
+	if( textSurface == NULL )
+	{
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+	else
+	{
+		//Create texture from surface pixels
+        texture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+		if( texture == NULL )
+		{
+			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		}
+		else
+		{
+			//Get image dimensions
+			dim.x = textSurface->w;
+			dim.y = textSurface->h;
+		}
+
+		//Get rid of old surface
+		SDL_FreeSurface( textSurface );
+	}
+	
+	//Return success
+	return texture != NULL;
 }
 
 //Renderizado
@@ -210,3 +247,4 @@ Vector2 Texture::getDim()
 {
 	return dim;
 }
+

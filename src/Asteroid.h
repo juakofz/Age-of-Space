@@ -18,7 +18,7 @@ public:
 	~Asteroid();
 
 	//Manejo de eventos
-	void event(SDL_Event* e);
+	void event(SDL_Event* e, SDL_Point xyrel);
 
 	//Selección
 	void select();
@@ -39,6 +39,7 @@ public:
 	Vector2 GetCen();
 	void SetCen(float x, float y);
 
+	bool getSel();
 	Texture tex;
 
 private:

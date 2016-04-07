@@ -17,26 +17,32 @@ Asteroid::~Asteroid()
 {
 }
 
-void Asteroid::event(SDL_Event* e)
+void Asteroid::event(SDL_Event* e, SDL_Point xyrel)
 {
 	int mx, my;
-
+	mx=xyrel.x;
+	my=xyrel.y;
 
 	//Botón izquierdo
 
 
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
+		SDL_Rect view;
+
 		Vector2 size = tex.getDim();
-		SDL_GetMouseState(&mx, &my);
-		if (sel) printf("seleccionado\n");
-		else printf("no seleccionado\n");
+		//SDL_GetMouseState(&mx, &my);
+		SDL_RenderGetViewport(gRenderer, &view);
+		printf("%d %d\n", mx, my);
+		printf(" viewport seleccionado, %d %d %d %d\n", view.x, view.y, view.w, view.h);
+		//if (sel) printf("seleccionado\n");
+		//else printf("no seleccionado\n");
 
 		if(sel)
 		{
-			if((my >= SCREEN_HEIGHT/10) && (my <= 3*SCREEN_HEIGHT/4))
-			{
-				printf("panatalla de huego\n");
+			//if((my >= SCREEN_HEIGHT/10) && (my <= 3*SCREEN_HEIGHT/4))
+			//{
+				//printf("panatalla de huego\n");
 				switch(e->button.button)
 				{
 				case SDL_BUTTON_LEFT:
@@ -50,10 +56,11 @@ void Asteroid::event(SDL_Event* e)
 				//Debug
 				printf("objetivo\n");
 				break;
-				}
-				render();
+				//}
+				
 			}
-			else menu.event(e);
+			//else menu.event(e);
+			//render();
 		}
 
 		else 
@@ -80,6 +87,8 @@ void Asteroid::event(SDL_Event* e)
 		}
 
 	}
+
+	render();
 
 }
 
@@ -145,11 +154,13 @@ bool Asteroid::moveTo(int x, int y)
 //Renderizado (con rotación y selección)
 void Asteroid::render()
 {
+	//printf("asteroide");
 	tex.render(gRenderer,(int)pos.x,(int)pos.y);
 
 	//Marcador de selección
 	if (sel == true)
 	{
+		//printf("selccionado\n");
 		SDL_Rect rec_sel;
 		rec_sel.x = pos.x;
 		rec_sel.y = pos.y;
@@ -157,7 +168,9 @@ void Asteroid::render()
 		rec_sel.w = tex.getDim().y;
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);;
 		SDL_RenderDrawRect(gRenderer, &rec_sel);
-		openMenu();
+		//printf("pintando cuadrado\n");
+		//tex.render(gRenderer, 100,100);
+		//openMenu();
 	}
 }
 
@@ -189,4 +202,9 @@ void Asteroid::SetCen(float x, float y)
 	cen.y = y;
 	pos.x = cen.x - tex.getDim().x / 2;
 	pos.y = cen.y - tex.getDim().y / 2;
+}
+
+bool Asteroid::getSel()
+{
+	return sel;
 }

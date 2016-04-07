@@ -18,7 +18,14 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
+bool loadText();
+
+//Globally used font
+TTF_Font *gFont = NULL;
+
 LWindow gWindow;
+
+Texture gTextTexture;
 
 //	, barraQuad, menuQuad, caractQuad;
 bool init()
@@ -67,6 +74,15 @@ bool init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+
+					 //Initialize SDL_ttf
+				if( TTF_Init() == -1 )
+				{
+					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+					success = false;
+				}
+
+				
 			}
 		}
 	}
@@ -77,13 +93,19 @@ bool init()
 void close()
 {
 	//Free loaded images
-	gSceneTexture.free();
+	gTextTexture.free();
+
+	//Free global font
+	TTF_CloseFont( gFont );
+	gFont = NULL;
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
 	gWindow.free();
+	gRenderer = NULL;
 
 	//Quit SDL subsystems
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -98,6 +120,31 @@ bool loadMedia()
 	{
 		printf( "Failed to load window texture!\n" );
 		success = false;
+	}
+
+	return success;
+}
+bool loadText()
+{
+	//Loading success flag
+	bool success = true;
+
+	//Open the font
+	gFont = TTF_OpenFont( "SPACEBAR.ttf", 28 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 47, 8, 114 };
+		if( !gTextTexture.loadFromRenderedText( "WELCOME TO... AGE OF SPACE", textColor ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = false;
+		}
 	}
 
 	return success;

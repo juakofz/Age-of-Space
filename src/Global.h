@@ -5,11 +5,13 @@
 #include <SDL_image.h>
 #include <string>
 
+#include <SDL_ttf.h>
+
 #include "Texture.h"
 #include "LWindow.h"
 
 class LWindow;
-
+extern Texture gTextTexture;
 //SDL_Window* gWindow = NULL;
 extern SDL_Renderer* gRenderer;
 
@@ -17,6 +19,9 @@ extern SDL_Renderer* gRenderer;
 extern Texture gSceneTexture;
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
+
+//Globally used font
+extern TTF_Font *gFont;
 
 //Starts up SDL and creates window
 extern bool init();
@@ -28,3 +33,5 @@ extern bool loadMedia();
 extern void close();
 
 extern LWindow gWindow;
+
+extern bool loadText();
