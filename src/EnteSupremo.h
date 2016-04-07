@@ -4,12 +4,14 @@
 #include <SDL.h>
 #include "LWindow.h"
 #include "Asteroid.h"
-
+#include "Barra.h"
 
 class EnteSupremo
 {
 	ViewPort barra, juego, menus, total;
 	Asteroid ast;
+	Barra menubarra;
+	string nombrejugador;
 
 public:
 
@@ -29,5 +31,7 @@ public:
 	//asteroides
 	void initjuego();
 	void renderJuego();
+
+	void setNombre(std::string nombre);
 };
 

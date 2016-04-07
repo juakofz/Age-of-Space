@@ -48,6 +48,8 @@ void EnteSupremo::InitViewPorts()
 	juego.SetRel(0,0.1,1,0.75);
 	barra.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "barra.png");
 	barra.SetRel(0,0,1,0.1);
+	
+
 	total.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "space2.png");
 	total.SetRel(0,0,1,1);
 }
@@ -65,7 +67,8 @@ void EnteSupremo::RenderViewPorts()
 	juego.render();
 
 	barra.render();
-
+	menubarra.render();
+	//printf("renderizado de barra");
 	menus.render();
 	if (ast.getSel()) printf("menu de asteroide");
 }
@@ -94,4 +97,13 @@ void EnteSupremo::renderJuego()
 {
 	juego.Set();
 	ast.render();
+	barra.Set();
+	//menubarra.render();
+
+}
+
+void EnteSupremo::setNombre(std::string nombre)
+{
+	nombrejugador=nombre;
+	menubarra.SetName(nombrejugador);
 }

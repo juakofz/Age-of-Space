@@ -95,3 +95,5 @@ void ViewPort::event(SDL_Event* e)
 
 	//ast.event(e, relatxy());
 }
+
+//void ViewPort::setTexto(std::string textureText)

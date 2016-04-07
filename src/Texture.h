@@ -22,7 +22,7 @@ public:
 
 	//Cargar
 	bool load(std::string path, SDL_Renderer* renderer);
-
+	bool loadText(std::string textureText, int tamaño, SDL_Color color );
 	//Liberar
 	void free();
 

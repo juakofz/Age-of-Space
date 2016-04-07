@@ -10,6 +10,8 @@
 #include "Texture.h"
 #include "LWindow.h"
 
+using namespace std;
+
 class LWindow;
 extern Texture gTextTexture;
 //SDL_Window* gWindow = NULL;
@@ -19,6 +21,13 @@ extern SDL_Renderer* gRenderer;
 extern Texture gSceneTexture;
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
+
+
+extern bool textinput(std::string *inputText, bool renderText, SDL_Event e);
+extern void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
+
+extern Texture gPromptTextTexture;
+extern Texture gInputTextTexture;
 
 //Globally used font
 extern TTF_Font *gFont;

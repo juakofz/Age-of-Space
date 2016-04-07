@@ -73,6 +73,34 @@ void Texture::free()
 	}
 }
 
+bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor)
+{
+	//Loading success flag
+	bool success = true;
+
+	//Open the font
+	gFont = TTF_OpenFont( "SPACEBAR.ttf", tamaño );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else
+	{
+		//Render text
+		//SDL_Color textColor = { 47, 8, 114 };
+		if( !loadFromRenderedText( textureText.c_str(), textColor ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = false;
+		}
+	}
+
+	return success;
+}
+
+
+
 //Modulación de color (tec)
 void Texture::setColor(Uint8 r, Uint8 g, Uint8 b) 
 {

@@ -18,7 +18,7 @@
 #include "Global.h"
 #include "EnteSupremo.h"
 
-
+using namespace std;
 
 int main(int argc, char* args[])
 {
@@ -30,7 +30,9 @@ int main(int argc, char* args[])
 	else
 	{
 		//Load media
-		if( !loadText() )
+		SDL_Color color = {0,255,0};
+
+		if( !gTextTexture.loadText("WELCOME TO AGE OF SPACE", 28, color) )
 		{
 			printf( "Failed to load media!\n" );
 		}
@@ -41,6 +43,12 @@ int main(int argc, char* args[])
 			bool total = true;
 			//Event handler
 			SDL_Event e;
+			SDL_Color textColor = { 0, 0, 255};
+			int tamaño = 28;
+			std::string inputText = "Jugador";
+			gInputTextTexture.loadText(inputText.c_str(), tamaño, textColor);
+
+			//gInputTextTexture.loadFromRenderedText( inputText.c_str(), textColor );
 			bool size;
 			EnteSupremo yo;
 
@@ -52,6 +60,7 @@ int main(int argc, char* args[])
 			//While application is running
 			while( !quit )
 			{
+				bool renderText = false;
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -61,12 +70,18 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
+					else
+
+
 					if(total) 
 					{
 						yo.RenderTotal();
 					
 						size=gWindow.handleEvent( e );
 						if( e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_RIGHT) total=false;
+
+						renderText=textinput(&inputText, renderText, e);
+						yo.setNombre(inputText);
 					}
 
 					else
@@ -111,7 +126,8 @@ int main(int argc, char* args[])
 					{
 						yo.RenderTotal();
 						gTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
-
+						Textrender(inputText, renderText, textColor, tamaño);
+						gInputTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.6*gWindow.getHeight() );
 					}
 					else
 					{

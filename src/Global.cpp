@@ -18,7 +18,11 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-bool loadText();
+bool textinput(std::string *inputText, bool renderText, SDL_Event e);
+void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
+
+Texture gPromptTextTexture;
+Texture gInputTextTexture;
 
 //Globally used font
 TTF_Font *gFont = NULL;
@@ -124,28 +128,64 @@ bool loadMedia()
 
 	return success;
 }
-bool loadText()
+
+bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 {
-	//Loading success flag
-	bool success = true;
+	if( e.type == SDL_KEYDOWN )
+					{
+						SDL_StartTextInput();
+						//Handle backspace
+						if( e.key.keysym.sym == SDLK_BACKSPACE && inputText->length() > 0 )
+						{
+							//lop off character
+							inputText->pop_back();
+							renderText = true;
+						}
+						//Handle copy
+						else if( e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL )
+						{
+							SDL_SetClipboardText( inputText->c_str() );
+						}
+						//Handle paste
+						/*else if( e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
+						{
+							inputText = SDL_GetClipboardText();
+							renderText = true;
+						}*/
+					}
+					//Special text input event
+					else if( e.type == SDL_TEXTINPUT )
+					{
+						//Not copy or pasting
+						if( !( ( e.text.text[ 0 ] == 'c' || e.text.text[ 0 ] == 'C' ) && ( e.text.text[ 0 ] == 'v' || e.text.text[ 0 ] == 'V' ) && SDL_GetModState() & KMOD_CTRL ) )
+						{
+							//Append character
+							//inputText += e.text.text;
+							//strcat(inputText, e.text.text);
+							inputText->append(e.text.text);
+							renderText = true;
+							//printf("inputtext");
+						}
+					}
+	return renderText;
+	SDL_StopTextInput();
+}
 
-	//Open the font
-	gFont = TTF_OpenFont( "SPACEBAR.ttf", 28 );
-	if( gFont == NULL )
-	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-		success = false;
-	}
-	else
-	{
-		//Render text
-		SDL_Color textColor = { 47, 8, 114 };
-		if( !gTextTexture.loadFromRenderedText( "WELCOME TO... AGE OF SPACE", textColor ) )
-		{
-			printf( "Failed to render text texture!\n" );
-			success = false;
-		}
-	}
-
-	return success;
+void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño)
+{
+	if( renderText )
+				{
+					//Text is not empty
+					if( inputText != "" )
+					{
+						//Render new text
+						gInputTextTexture.loadText( inputText.c_str(),tamaño, textColor );
+					}
+					//Text is empty
+					else
+					{
+						//Render space texture
+						gInputTextTexture.loadText( " ", tamaño, textColor );
+					}
+				}
 }
