@@ -1,7 +1,6 @@
 #pragma once
 #include "Texture.h"
 #include "Vector2.h"
-#include "Marker.h"
 
 class Texture;
 
@@ -58,7 +57,6 @@ private:
 	Texture *tex;
 	Texture *marker;
 
-	Marker sel_marker;
 	SDL_Color marker_color;
 
 	int size;

@@ -11,10 +11,17 @@
 #include "Texture.h"
 #include "Ship.h"
 #include "mouse.h"
+#include "Timer.h"
+
+
+using namespace std;
 
 //Tamaño de la ventana
 const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 640;
+//Límite FPS
+const int SCREEN_FPS = 60;
+const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 //Starts up SDL and creates window
 bool init();
@@ -44,6 +51,11 @@ int main(int argc, char* args[])
 		//Flag principal
 		bool quit = false;
 
+		//FPS
+		Timer fps_timer, cap_timer;
+		int countedFrames = 0;
+		fps_timer.start();
+
 		//Manejo de eventos
 		SDL_Event e;
 
@@ -65,13 +77,13 @@ int main(int argc, char* args[])
 		ship.stop();
 		
 		//Muchas naves
-		Ship naves[20][20];
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
+		Ship naves[30][30];
+		for (int i = 0; i < 30; i++) {
+			for (int j = 0; j < 30; j++) {
 				naves[i][j].SetTex(tex);
-				naves[i][j].setSize(5);
+				naves[i][j].setSize(17);
 				naves[i][j].setMarker(&tex[3]);
-				naves[i][j].SetCen(50 + 30 * i, 50 + 30 * j);
+				naves[i][j].SetCen(30 + 18 * i, 30 + 18 * j);
 				naves[i][j].stop();
 			}
 		}
@@ -79,6 +91,10 @@ int main(int argc, char* args[])
 		//Bucle principal
 		while (!quit)
 		{
+
+			//Límite FPS
+			cap_timer.start();
+
 			//Manejo de eventos
 			while (SDL_PollEvent(&e) != 0)
 			{
@@ -96,15 +112,31 @@ int main(int argc, char* args[])
 				ship.event(&e, mouse_selection);
 
 				//Eventos de muchas naves
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 20; j++) {
+				for (int i = 0; i < 30; i++) {
+					for (int j = 0; j < 30; j++) {
 						naves[i][j].event(&e, mouse_selection);
 					}
 				}
 			}
+
+			//Cálculo de fps
+			float avgFPS = countedFrames / (fps_timer.getTicks() / 1000.f);
+			if (avgFPS > 2000000)
+			{
+				avgFPS = 0;
+			}
+			if (fps_timer.getTicks() > 2000)
+			{
+				countedFrames = 0;
+				fps_timer.start();
+			}
+			cout << "FPS: " << avgFPS << '\r';
+
+
+
 			//Movimiento
-			for (int i = 0; i < 20; i++) {
-				for (int j = 0; j < 20; j++) {
+			for (int i = 0; i < 30; i++) {
+				for (int j = 0; j < 30; j++) {
 					naves[i][j].move();
 				}
 			}
@@ -122,14 +154,24 @@ int main(int argc, char* args[])
 			mouse.render(gRenderer);
 
 			//Renderizar muchas naves
-			for (int i = 0; i < 20; i++) {
-				for (int j = 0; j < 20; j++) {
+			for (int i = 0; i < 30; i++) {
+				for (int j = 0; j < 30; j++) {
 					naves[i][j].render(gRenderer);
 				}
 			}
 
 			//Actualizar pantalla
 			SDL_RenderPresent(gRenderer);
+			++countedFrames;
+
+			//If frame finished early
+			int frameTicks = cap_timer.getTicks();
+			if (frameTicks < SCREEN_TICKS_PER_FRAME)
+			{
+				//Wait remaining time
+				SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+			}
+
 			}
 		}
 
