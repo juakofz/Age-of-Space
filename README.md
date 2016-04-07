@@ -31,3 +31,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P0.4
 - Panatlla dividida en viewports(de nuevo).
 - Cambio de tamaño de la pantalla y los viewports proporcionalmente.
+
+#### P0.5
+- Añadida pantalla de inicio con renderizado de texto.
+- los asteroides renderizan independientemente de los viewports, pero en el que les toca.
