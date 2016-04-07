@@ -35,3 +35,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P0.5
 - Añadida pantalla de inicio con renderizado de texto.
 - los asteroides renderizan independientemente de los viewports, pero en el que les toca.
+
+#### P0.6
+- Añadida función para introducir texto
+- El nombre del jugador se introduce por texto en la pantalla de inicio
