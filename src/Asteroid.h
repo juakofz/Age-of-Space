@@ -18,18 +18,16 @@ public:
 	~Asteroid();
 
 	//Manejo de eventos
-	void event(SDL_Event* e, SDL_Point xyrel);
+	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 
 	//Selección
 	void select();
 	void deselect();
-
-	//menu
-	void SetMenu(int w, int h);
-	void openMenu();
+	bool getSel();
 
 	//Renderizado
 	void render();
+	void setMarker(Texture *m);
 
 	//Posición
 	Vector2 GetPos();
@@ -39,17 +37,25 @@ public:
 	Vector2 GetCen();
 	void SetCen(float x, float y);
 
-	bool getSel();
-	Texture tex;
+	void SetTex(Texture *t);
+
+	//Tamaño
+	void setSize(int s);
 
 private:
-	Menu menu;
-	Button boton;
+
+	Texture *tex;
+	Texture *marker;
+	SDL_Color marker_color;
+
+	//posicion y centro
 	Vector2 pos;
 	Vector2 cen;
 
+	int size;
+
+	//flag de seleccion
 	bool sel;
-	float sel_radius;
-	Texture sel_circle;
+	int sel_angle;
 };
 

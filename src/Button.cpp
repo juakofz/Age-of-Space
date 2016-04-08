@@ -47,17 +47,11 @@ void Button::render()
 	//Marcador de selección
 	if (sel == true)
 	{
-		SDL_Rect rec_sel;
-		rec_sel.x = pos.x;
-		rec_sel.y = pos.y;
-		rec_sel.h = tex.getDim().x;
-		rec_sel.w = tex.getDim().y;
-		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);;
-		SDL_RenderDrawRect(gRenderer, &rec_sel);
+		//ya se vera
 	}
 }
 
-bool Button::clickOn(SDL_Event* e)
+bool Button::clickOn(SDL_Event* e) //faltan un par de cambios
 {
 	int mx, my;
 	bool flag =false;

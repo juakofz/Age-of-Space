@@ -6,32 +6,39 @@ SDL_Renderer* gRenderer = NULL;
 //Scene textures
 Texture gSceneTexture;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+//tamaño de la pantalla
+const int SCREEN_WIDTH = 960;
+const int SCREEN_HEIGHT = 640;
+
+//Límite FPS
+const int SCREEN_FPS = 60;
+const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 //Starts up SDL and creates window
 bool init();
 
-//Loads media
-bool loadMedia();
-
 //Frees media and shuts down SDL
 void close();
 
+//cargan el texto del reclado y lo renderizan
 bool textinput(std::string *inputText, bool renderText, SDL_Event e);
 void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
 
+//texturas del texto
 Texture gPromptTextTexture;
 Texture gInputTextTexture;
 
 //Globally used font
 TTF_Font *gFont = NULL;
 
+//ventana
 LWindow gWindow;
 
+//textura texto
 Texture gTextTexture;
 
-//	, barraQuad, menuQuad, caractQuad;
+
+//inicializa
 bool init()
 {
 	//Initialization flag
@@ -79,7 +86,7 @@ bool init()
 					success = false;
 				}
 
-					 //Initialize SDL_ttf
+				 //Initialize SDL_ttf
 				if( TTF_Init() == -1 )
 				{
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -94,6 +101,7 @@ bool init()
 	return success;
 }
 
+//cierra el programa
 void close()
 {
 	//Free loaded images
@@ -114,25 +122,12 @@ void close()
 	SDL_Quit();
 }
 
-bool loadMedia()
-{
-	//Loading success flag
-	bool success = true;
-
-	//Load scene texture
-	if( !gSceneTexture.load("alquimiapre.png", gRenderer) )
-	{
-		printf( "Failed to load window texture!\n" );
-		success = false;
-	}
-
-	return success;
-}
-
+//texto por teclado
 bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 {
 	if( e.type == SDL_KEYDOWN )
 					{
+						//permite introducir texto
 						SDL_StartTextInput();
 						//Handle backspace
 						if( e.key.keysym.sym == SDLK_BACKSPACE && inputText->length() > 0 )
@@ -146,7 +141,9 @@ bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 						{
 							SDL_SetClipboardText( inputText->c_str() );
 						}
+
 						//Handle paste
+						//esta comentado porq me da un error
 						/*else if( e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
 						{
 							inputText = SDL_GetClipboardText();
@@ -160,32 +157,33 @@ bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 						if( !( ( e.text.text[ 0 ] == 'c' || e.text.text[ 0 ] == 'C' ) && ( e.text.text[ 0 ] == 'v' || e.text.text[ 0 ] == 'V' ) && SDL_GetModState() & KMOD_CTRL ) )
 						{
 							//Append character
-							//inputText += e.text.text;
-							//strcat(inputText, e.text.text);
 							inputText->append(e.text.text);
 							renderText = true;
-							//printf("inputtext");
 						}
 					}
+	//devuelve si hay que renderizar el texto
 	return renderText;
+	//cierra la comunicacion con el telclado
 	SDL_StopTextInput();
 }
 
+
+//renderiza el texto
 void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño)
 {
 	if( renderText )
-				{
-					//Text is not empty
-					if( inputText != "" )
-					{
-						//Render new text
-						gInputTextTexture.loadText( inputText.c_str(),tamaño, textColor );
-					}
-					//Text is empty
-					else
-					{
-						//Render space texture
-						gInputTextTexture.loadText( " ", tamaño, textColor );
-					}
-				}
+	{
+		//Text is not empty
+		if( inputText != "" )
+		{
+			//Render new text
+			gInputTextTexture.loadText( inputText.c_str(),tamaño, textColor );
+		}
+		//Text is empty
+		else
+		{
+			//Render space texture
+			gInputTextTexture.loadText( " ", tamaño, textColor );
+		}
+	}
 }

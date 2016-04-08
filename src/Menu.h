@@ -5,6 +5,8 @@
 
 const int NUMERO_BOTONES=3;
 
+//esto ahora mismo no se utiliza
+
 class Menu
 {
 	Button botones[NUMERO_BOTONES];

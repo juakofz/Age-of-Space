@@ -6,14 +6,13 @@
 #include "Asteroid.h"
 
 
-//extern SDL_Window* gWindow;
-//extern SDL_Renderer* gRenderer;
-
 class ViewPort
 {
-	Asteroid ast;
+	//datos del viewport
 	SDL_Rect param;
 	Texture tex;
+
+	//proporciones y tamaño final
 	Vector2 origen, tamaño, tamañofin;
 
 public:
@@ -23,19 +22,29 @@ public:
 	//destructor
 	~ViewPort(void);
 
-	//parametros
+	//inicializar
 	void Init(int x, int y, int w, int h,std::string path);
-	void ActParam();
 
-	void SetRel(float x, float y, float w, float h);
+	//parametros
+	void ActParam();
 	void SetParam( int w, int h, int x=NULL, int y=NULL);
 	SDL_Rect GetParam();
+
+	//relacion de tamaño respecto a la pantalla
+	void SetRel(float x, float y, float w, float h);
+
+	//altura y corrdonada y
 	int getHeight();
 	int getY();
+
 	//renderizar
 	void render();
 	void Set();
+
+	//relativiza la posicion del raton a sus coordenadas
 	SDL_Point relatxy();
+
+	//handle event
 	void event(SDL_Event* e);
 
 };

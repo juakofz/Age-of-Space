@@ -11,45 +11,62 @@ EnteSupremo::~EnteSupremo(void)
 {
 }
 
-void EnteSupremo::setViewPort(SDL_Event* e)
+void EnteSupremo::event(SDL_Event* e)
 {
-
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-	if(my<barra.getHeight())
+
+	//Decide en que viewport estamos segun la posicion del raton
+	if(my<barra.getHeight()) //zona de barra
 	{
-	barra.Set();
-	//printf("en barra");
+		barra.Set();
+		//printf("en barra");
 	}
-	if(my>menus.getY())
+	if(my>menus.getY()) //zona de menus
 	{
 		menus.Set();
 		//printf("menus");
 		menus.event(e);
 	}
-	if(my>barra.getHeight() && my<menus.getY())
+	if(my>barra.getHeight() && my<menus.getY()) //zona de juego
 	{
 		juego.Set();
+		eventjuego(e);
 		//printf("en juego");
 		juego.event(e);
 	}
-	SDL_Rect view;
-	SDL_RenderGetViewport(gRenderer, &view);
+	//eventos del raton
+	mouse.update(e, juego.relatxy());
+	mouse_selection = mouse.getSel();
 
-	//printf("\n estamos en: %d %d %d %d\n", view.x, view.y, view.w, view.h);
+}
 
+void EnteSupremo::cargarTexturas()
+{
+	tex[0].load("Nave1.png", gRenderer);
+	tex[1].load("asteroide.png", gRenderer);
+	tex[2].load("edificio.png", gRenderer);
+	tex[3].load("markerW.png", gRenderer);
+
+	tex[3].setColor(255, 100, 0);
 }
 
 void EnteSupremo::InitViewPorts()
 {
+
+	//juego
+	juego.Init(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "space.png");
+	juego.SetRel(0,0.1,1,0.65);
+
+	//menus
 	menus.Init(0,3*SCREEN_HEIGHT/4,SCREEN_WIDTH,SCREEN_HEIGHT/4, "menu.png");
-	juego.Init(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,3*SCREEN_HEIGHT/4, "space.png");
 	menus.SetRel(0,0.75,1,0.25);
-	juego.SetRel(0,0.1,1,0.75);
+
+	//barra
 	barra.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "barra.png");
 	barra.SetRel(0,0,1,0.1);
 	
-
+	//pantalla inicial
 	total.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "space2.png");
 	total.SetRel(0,0,1,1);
 }
@@ -64,41 +81,49 @@ void EnteSupremo::ActViewPorts()
 
 void EnteSupremo::RenderViewPorts()
 {
+	//viewports
 	juego.render();
-
 	barra.render();
-	menubarra.render();
-	//printf("renderizado de barra");
+		//elementos que se imprimen en la barra (debe ir detras de la barra)
+		menubarra.render();
 	menus.render();
-	if (ast.getSel()) printf("menu de asteroide");
-}
-
-void EnteSupremo::event(SDL_Event* e)
-{
-	//juego.event(e);
-	//menus.event(e);
-	ast.event(e, juego.relatxy());
-	ast.render();
 }
 
 void EnteSupremo::RenderTotal()
 {
-
 	total.render();
 }
 
 void EnteSupremo::initjuego()
 {
+	//inicializacion asteroide
+	ast.SetTex(tex+1);
 	ast.SetCen(50,50);
-	ast.tex.load("asteroide.png", gRenderer);
+	
+	ast.setSize(70);
+	ast.setMarker(&(tex[3]));
+
+	//inicializacion nave
+	ship.SetTex(tex);
+	ship.setSize(60);
+	ship.setMarker(&(tex[3]));
+	ship.SetCen(200, 200);
+	ship.stop();
 }
 
 void EnteSupremo::renderJuego()
 {
+	//viewport de juego
 	juego.Set();
+
+	//renderizamos los elementos del juego y la seleccion multiple
+	mouse.render(gRenderer);
+	ship.render(gRenderer);
 	ast.render();
-	barra.Set();
-	//menubarra.render();
+
+	//movemos la nave y acualizamos
+	ship.move();
+	ship.render(gRenderer);
 
 }
 
@@ -106,4 +131,14 @@ void EnteSupremo::setNombre(std::string nombre)
 {
 	nombrejugador=nombre;
 	menubarra.SetName(nombrejugador);
+}
+
+void EnteSupremo::eventjuego(SDL_Event* e)
+{
+	//eventos de los elementos del juego
+	ast.event(e, mouse_selection, juego.relatxy());
+	ast.render();
+
+	ship.event(e, mouse_selection, juego.relatxy());
+	ship.render(gRenderer);
 }

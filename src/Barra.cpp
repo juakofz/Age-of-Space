@@ -38,14 +38,18 @@ void Barra::renderRecursos()
 {
 	SDL_Color color={255,255,0};
 
+	//iconos del oro y la energia
 	Texture energia, oro;
-	energia.load("Energy.png", gRenderer);
+	
+	//energia.load("Energy.png", gRenderer);
 	oro.load("gold.png", gRenderer);
 
+	//tamaño de los iconos
 	Vector2 tamaño;
 	tamaño.x=30;
 	tamaño.y=30;
-	energia.render(gRenderer, &tamaño);
+
+	//energia.render(gRenderer, &tamaño);
 	oro.render(gRenderer, &tamaño, gWindow.getWidth()*0.1);
 
 }

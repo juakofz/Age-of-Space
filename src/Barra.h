@@ -2,6 +2,7 @@
 #include <string>
 #include "Texture.h"
 
+//esta clase todavia esta en pañales, no hay que hacerle mucho caso
 
 class Barra
 {
@@ -9,6 +10,7 @@ class Barra
 	Texture nombrejugador, opciones, recursos;
 
 public:
+
 	Barra(void);
 	~Barra(void);
 
@@ -17,6 +19,7 @@ public:
 	//void actRecursos();
 	void renderRecursos();
 
+	//nombre del jugador
 	void SetName(std::string nombre);
 	void renderName();
 

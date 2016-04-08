@@ -1,6 +1,6 @@
 #include "LWindow.h"
 #include <sstream>
-extern SDL_Renderer* gRenderer;
+
 
 LWindow::LWindow()
 {
@@ -105,21 +105,6 @@ bool LWindow::handleEvent( SDL_Event& e )
 			SDL_SetWindowTitle( mWindow, caption.str().c_str() );
 		}
 	}
-	//Enter exit full screen on return key
-	/*else if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN )
-	{
-		if( mFullScreen )
-		{
-			SDL_SetWindowFullscreen( mWindow, SDL_FALSE );
-			mFullScreen = false;
-		}
-		else
-		{
-			SDL_SetWindowFullscreen( mWindow, SDL_TRUE );
-			mFullScreen = true;
-			mMinimized = false;
-		}
-	}*/
 	return size;
 }
 

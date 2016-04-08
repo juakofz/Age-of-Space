@@ -9,7 +9,7 @@ Texture::Texture()
 	texture = NULL;
 	dim.x = 0;
 	dim.y = 0;
-	wpantalla=SCREEN_WIDTH;
+	diag=0;
 }
 
 //Destructor
@@ -50,6 +50,7 @@ bool Texture::load(std::string path, SDL_Renderer* renderer)
 			//Utilizar diménsiones de la imagen
 			dim.x = img->w;
 			dim.y = img->h;
+			diag = sqrt(dim.x * dim.x + dim.y * dim.y);
 		}
 
 		//Liberar imagen
@@ -88,7 +89,6 @@ bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor)
 	else
 	{
 		//Render text
-		//SDL_Color textColor = { 47, 8, 114 };
 		if( !loadFromRenderedText( textureText.c_str(), textColor ) )
 		{
 			printf( "Failed to render text texture!\n" );
@@ -171,13 +171,14 @@ void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, doubl
 	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, center, flip);
 }
 
-void Texture::rendermini(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip)
+//Renderizado por centro y rect
+void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip, double angle, SDL_RendererFlip flip)
 {
-		
-	SDL_Rect minimapQuad = {2*SCREEN_WIDTH/3, 3*SCREEN_HEIGHT/4, SCREEN_WIDTH/3, SCREEN_HEIGHT/4};
 
-	SDL_Rect renderQuad= { x+minimapQuad.x, y+minimapQuad.y, minimapQuad.w, minimapQuad.h};
-	//printf("%d x ",minimapQuad.x);
+	//Espacio de renderizado
+	SDL_Rect renderQuad = { center->x -  w/2, center->y - h/2, w, h};
+
+	//Espacio final de renderizado de renderizado
 	if (clip != NULL)
 	{
 		renderQuad.w = clip->w;
@@ -185,12 +186,14 @@ void Texture::rendermini(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip)
 	}
 
 	//Renderizado
-	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
+	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, NULL, flip);
 }
+
+//renderizado por rectangulo y posicion
 void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Rect* clip)
 {
 		
-	//SDL_Rect menuQuad = {0, 3*SCREEN_HEIGHT/4, SCREEN_WIDTH/3, SCREEN_HEIGHT/4};
+	//espacio final de renderizado
 	SDL_Rect renderQuad;
 	renderQuad.x=x;
 	renderQuad.y=y;
@@ -207,64 +210,6 @@ void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Re
 			renderQuad.h=dim.y;
 	}
 
-	//printf("%d x ",renderQuad.x);
-
-	//Renderizado
-	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
-}
-void Texture::rendermenu(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Rect* clip)
-{
-		
-	SDL_Rect menuQuad = {0, 3*SCREEN_HEIGHT/4, SCREEN_WIDTH/3, SCREEN_HEIGHT/4};
-	SDL_Rect renderQuad;
-	renderQuad.x=x+menuQuad.x;
-	renderQuad.y=y+menuQuad.y;
-
-	if(Quad!=NULL)
-		{
-			renderQuad.w = Quad->x;
-			renderQuad.h = Quad->y;
-		}
-
-	else
-		{
-			renderQuad.w= menuQuad.w;
-			renderQuad.h=menuQuad.h;
-	}
-
-	//printf("%d x ",minimapQuad.x);
-
-	//Renderizado
-	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
-}
-void Texture::renderbarra(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip)
-{
-		
-	SDL_Rect barraQuad = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/10};
-
-	SDL_Rect renderQuad= { x+barraQuad.x, y+barraQuad.y, barraQuad.w, barraQuad.h};
-	//printf("%d x ",minimapQuad.x);
-	if (clip != NULL)
-	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
-	}
-
-	//Renderizado
-	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
-}
-void Texture::rendercaract(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip)
-{
-		
-	SDL_Rect caractQuad = {SCREEN_WIDTH/3, 3*SCREEN_HEIGHT/4, SCREEN_WIDTH/3, SCREEN_HEIGHT/4};
-
-	SDL_Rect renderQuad= { x+caractQuad.x, y+caractQuad.y, caractQuad.w, caractQuad.h};
-	//printf("%d x ",minimapQuad.x);
-	if (clip != NULL)
-	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
-	}
 
 	//Renderizado
 	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
@@ -274,5 +219,11 @@ void Texture::rendercaract(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip)
 Vector2 Texture::getDim() 
 {
 	return dim;
+}
+
+//Diagonal
+float Texture::getDiag()
+{
+	return diag;
 }
 
