@@ -21,7 +21,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Añadida selección múltiple
 - Tamaño de textura ajustable
 - Marcador de selección mejorado
-- 
+
 ##### P 0.3.1:
 - Temporizadores
 - Añadido cap y contador de FPS (consola)
