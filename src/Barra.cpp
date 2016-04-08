@@ -39,14 +39,14 @@ void Barra::renderRecursos()
 	SDL_Color color={255,255,0};
 
 	Texture energia, oro;
-	energia.loadText("energia", 10, color);
-	oro.loadText("oro", 10, color);
+	energia.load("Energy.png", gRenderer);
+	oro.load("gold.png", gRenderer);
 
 	Vector2 tamaño;
-	tamaño.x=gWindow.getWidth()*0.1;
-	tamaño.y=15;
-	energia.render(gRenderer, &tamaño, gWindow.getWidth()*0, 10);
-	oro.render(gRenderer, &tamaño, gWindow.getWidth()*0.1, 10);
+	tamaño.x=30;
+	tamaño.y=30;
+	energia.render(gRenderer, &tamaño);
+	oro.render(gRenderer, &tamaño, gWindow.getWidth()*0.1);
 
 }
 

@@ -78,7 +78,7 @@ int main(int argc, char* args[])
 						yo.RenderTotal();
 					
 						size=gWindow.handleEvent( e );
-						if( e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_RIGHT) total=false;
+						if( e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_RETURN) total=false;
 
 						renderText=textinput(&inputText, renderText, e);
 						yo.setNombre(inputText);

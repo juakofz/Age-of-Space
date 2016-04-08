@@ -106,7 +106,7 @@ bool LWindow::handleEvent( SDL_Event& e )
 		}
 	}
 	//Enter exit full screen on return key
-	else if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN )
+	/*else if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN )
 	{
 		if( mFullScreen )
 		{
@@ -119,7 +119,7 @@ bool LWindow::handleEvent( SDL_Event& e )
 			mFullScreen = true;
 			mMinimized = false;
 		}
-	}
+	}*/
 	return size;
 }
 
