@@ -47,8 +47,10 @@ void EnteSupremo::cargarTexturas()
 	tex[1].load("asteroide.png", gRenderer);
 	tex[2].load("edificio.png", gRenderer);
 	tex[3].load("markerW.png", gRenderer);
+	tex[4].load("markerW.png", gRenderer);
 
 	tex[3].setColor(255, 100, 0);
+	tex[4].setColor(0, 255, 0);
 }
 
 void EnteSupremo::InitViewPorts()
@@ -101,7 +103,7 @@ void EnteSupremo::initjuego()
 	ast.SetCen(50,50);
 	
 	ast.setSize(70);
-	ast.setMarker(&(tex[3]));
+	ast.setMarker(&(tex[4]));
 
 	//inicializacion nave
 	ship.SetTex(tex);

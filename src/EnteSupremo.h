@@ -24,7 +24,7 @@ class EnteSupremo
 	string nombrejugador;
 
 	//texturas
-	Texture tex[4];
+	Texture tex[5];
 
 	//Mouse
 	Mouse mouse;
