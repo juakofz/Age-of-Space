@@ -1,5 +1,5 @@
 #include "EnteSupremo.h"
-
+#include <typeinfo>
 
 EnteSupremo::EnteSupremo(void)
 {
@@ -27,6 +27,7 @@ void EnteSupremo::event(SDL_Event* e)
 		menus.Set();
 		//printf("menus");
 		menus.event(e);
+		eventMenu(e);
 	}
 	if(my>barra.getHeight() && my<menus.getY()) //zona de juego
 	{
@@ -51,6 +52,11 @@ void EnteSupremo::cargarTexturas()
 
 	tex[3].setColor(255, 100, 0);
 	tex[4].setColor(0, 255, 0);
+
+
+	texOpciones[0].load("edificio.png", gRenderer);
+	texOpciones[1].load("markerW.png", gRenderer);
+	texOpciones[2].load("Nave1.png", gRenderer);
 }
 
 void EnteSupremo::InitViewPorts()
@@ -105,12 +111,19 @@ void EnteSupremo::initjuego()
 	ast.setSize(70);
 	ast.setMarker(&(tex[4]));
 
+	//printf("%c", typeid(ast).name());
+
+	cout << typeid(ast).name()<<'\n';
+
 	//inicializacion nave
-	ship.SetTex(tex);
-	ship.setSize(60);
-	ship.setMarker(&(tex[3]));
-	ship.SetCen(200, 200);
-	ship.stop();
+	for(int i=0;i<60;i++)
+	{
+	ship[i].SetTex(tex);
+	ship[i].setSize(60);
+	ship[i].setMarker(&(tex[3]));
+	ship[i].SetCen(10*i, 0);
+	ship[i].stop();
+	}
 }
 
 void EnteSupremo::renderJuego()
@@ -120,14 +133,19 @@ void EnteSupremo::renderJuego()
 
 	//renderizamos los elementos del juego y la seleccion multiple
 	mouse.render(gRenderer);
-	ship.render(gRenderer);
+	for(int i=0;i<60;i++) ship[i].render(gRenderer);
 	ast.render();
 
 	//movemos la nave y acualizamos
-	ship.move();
-	ship.render(gRenderer);
-
+	for(int i=0;i<60;i++)
+	{
+	ship[i].move();
+	ship[i].render(gRenderer);
+	}
+	if(ast.getSel()) renderMenu();
 }
+
+
 
 void EnteSupremo::setNombre(std::string nombre)
 {
@@ -140,7 +158,33 @@ void EnteSupremo::eventjuego(SDL_Event* e)
 	//eventos de los elementos del juego
 	ast.event(e, mouse_selection, juego.relatxy());
 	ast.render();
+	for(int i=0;i<60;i++)
+	{
+	ship[i].event(e, mouse_selection, juego.relatxy());
+	ship[i].render(gRenderer);
+	}
+	if(ast.getSel()) renderMenu();
+}
 
-	ship.event(e, mouse_selection, juego.relatxy());
-	ship.render(gRenderer);
+void EnteSupremo::initMenu()
+{
+	menu.setBotones(texOpciones);
+	menu.setBotonQuad(40, 40);
+}
+
+void EnteSupremo::renderMenu()
+{
+	//viewport de menu
+	menus.Set();
+
+	//renderizamos el menu
+	menu.render();
+
+}
+
+void EnteSupremo::eventMenu(SDL_Event* e)
+{
+	//eventos del menu
+	menu.event(e, menus.relatxy());
+	printf("dentro del menu");
 }

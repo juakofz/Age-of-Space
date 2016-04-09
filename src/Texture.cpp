@@ -198,17 +198,16 @@ void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Re
 	renderQuad.x=x;
 	renderQuad.y=y;
 
-	if(Quad!=NULL)
+	//if(Quad!=NULL)
 		{
 			renderQuad.w = Quad->x;
 			renderQuad.h = Quad->y;
 		}
-
-	else
+	/*else
 		{
 			renderQuad.w= dim.x;
-			renderQuad.h=dim.y;
-	}
+			renderQuad.h= dim.y;
+	}*/
 
 
 	//Renderizado
