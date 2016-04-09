@@ -11,15 +11,16 @@ class Menu
 {
 	Button botones[NUMERO_BOTONES];
 	Vector2 botondim;
-	//Texture texturas[NUMERO_BOTONES];
+	//Texture *texturas[NUMERO_BOTONES];
 
 public:
 
 	Menu(void);
 	~Menu(void);
-	void SetBotones();
+	void setBotones(Texture tex[]);
 	void render();
-	void SetBotonQuad(int w, int h);
-	void event(SDL_Event* e);
+	void setBotonQuad(int w, int h);
+	void event(SDL_Event* e, SDL_Point xyrel);
+	//void setTexturas(Texture tex[]);
 };
 
