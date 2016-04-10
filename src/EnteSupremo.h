@@ -17,14 +17,16 @@ class EnteSupremo
 
 	//elementos del juego
 	Asteroid ast;
-	Ship ship;
+	Ship ship[60];
 
 	//añadidos que hay que recolocar
 	Barra menubarra;
 	string nombrejugador;
+	Menu menu;
 
 	//texturas
 	Texture tex[5];
+	Texture texOpciones[3];
 
 	//Mouse
 	Mouse mouse;
@@ -53,6 +55,12 @@ public:
 	void initjuego(); //inicializa los elementos del juego
 	void renderJuego(); //renderiza los elementos del juego
 	void eventjuego(SDL_Event* e); //eventos en el viewport del juego 
+
+
+	//menu
+	void initMenu(); //inicializa los elementos del juego
+	void renderMenu(); //renderiza los elementos del juego
+	void eventMenu(SDL_Event* e); //eventos en el viewport del juego 
 
 	//nombre del jugador
 	void setNombre(std::string nombre);

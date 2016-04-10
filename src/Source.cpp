@@ -43,6 +43,8 @@ int main(int argc, char* args[])
 		}
 		else
 		{	
+
+	//		SDL_GL_SetSwapInterval(0);
 			//Main loop flag
 			bool quit = false;
 
@@ -74,11 +76,17 @@ int main(int argc, char* args[])
 			yo.InitViewPorts();
 			yo.initjuego();
 
+			yo.initMenu();
+
 			//While application is running
 			while( !quit )
 			{
 				//flag de cambio en el texto introducido
 				bool renderText = false;
+
+
+				//Límite FPS
+				cap_timer.start();
 
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
@@ -92,8 +100,7 @@ int main(int argc, char* args[])
 					//Si estamos en pantalla de inicio
 					if(total) 
 					{
-						yo.RenderTotal();
-					
+									
 						//eventos del cambio de pantalla
 						size=gWindow.handleEvent( e );
 
@@ -117,6 +124,8 @@ int main(int argc, char* args[])
 
 						//renderizamos los elementos del juego (asteroide y nave)
 						yo.renderJuego();
+
+						yo.renderMenu();
 					}
 					
 				}
@@ -146,8 +155,8 @@ int main(int argc, char* args[])
 					}
 
 					//no me dejaba usar cout no se porq
-					//std::cout<< "FPS: " << avgFPS << '\r';
-					printf("FPS: %d '\r'", avgFPS);
+					std::cout<< "FPS: " << avgFPS << '\r';
+					//printf("FPS: %d '\r'", avgFPS);
 
 					//si ha cambiado el tamaño de la ventana actualizamos los parámetros que dependen de ella.
 					if(size)
@@ -178,6 +187,7 @@ int main(int argc, char* args[])
 							//renderizamos los viewports y los elementos del juego
 							yo.RenderViewPorts();
 							yo.renderJuego();
+							yo.renderMenu();
 					}
 
 					//actualizamos renderizado total

@@ -20,19 +20,20 @@ void Button::setPos( int x, int y )
 }
 
 //Handles mouse event
-void Button::event( SDL_Event* e )
+void Button::event( SDL_Event* e, SDL_Point xyrel )
 {
 	//If mouse event happened
-	if(clickOn(e))
+	if(clickOn(e, xyrel))
 	{	
-		switch( e->type )
+
+		switch( e->button.button )
 		{
 			case SDL_BUTTON_LEFT:
-			printf("pulsado boton izquierdo sobre el boton");
+			printf("pulsado boton izquierdo sobre el boton \n");
 			break;
 			
 			case SDL_BUTTON_RIGHT:
-			printf("pulsado boton derecho sobre el boton");
+			printf("pulsado boton derecho sobre el boton \n");
 			break;
 				
 		}
@@ -40,30 +41,32 @@ void Button::event( SDL_Event* e )
 }
 	
 //Shows button sprite
-void Button::render()
+void Button::render(Vector2 botondim)
 {
-	tex.render(gRenderer,(int)pos.x,(int)pos.y);
-
+	size=botondim;
+	tex->render(gRenderer, &botondim, (int)pos.x,(int)pos.y);
 	//Marcador de selección
 	if (sel == true)
 	{
-		//ya se vera
+		printf("marcador de seleccion\n");
 	}
 }
 
-bool Button::clickOn(SDL_Event* e) //faltan un par de cambios
+bool Button::clickOn(SDL_Event* e, SDL_Point xyrel) //faltan un par de cambios
 {
-	int mx, my;
+	int mx=xyrel.x, my=xyrel.y;
 	bool flag =false;
 
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
-		//printf("click\n");
-		Vector2 size = tex.getDim();
-		SDL_GetMouseState(&mx, &my);
-
+		//Vector2 size = tex->getDim();
 		if((((mx >= pos.x) && (mx <= (pos.x + size.x))) && ((my >= pos.y) && (my <= (pos.y + size.y))))) flag =true;
 	}
 	return flag;
 }
 
+void Button::setTexture(Texture *t)
+{
+	tex=t;
+
+}
