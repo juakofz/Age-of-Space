@@ -8,16 +8,18 @@ class Barra
 {
 	// name;
 	Texture nombrejugador, opciones, recursos;
+	Texture oroVal, energiaVal;
 
 public:
 
 	Barra(void);
 	~Barra(void);
 
-	void render();
+	void render(std::stringstream recursos[]);
 
 	//void actRecursos();
-	void renderRecursos();
+	void renderRecursos(std::stringstream recursos[]);
+	void setRecursos(std::stringstream recursos[]);
 
 	//nombre del jugador
 	void SetName(std::string nombre);

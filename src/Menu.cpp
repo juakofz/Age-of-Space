@@ -34,7 +34,7 @@ void Menu::setBotonQuad(int w, int h)
 
 void Menu::event(SDL_Event* e, SDL_Point xyrel)
 {
-	for(int i=0; i<2 ;i++) botones[i].event(e, xyrel);				
+	for(int i=0; i<NUMERO_BOTONES;i++) botones[i].event(e, xyrel);				
 }
 
 /*void Menu::setTexturas(Texture tex[])
