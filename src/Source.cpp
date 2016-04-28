@@ -183,7 +183,7 @@ int main(int argc, char* args[])
 					{
 							//renderizamos los viewports y los elementos del juego
 							game.RenderViewPorts();
-							game.renderJuego();
+							//game.renderJuego();
 						
 					}
 
