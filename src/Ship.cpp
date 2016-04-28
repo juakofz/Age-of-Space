@@ -68,7 +68,7 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 	}
 	*/
 	//Selección múltiple
-	if ((e->type == SDL_MOUSEBUTTONUP) && (e->button.button == SDL_BUTTON_LEFT))
+	if (e->button.button == SDL_BUTTON_LEFT)
 	{
 		if (((cen.x > selection.x - tex->getDim().x/2) && (cen.x < (selection.x + selection.w + tex->getDim().x / 2))))
 		{

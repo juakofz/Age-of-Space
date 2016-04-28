@@ -3,7 +3,6 @@
 
 Game::Game(void)
 {
-
 }
 
 
@@ -44,21 +43,22 @@ void Game::event(SDL_Event* e)
 
 void Game::cargarTexturas()
 {
-	tex[0].load("Nave1.png", gRenderer);
-	tex[1].load("asteroide.png", gRenderer);
-	tex[2].load("edificio.png", gRenderer);
-	tex[3].load("markerW.png", gRenderer);
-	tex[4].load("markerW.png", gRenderer);
+	tex[0].load("Nave1.png");
+	tex[1].load("asteroide.png");
+	tex[2].load("edificio.png");
+	tex[3].load("markerW.png");
+	tex[4].load("markerW.png");
+	tex[5].load("Cursor.png");
 
 	tex[3].setColor(255, 100, 0);
 	tex[4].setColor(0, 255, 0);
 
 
-	texOpciones[0].load("edificio.png", gRenderer);
-	texOpciones[1].load("markerW.png", gRenderer);
-	texOpciones[2].load("Nave1.png", gRenderer);
-	texOpciones[3].load("atras.png", gRenderer);
-	texOpciones[4].load("cerrar.png", gRenderer);
+	texOpciones[0].load("edificio.png");
+	texOpciones[1].load("markerW.png");
+	texOpciones[2].load("Nave1.png");
+	texOpciones[3].load("atras.png");
+	texOpciones[4].load("cerrar.png");
 }
 
 void Game::InitViewPorts()
@@ -100,15 +100,22 @@ void Game::RenderViewPorts()
 	menubarra.setRecursos(recursos);*/
 		menubarra.render();
 	menus.render();
+	//mouse.render(gRenderer);
+	total.Set();
+	mouse.render(gRenderer);
 }
 
 void Game::RenderTotal()
 {
 	total.render();
+	mouse.render(gRenderer);
 }
 
 void Game::initjuego()
 {
+	//Inicialización del cursor
+	mouse.setCursor(tex + 5);
+
 	//inicializacion asteroide
 	ast.SetTex(tex+1);
 	ast.SetCen(50,50);
@@ -139,9 +146,9 @@ void Game::renderJuego()
 {
 	//viewport de juego
 	juego.Set();
+	
 
 	//renderizamos los elementos del juego y la seleccion multiple
-	mouse.render(gRenderer);
 	for(int i=0;i<60;i++) ship[i].render(gRenderer);
 	ast.render();
 
@@ -156,6 +163,7 @@ void Game::renderJuego()
 			renderMenu();
 			int type=ast.getType();
 	}
+	//mouse.render(gRenderer);
 }
 
 

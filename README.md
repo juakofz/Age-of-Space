@@ -17,8 +17,17 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Fondo negro y nueva textura neón para la nave
 
 #### P 0.3
+- Render mejorado
+- Añadida selección múltiple
+- Tamaño de textura ajustable
+- Marcador de selección mejorado
 - Funciones globales fuera del main
 - Pantalla dividida en ViewPoints
+
+##### P 0.3.1:
+- Temporizadores
+- Añadido cap y contador de FPS (consola)
+- Prueba con 900 naves
 
 ##### P 0.3.2
 - Funciones que imprimen en distintas partes de la pantalla
@@ -39,3 +48,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P0.6
 - Añadida función para introducir texto
 - El nombre del jugador se introduce por texto en la pantalla de inicio
+
+#### P0.7
+- Añadidos recursos
+- Corregidos algunos fallos
