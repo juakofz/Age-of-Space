@@ -33,6 +33,7 @@ int main(int argc, char* args[])
 	}
 	else
 	{
+		
 		//Load media
 		SDL_Color color = {0,255,0};
 
@@ -50,6 +51,7 @@ int main(int argc, char* args[])
 
 			//flag de pantalla de inicio
 			bool total = true;
+
 
 			//FPS
 			Timer fps_timer, cap_timer;

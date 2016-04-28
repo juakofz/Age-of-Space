@@ -10,6 +10,8 @@
 #include "Ship.h"
 #include "Mouse.h"
 #include "Player.h"
+#include "Caracteristicas.h"
+#include "Global.h"
 
 class Game
 {
@@ -22,17 +24,20 @@ class Game
 
 	//añadidos que hay que recolocar
 	Barra menubarra;
-	string nombrejugador;
+	//string nombrejugador;
 	Menu menu;
 	Player jugador;
+	Caracteristicas caract;
 
 	//texturas
 	Texture tex[5];
-	Texture texOpciones[3];
+	Texture texOpciones[5];
 
 	//Mouse
 	Mouse mouse;
 	SDL_Rect mouse_selection;
+
+	characts* chooseElement(int type);
 
 public:
 
@@ -63,6 +68,17 @@ public:
 	void initMenu(); //inicializa los elementos del juego
 	void renderMenu(); //renderiza los elementos del juego
 	void eventMenu(SDL_Event* e); //eventos en el viewport del juego 
+
+
+	//caracteristicas
+	void initCaract(); //inicializa los elementos del juego
+	void renderCaract(); //renderiza los elementos del juego
+	void eventCaract(SDL_Event* e); //eventos en el viewport del juego 
+
+	//barra
+	void initBarra(); //inicializa los elementos del juego
+	void renderBarra(); //renderiza los elementos del juego
+	void eventBarra(SDL_Event* e); //eventos en el viewport del juego 
 
 	//nombre del jugador
 	void setNombre(std::string nombre);

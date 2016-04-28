@@ -74,13 +74,15 @@ void Texture::free()
 	}
 }
 
-bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor)
+bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor, int fuente)
 {
 	//Loading success flag
 	bool success = true;
 
+	
 	//Open the font
-	gFont = TTF_OpenFont( "SPACEBAR.ttf", tamaño );
+	if(fuente==1) gFont = TTF_OpenFont( "SPACEBAR.ttf", tamaño );
+	if(fuente==2) gFont = TTF_OpenFont( "fuente2.ttf", tamaño );	
 	if( gFont == NULL )
 	{
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -198,7 +200,7 @@ void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Re
 	renderQuad.x=x;
 	renderQuad.y=y;
 
-	//if(Quad!=NULL)
+	if(Quad!=NULL)
 		{
 			renderQuad.w = Quad->x;
 			renderQuad.h = Quad->y;

@@ -53,5 +53,5 @@ extern void close();
 //ventana del juego
 extern LWindow gWindow;
 
-
+extern struct characts;
 

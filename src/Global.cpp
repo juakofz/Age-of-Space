@@ -122,6 +122,12 @@ void close()
 	SDL_Quit();
 }
 
+typedef struct characts
+{
+	Texture *tex;
+	string name;
+};
+
 //texto por teclado
 bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 {

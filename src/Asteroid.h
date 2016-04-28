@@ -42,6 +42,8 @@ public:
 	//Tamaño
 	void setSize(int s);
 
+	int getType();
+
 private:
 
 	Texture *tex;
