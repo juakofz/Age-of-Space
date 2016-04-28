@@ -7,7 +7,7 @@
 class Player
 {
 	std::string name;
-	int oro, energia;
+	unsigned int oro, energia;
 	
 public:
 

@@ -47,7 +47,7 @@ void ViewPort::render()
 	SDL_RenderSetViewport( gRenderer, &param );	
 
 	//Render texture to screen
-	tex.render(gRenderer,&tamañofin);
+	tex.render(gRenderer, &tamañofin);
 }
 
 SDL_Rect ViewPort::GetParam()

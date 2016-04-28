@@ -138,3 +138,9 @@ void Asteroid::setSize(int s)
 	//width = tex->getDim().x * scale;
 	//height = tex->getDim().y * scale;
 }
+
+int Asteroid::getType()
+{
+
+	return 1;
+}

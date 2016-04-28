@@ -57,6 +57,8 @@ void Game::cargarTexturas()
 	texOpciones[0].load("edificio.png", gRenderer);
 	texOpciones[1].load("markerW.png", gRenderer);
 	texOpciones[2].load("Nave1.png", gRenderer);
+	texOpciones[3].load("atras.png", gRenderer);
+	texOpciones[4].load("cerrar.png", gRenderer);
 }
 
 void Game::InitViewPorts()
@@ -93,10 +95,10 @@ void Game::RenderViewPorts()
 	juego.render();
 	barra.render();
 		//elementos que se imprimen en la barra (debe ir detras de la barra)
-	std::stringstream recursos[2];
+	/*std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
-	menubarra.setRecursos(recursos);
-		menubarra.render(recursos);
+	menubarra.setRecursos(recursos);*/
+		menubarra.render();
 	menus.render();
 }
 
@@ -124,7 +126,7 @@ void Game::initjuego()
 	ship[i].SetTex(tex);
 	ship[i].setSize(60);
 	ship[i].setMarker(&(tex[3]));
-	ship[i].SetCen(10*i, 0);
+	ship[i].SetCen(15*i, 200);
 	ship[i].stop();
 	}
 
@@ -149,21 +151,20 @@ void Game::renderJuego()
 	ship[i].move();
 	ship[i].render(gRenderer);
 	}
-	if(ast.getSel()) renderMenu();
+	if(ast.getSel()) 
+	{
+			renderMenu();
+			int type=ast.getType();
+	}
 }
 
 
 
 void Game::setNombre(std::string nombre)
 {
-	nombrejugador=nombre;
+	//nombrejugador=nombre;
 	jugador.setName(nombre);
 	menubarra.SetName(jugador.getName());
-
-	/*std::stringstream recursos[2];
-	jugador.getRecursos(recursos);
-	menubarra.setRecursos(recursos);*/
-	//cout<<recursos[0]<<recursos[1]<<'\n';
 }
 
 void Game::eventjuego(SDL_Event* e)
@@ -199,5 +200,61 @@ void Game::eventMenu(SDL_Event* e)
 {
 	//eventos del menu
 	menu.event(e, menus.relatxy());
-	printf("dentro del menu");
+	//printf("dentro del menu");
 }
+
+void Game::initCaract()
+{
+	caract.setDim(Vector2(30,10), Vector2(40,40));
+}
+
+void Game::renderCaract()
+{
+	//viewport de menu
+	menus.Set();
+
+	//renderizamos el menu
+	caract.render();
+
+}
+
+void Game::eventCaract(SDL_Event* e)
+{
+	//eventos del menu
+	caract.event(e, menus.relatxy());
+	//printf("dentro del menu");
+}
+
+void Game::initBarra()
+{
+	menubarra.SetName(jugador.getName());
+
+	std::stringstream recursos[2];
+	jugador.getRecursos(recursos);
+	menubarra.setRecursos(recursos);
+}
+
+void Game::renderBarra()
+{
+	//viewport de menu
+	barra.Set();
+
+	//renderizamos el menu
+	menubarra.render();
+
+}
+
+void Game::eventBarra(SDL_Event* e)
+{
+	//eventos de la barra
+	menubarra.event(e, barra.relatxy());
+
+}
+
+/*characts* Game::chooseElement(int type)
+{
+	characts datos;
+	switch (type)
+	{
+	case 1:
+		datos.*/

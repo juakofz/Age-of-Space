@@ -7,18 +7,18 @@
 class Barra
 {
 	// name;
-	Texture nombrejugador, opciones, recursos;
-	Texture oroVal, energiaVal;
+	Texture nombrejugador, opciones, recursos, energianum, oronum;
+
 
 public:
 
 	Barra(void);
 	~Barra(void);
 
-	void render(std::stringstream recursos[]);
+	void render();
 
 	//void actRecursos();
-	void renderRecursos(std::stringstream recursos[]);
+	void renderRecursos();
 	void setRecursos(std::stringstream recursos[]);
 
 	//nombre del jugador
@@ -26,5 +26,7 @@ public:
 	void renderName();
 
 	//void renderOpciones();
+
+	void event(SDL_Event* e, SDL_Point xyrel);
 };
 
