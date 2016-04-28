@@ -30,7 +30,7 @@ class Game
 	Caracteristicas caract;
 
 	//texturas
-	Texture tex[5];
+	Texture tex[10];
 	Texture texOpciones[5];
 
 	//Mouse

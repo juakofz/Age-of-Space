@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include <string>
 #include "Vector2.h"
+//#include "Global.h"
 
 
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
-
+extern SDL_Renderer* gRenderer;
 
 
 class Texture
@@ -21,7 +22,7 @@ public:
 	~Texture();
 
 	//Cargar
-	bool load(std::string path, SDL_Renderer* renderer);
+	bool load(std::string path, SDL_Renderer* renderer = gRenderer);
 	bool loadText(std::string textureText, int tamaño, SDL_Color color, int fuente=1 );
 
 	//Liberar

@@ -11,6 +11,11 @@ Mouse::~Mouse()
 {
 }
 
+void Mouse::setCursor(Texture * c)
+{
+	cursor = c;
+}
+
 void Mouse::update(SDL_Event *e, SDL_Point xyrel)
 {
 	//Posición
@@ -66,6 +71,8 @@ void Mouse::update(SDL_Event *e, SDL_Point xyrel)
 
 void Mouse::render(SDL_Renderer *renderer)
 {
+	cursor->render(renderer, pos.x, pos.y, NULL);
+
 	if (active) {
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderDrawRect(renderer, &rect);

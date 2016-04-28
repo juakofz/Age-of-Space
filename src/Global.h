@@ -1,5 +1,5 @@
 //funciones y variables globales
-
+#pragma once
 #include <SDL.h>
 #include <stdio.h>
 #include <SDL_image.h>
@@ -21,8 +21,6 @@ extern Texture gTextTexture;
 
 //renderizado general
 extern SDL_Renderer* gRenderer;
-
-//Scene textures
 
 //Tamaño de la pantalla
 extern Texture gSceneTexture;
