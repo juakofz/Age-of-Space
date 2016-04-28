@@ -15,7 +15,7 @@
 #include "Menu.h"
 #include "ViewPort.h"
 #include "LWindow.h"
-#include "EnteSupremo.h"
+#include "Game.h"
 #include "Mouse.h"
 #include "Timer.h"
 
@@ -33,6 +33,7 @@ int main(int argc, char* args[])
 	}
 	else
 	{
+		
 		//Load media
 		SDL_Color color = {0,255,0};
 
@@ -50,6 +51,7 @@ int main(int argc, char* args[])
 
 			//flag de pantalla de inicio
 			bool total = true;
+
 
 			//FPS
 			Timer fps_timer, cap_timer;
@@ -69,14 +71,14 @@ int main(int argc, char* args[])
 			bool size=false;
 
 			//game master
-			EnteSupremo yo;
+			Game game;
 
 			//inicializamos los elementos del juego
-			yo.cargarTexturas();
-			yo.InitViewPorts();
-			yo.initjuego();
+			game.cargarTexturas();
+			game.InitViewPorts();
+			game.initjuego();
 
-			yo.initMenu();
+			game.initMenu();
 
 			//While application is running
 			while( !quit )
@@ -109,23 +111,18 @@ int main(int argc, char* args[])
 
 						//función de entrada de texto y actualización del nombre
 						renderText=textinput(&inputText, renderText, e);
-						yo.setNombre(inputText);
+						game.setNombre(inputText);
 					}
 
 					//si estamos en la pantalla del juego
 					else
 					{
-						//eventos del juego
-						yo.RenderViewPorts();
-						yo.event(&e);
+
+						game.event(&e);
 
 						//Handle window events
 						size=gWindow.handleEvent( e );
 
-						//renderizamos los elementos del juego (asteroide y nave)
-						yo.renderJuego();
-
-						yo.renderMenu();
 					}
 					
 				}
@@ -154,15 +151,15 @@ int main(int argc, char* args[])
 						fps_timer.start();
 					}
 
-					//no me dejaba usar cout no se porq
+					
 					std::cout<< "FPS: " << avgFPS << '\r';
-					//printf("FPS: %d '\r'", avgFPS);
+					
 
 					//si ha cambiado el tamaño de la ventana actualizamos los parámetros que dependen de ella.
 					if(size)
 					{
 						
-						yo.ActViewPorts();
+						game.ActViewPorts();
 
 						//ajustar el tamaño a la ventana.					
 						WindowQuad.x=gWindow.getWidth();
@@ -175,7 +172,7 @@ int main(int argc, char* args[])
 					if(total)
 					{
 						//pantalla de inicio
-						yo.RenderTotal();
+						game.RenderTotal();
 
 						//textos del inicio
 						gTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
@@ -185,9 +182,9 @@ int main(int argc, char* args[])
 					else
 					{
 							//renderizamos los viewports y los elementos del juego
-							yo.RenderViewPorts();
-							yo.renderJuego();
-							yo.renderMenu();
+							game.RenderViewPorts();
+							game.renderJuego();
+						
 					}
 
 					//actualizamos renderizado total

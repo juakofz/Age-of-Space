@@ -48,3 +48,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P0.6
 - Añadida función para introducir texto
 - El nombre del jugador se introduce por texto en la pantalla de inicio
+
+#### P0.7
+- Añadidos recursos
+- Corregidos algunos fallos

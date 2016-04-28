@@ -2,10 +2,10 @@
 
 
 //Constructor
-Vector2::Vector2()
+Vector2::Vector2(float px, float py)
 {
-	//Valor por defecto
-	x = y = 0.f;
+	x=px;
+	y=py;
 }
 
 //Destructor
