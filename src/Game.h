@@ -17,6 +17,7 @@ class Game
 {
 	//viewports del juego
 	ViewPort barra, juego, menus, total;
+	int numviewport;
 
 	//elementos del juego
 	Asteroid ast;

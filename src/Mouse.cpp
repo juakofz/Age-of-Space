@@ -16,7 +16,7 @@ void Mouse::setCursor(Texture * c)
 	cursor = c;
 }
 
-void Mouse::update(SDL_Event *e, SDL_Point xyrel)
+bool Mouse::update(SDL_Event *e, SDL_Point xyrel)
 {
 	//Posición
 
@@ -29,7 +29,6 @@ void Mouse::update(SDL_Event *e, SDL_Point xyrel)
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
 		//SDL_GetMouseState(&press.x, &press.y);
-
 		press.x=xyrel.x;
 		press.y=xyrel.y;
 	}
@@ -67,6 +66,8 @@ void Mouse::update(SDL_Event *e, SDL_Point xyrel)
 	{
 		active = false;
 	}
+
+	return active;
 }
 
 void Mouse::render(SDL_Renderer *renderer)

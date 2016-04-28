@@ -14,7 +14,7 @@ public:
 	void setCursor(Texture * c);
 	
 	//Manejo de eventos
-	void update(SDL_Event *e, SDL_Point xyrel);
+	bool update(SDL_Event *e, SDL_Point xyrel);
 
 	//Render de efectos
 	void render(SDL_Renderer *renderer);
