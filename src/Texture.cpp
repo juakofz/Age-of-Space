@@ -9,7 +9,7 @@ Texture::Texture()
 	texture = NULL;
 	dim.x = 0;
 	dim.y = 0;
-	diag = 0;
+	diag=0;
 }
 
 //Destructor
@@ -81,11 +81,11 @@ bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor,
 
 	
 	//Open the font
-	if(fuente==1) gFont = TTF_OpenFont( "SPACEBAR.ttf", tamaño );
-	if(fuente==2) gFont = TTF_OpenFont( "fuente2.ttf", tamaño );	
+	if(fuente==1) gFont = TTF_OpenFont( "img/SPACEBAR.ttf", tamaño );
+	if(fuente==2) gFont = TTF_OpenFont( "img/fuente2.ttf", tamaño );	
 	if( gFont == NULL )
 	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false;
 	}
 	else
@@ -180,7 +180,7 @@ void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SD
 	//Espacio de renderizado
 	SDL_Rect renderQuad = { center->x -  w/2, center->y - h/2, w, h};
 
-	//Espacio final de renderizado de renderizado
+	//Porción renderizada de la textura
 	if (clip != NULL)
 	{
 		renderQuad.w = clip->w;

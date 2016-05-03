@@ -9,17 +9,25 @@
 #include "Timer.h"
 #include "Ship.h"
 #include "Mouse.h"
-#include "Keyboard.h"
 #include "Player.h"
 #include "Caracteristicas.h"
 #include "Global.h"
 #include "Map.h"
-#include "Camera.h"
 
 class Game
 {
 	//viewports del juego
 	ViewPort barra, juego, menus, total;
+	int numviewport;
+
+	//Mapa
+	Map map;
+
+	//Mouse
+	Mouse mouse;
+
+	//Camara
+	Camera cam;
 
 	//elementos del juego
 	Asteroid ast;
@@ -36,18 +44,7 @@ class Game
 	Texture tex[10];
 	Texture texOpciones[5];
 
-	//Map
-	Map map;
-
-	//Camera
-	Camera camera;
-
-	//Mouse
-	Mouse mouse;
 	SDL_Rect mouse_selection;
-
-	//Keyboard
-	Keyboard keyboard;
 
 	characts* chooseElement(int type);
 
@@ -68,7 +65,9 @@ public:
 	//eventos
 	void event(SDL_Event* e); //reparte los eventos al viewport en el que nos encontremos
 	void RenderTotal(); //renderiza la pantalla de inicio
-
+	
+	//Eventos fuera de cola
+	void main_event();
 
 	//juego
 	void initjuego(); //inicializa los elementos del juego

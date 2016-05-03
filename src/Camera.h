@@ -1,9 +1,8 @@
 #pragma once
-#include <SDL.h>
 #include "Vector2.h"
-#include <iostream>
+#include "ViewPort.h"
 
-using namespace std;
+class ViewPort;
 
 class Camera
 {
@@ -11,25 +10,31 @@ public:
 	Camera();
 	~Camera();
 
-	//Rect
-	SDL_Rect getRect();
-	void setRect(SDL_Rect r);
+	//Actualizar
+	void update(ViewPort v);
+
+	//Movimiento y zoom
+	void move(float mx, float my);
+	void changeZoom(float z);
+
+	//Margen de renderizado
+	bool isVisible(Vector2 pos, int margin = 0);
+
+	//Posición
+	Vector2 getPos();
+	void setPos(float x, float y);
 
 	//Centro
 	Vector2 getCen();
 	void setCen(float x, float y);
-	void moveX(float x);
-	void moveY(float y);
-	void update();
 
-	//Zoom
-	void setZoom(float z);
-	float getZoom();
+	//Tamaño
+	void setSize(int w, int h);
+	Vector2 getSize();
 
 private:
-	SDL_Rect rect;
-	Vector2 center;
-
+		
+	SDL_Rect frame;
+	Vector2 cen;
 	float zoom;
 };
-

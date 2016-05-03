@@ -42,8 +42,8 @@ void Barra::renderRecursos()
 	//iconos del oro y la energia
 	Texture energia, oro;
 	Texture energiaVal, oroVal;
-	energia.load("energy3.png", gRenderer);
-	oro.load("gold.png", gRenderer);
+	energia.load("img/energy3.png", gRenderer);
+	oro.load("img/gold.png", gRenderer);
 
 	//tamaño de los iconos
 	Vector2 tamañoiconos;

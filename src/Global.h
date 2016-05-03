@@ -52,4 +52,3 @@ extern void close();
 extern LWindow gWindow;
 
 extern struct characts;
-

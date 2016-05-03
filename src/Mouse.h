@@ -3,6 +3,9 @@
 #include <SDL_image.h>
 #include <iostream>
 #include "Texture.h"
+#include "Camera.h"
+
+class Camera;
 
 class Mouse
 {
@@ -14,7 +17,10 @@ public:
 	void setCursor(Texture * c);
 	
 	//Manejo de eventos
-	void update(SDL_Event *e, SDL_Point xyrel);
+	bool update(SDL_Event *e, SDL_Point xyrel);
+	
+	//Movimiendo de cámara
+	void scroll(Camera cam);
 
 	//Render de efectos
 	void render(SDL_Renderer *renderer);

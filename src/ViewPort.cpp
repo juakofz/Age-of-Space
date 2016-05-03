@@ -4,6 +4,7 @@
 ViewPort::ViewPort(void)
 {
 	param.x = param.y = param.h = param.w = 0;
+
 }
 
 
@@ -14,10 +15,11 @@ ViewPort::~ViewPort(void)
 //parametros
 void ViewPort::SetParam(int w, int h, int x, int y)
 {
+	param.w = w;
+	param.h = h;
+	
 	param.x = x;
 	param.y = y;
-	param.h = h;
-	param.w = w;
 }
 
 void ViewPort::ActParam()
@@ -34,6 +36,7 @@ void ViewPort::SetRel(float x, float y, float w, float h)
 {
 	origen.x = x;
 	origen.y = y;
+
 	tamaño.x = w;
 	tamaño.y = h;
 
@@ -43,7 +46,7 @@ void ViewPort::SetRel(float x, float y, float w, float h)
 void ViewPort::render()
 {
 	//renderizamos en el viewport seleccionado
-	SDL_RenderSetViewport(gRenderer, &param );	
+	SDL_RenderSetViewport( gRenderer, &param );	
 
 	//Render texture to screen
 	tex.render(gRenderer, &tamañofin);
@@ -71,8 +74,7 @@ void ViewPort::Init(int x, int y, int w, int h, std::string path)
 	param.y = y;
 	param.h = h;
 	param.w = w;
-	if (path != "null")
-		tex.load(path, gRenderer);
+	tex.load(path, gRenderer);
 }
 
 void ViewPort::Set()
@@ -86,8 +88,8 @@ SDL_Point ViewPort::relatxy()
 	SDL_Point xyrel;
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-	xyrel.x=mx-param.x;
-	xyrel.y=my-param.y;
+	xyrel.x = mx - param.x;
+	xyrel.y = my - param.y;
 	return xyrel;
 }
 

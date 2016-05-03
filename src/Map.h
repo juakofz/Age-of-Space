@@ -1,25 +1,30 @@
 #pragma once
+#include "Vector2.h"
 #include "Texture.h"
-
-extern SDL_Renderer* gRenderer;
+#include "Camera.h"
 
 class Map
 {
-
 public:
 	Map();
+	Map(float width, float height, Texture *bg, Texture *gr);
 	~Map();
 
-	void setMap(Texture *m);
-	void setBackground(Texture *b);
+	//Size
+	void setSize(float x, float y);
+	Vector2 getSize();
 
-	//Render map
-	void render(SDL_Rect camera);
+	//Textures
+	void setBg(Texture *bg);
+	void setGrid(Texture *gr);
 
+	//Render
+	void renderBg(Camera cam);
+	void renderParallax(Camera cam);
 
 private:
-	Texture * map, * background;
-
 	Vector2 size;
+	Texture *background;
+	Texture *grid;
 };
 

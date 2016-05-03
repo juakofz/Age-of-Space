@@ -38,6 +38,7 @@ LWindow gWindow;
 Texture gTextTexture;
 
 
+
 //inicializa
 bool init()
 {
@@ -59,7 +60,7 @@ bool init()
 		}
 
 		//Set mouse mode to relative
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 
 		//Create window
 		if( !gWindow.init() )
@@ -95,6 +96,8 @@ bool init()
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = false;
 				}
+
+				
 			}
 		}
 	}

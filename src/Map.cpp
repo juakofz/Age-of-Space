@@ -6,31 +6,56 @@ Map::Map()
 {
 }
 
+Map::Map(float width, float height, Texture *bg, Texture *gr)
+{
+	size.x = width;
+	size.y = height;
+	background = bg;
+	grid = gr;
+}
+
 Map::~Map()
 {
 }
 
-void Map::setMap(Texture *m)
+
+//Size
+void Map::setSize(float x, float y)
 {
-	map = m;
+	size.x = x;
+	size.y = y;
 }
 
-void Map::setBackground(Texture *b)
+Vector2 Map::getSize()
 {
-	background = b;
+	return size;
 }
 
-
-void Map::render(SDL_Rect camera)
+//Textures
+void Map::setBg(Texture *bg)
 {
-	SDL_Point center;
-	center.x = camera.w / 2;
-	center.y = camera.h / 2;
-
-	SDL_Rect clip = camera;
-	//Background
-	background->render(gRenderer, &center, camera.w, camera.h, &camera);
-	//render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip = NULL, double angle  = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
-
+	background = bg;
 }
 
+void Map::setGrid(Texture *gr)
+{
+	grid = gr;
+}
+
+//Render
+void Map::renderBg(Camera cam)
+{
+	SDL_Rect clip;
+	clip.w = cam.getSize().x;
+	clip.h = cam.getSize().y;
+	clip.x = cam.getPos().x;
+	clip.y = cam.getPos().y;
+
+	SDL_Point cero;
+	cero.x = 0;
+	cero.y = 0;
+
+	//render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip, double angle, SDL_RendererFlip flip)
+	background->render(gRenderer, &cero, cam.getSize().x, cam.getSize().y, &clip);
+}
+void renderParallax(Camera cam);

@@ -23,7 +23,7 @@ public:
 	~ViewPort(void);
 
 	//inicializar
-	void Init(int x, int y, int w, int h,std::string path = "null");
+	void Init(int x, int y, int w, int h,std::string path);
 
 	//parametros
 	void ActParam();

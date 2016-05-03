@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string>
 #include "Vector2.h"
+//#include "Global.h"
+
 
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;

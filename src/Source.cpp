@@ -90,6 +90,9 @@ int main(int argc, char* args[])
 				//Límite FPS
 				cap_timer.start();
 
+				//Non queue events
+				game.main_event();
+
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -183,7 +186,7 @@ int main(int argc, char* args[])
 					{
 							//renderizamos los viewports y los elementos del juego
 							game.RenderViewPorts();
-							game.renderJuego();
+							//game.renderJuego();
 						
 					}
 
@@ -204,9 +207,8 @@ int main(int argc, char* args[])
 			}
 		}
 	}
-
+	//system("PAUSE");
 	//Free resources and close SDL
 	close();
-	//system("PAUSE");
 	return 0;
 }

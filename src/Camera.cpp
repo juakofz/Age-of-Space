@@ -1,9 +1,13 @@
 #include "Camera.h"
 
-
-
 Camera::Camera()
-{	
+{
+	cen.x = 100;
+	cen.y = 100;
+
+	frame.w = frame.h = frame.x = frame.y = 0;
+	zoom = 1;
+	//cout << "Constructor" << endl;
 }
 
 
@@ -11,60 +15,98 @@ Camera::~Camera()
 {
 }
 
-//Rect
-SDL_Rect Camera::getRect()
+//Actualizar
+void Camera::update(ViewPort v)
 {
-	return rect;
+	frame.w = v.GetParam().w;
+	frame.h = v.GetParam().h;
+
+	setCen(cen.x, cen.y);
+	//cout << "Update" << endl;
 }
 
-void Camera::setRect(SDL_Rect r)
+
+//Movimiento y zoom
+void Camera::move(float mx, float my)
 {
-	rect = r;
+	cen.x += mx;
+	cen.y += my;
+
+	frame.x += mx;
+	frame.y += my;
+	//cout << "Move" << endl;
 }
 
+void Camera::changeZoom(float z)
+{
+	zoom += z;
+}
+
+//Margen de renderizado
+bool Camera::isVisible(Vector2 pos, int margin)
+{
+	if ((pos.x - margin >= frame.x) && (pos.x + margin <= frame.x + frame.w))
+	{
+		if ((pos.y - margin >= frame.y) && (pos.y + margin <= frame.y + frame.h))
+			return true;
+	}
+	return false;
+}
+
+//Posición
+Vector2 Camera::getPos()
+{
+	Vector2 temp;
+	temp.x = frame.x;
+	temp.y = frame.y;
+
+	return temp;
+}
+
+void Camera::setPos(float x, float y)
+{
+	frame.x = x;
+	frame.y = y;
+
+	cen.x = frame.x + frame.w / 2;
+	cen.y = frame.y + frame.h / 2;
+
+	//cout << "setPos" << endl;
+}
 
 //Centro
 Vector2 Camera::getCen()
 {
-	return center;
+	return cen;
 }
 
 void Camera::setCen(float x, float y)
 {
-	center.x = x;
-	center.y = y;
-	update();
+	cen.x = x;
+	cen.y = y;
+
+	frame.x = cen.x - frame.w / 2;
+	frame.y = cen.y - frame.h / 2;
+
+	//cout << "setCen" << endl;
 }
 
-void Camera::moveX(float x)
+//Tamaño
+void Camera::setSize(int w, int h)
 {
-	center.x += x;
-	cout << "mierda grande y seca" << center.x << endl;
-	cout << endl;
-	update();
+	frame.w = w;
+	frame.h = h;
+
+	frame.x = cen.x - frame.w / 2;
+	frame.y = cen.y - frame.h / 2;
+
+	//cout << "setSize" << endl;
 }
 
-void Camera::moveY(float y)
+Vector2 Camera::getSize()
 {
-	center.y += y;
-	update();
-}
-
-void Camera::update()
-{
-	rect.x = center.x - rect.w / 2;
-	rect.y = center.y - rect.h / 2;
-	cout << "update!  --  " << center.x << "  --  " << center.y << endl;
-	cout << endl;
-}
-
-//Zoom
-void Camera::setZoom(float z)
-{
-	zoom = z;
-}
-
-float Camera::getZoom()
-{
-	return zoom;
+	Vector2 temp;
+	temp.x = frame.w;
+	temp.y = frame.h;
+	return temp;
 }
