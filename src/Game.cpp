@@ -12,33 +12,45 @@ Game::~Game(void)
 
 void Game::event(SDL_Event* e)
 {
+	//flag de selección múltiple con el ratón
+	static bool seleccion=false;
+
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
 
 	//Decide en que viewport estamos segun la posicion del raton
-	if(my<barra.getHeight()) //zona de barra
-	{
-		barra.Set();
-		//printf("en barra");
-	}
-	if(my>menus.getY()) //zona de menus
-	{
-		menus.Set();
-		//printf("menus");
-		menus.event(e);
-		eventMenu(e);
-	}
-	if(my>barra.getHeight() && my<menus.getY()) //zona de juego
+	if(seleccion || (my>barra.getHeight() && my<menus.getY())) //zona de juego
 	{
 		juego.Set();
 		eventjuego(e);
 		//printf("en juego");
 		juego.event(e);
+		seleccion = mouse.update(e, juego.relatxy());
+		mouse_selection = mouse.getSel();
+		numviewport=3;
 	}
-	//eventos del raton
-	mouse.update(e, juego.relatxy());
-	mouse_selection = mouse.getSel();
 
+	//si estamos haciendo selección en el juego no entra en los otros viewports
+
+	if(seleccion==false)
+	{
+		if(my<barra.getHeight()) //zona de barra
+		{
+			barra.Set();
+			//printf("en barra");
+			mouse.update(e, barra.relatxy());
+			numviewport=1;
+		}
+		if(my>menus.getY()) //zona de menus
+		{
+			menus.Set();
+			//printf("menus");
+			menus.event(e);
+			eventMenu(e);
+			mouse.update(e, menus.relatxy());
+			numviewport=2;
+		}
+	}		
 }
 
 void Game::cargarTexturas()
@@ -92,23 +104,25 @@ void Game::ActViewPorts()
 void Game::RenderViewPorts()
 {
 	//viewports
-	juego.render();
+	
 	barra.render();
 		//elementos que se imprimen en la barra (debe ir detras de la barra)
 	/*std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
 	menubarra.setRecursos(recursos);*/
+	if(numviewport==1) 	mouse.render(gRenderer);
 		menubarra.render();
 	menus.render();
-	//mouse.render(gRenderer);
-	total.Set();
-	mouse.render(gRenderer);
+	if(numviewport==2) mouse.render(gRenderer);
+	juego.render();
+	renderJuego();
+	if(numviewport==3) mouse.render(gRenderer);
 }
 
 void Game::RenderTotal()
 {
 	total.render();
-	mouse.render(gRenderer);
+	//mouse.render(gRenderer);
 }
 
 void Game::initjuego()
@@ -158,12 +172,14 @@ void Game::renderJuego()
 	ship[i].move();
 	ship[i].render(gRenderer);
 	}
+	//mouse.render(gRenderer);
 	if(ast.getSel()) 
 	{
 			renderMenu();
 			int type=ast.getType();
 	}
-	//mouse.render(gRenderer);
+	juego.Set();
+	
 }
 
 
@@ -185,7 +201,8 @@ void Game::eventjuego(SDL_Event* e)
 	ship[i].event(e, mouse_selection, juego.relatxy());
 //	ship[i].render(gRenderer);
 	}
-	if(ast.getSel()) renderMenu();
+	/*if(ast.getSel()) renderMenu();
+	juego.Set();*/
 }
 
 void Game::initMenu()
