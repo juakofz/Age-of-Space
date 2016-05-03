@@ -29,6 +29,7 @@ Ship::Ship()
 	marker_color.b = 0x00;
 	marker_color.a = 0x00;
 
+	tex=NULL;
 }
 
 
@@ -36,9 +37,13 @@ Ship::~Ship()
 {
 }
 
-void Ship::event(SDL_Event* e, SDL_Rect selection)
+void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;
+
+	mx=xyrel.x;
+	my=xyrel.y;
+
 /*
 	//Botón izquierdo
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT))
@@ -63,7 +68,7 @@ void Ship::event(SDL_Event* e, SDL_Rect selection)
 	}
 	*/
 	//Selección múltiple
-	if ((e->type == SDL_MOUSEBUTTONUP) && (e->button.button == SDL_BUTTON_LEFT))
+	if (e->button.button == SDL_BUTTON_LEFT)
 	{
 		if (((cen.x > selection.x - tex->getDim().x/2) && (cen.x < (selection.x + selection.w + tex->getDim().x / 2))))
 		{
@@ -80,7 +85,7 @@ void Ship::event(SDL_Event* e, SDL_Rect selection)
 	//Botón derecho
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
 	{
-		SDL_GetMouseState(&mx, &my);
+		//SDL_GetMouseState(&mx, &my);
 		dest.x = mx;
 		dest.y = my;
 

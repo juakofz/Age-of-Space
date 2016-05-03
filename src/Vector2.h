@@ -6,7 +6,7 @@ class Vector2
 public:
 
 	//Constructor
-	Vector2();
+	Vector2(float px=0, float py=0);
 	
 	//Destructor
 	~Vector2();

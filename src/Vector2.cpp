@@ -2,18 +2,16 @@
 
 
 //Constructor
-Vector2::Vector2()
+Vector2::Vector2(float px, float py)
 {
-	//Valor por defecto
-	x = y = 0.f;
+	x=px;
+	y=py;
 }
 
 //Destructor
 Vector2::~Vector2()
 {
 }
-
-//SDL_Point
 
 SDL_Point Vector2::convert_int()
 {
