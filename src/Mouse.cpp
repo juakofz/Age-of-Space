@@ -11,6 +11,7 @@ Mouse::~Mouse()
 {
 }
 
+<<<<<<< HEAD
 void Mouse::setCursor(Texture * c)
 {
 	cursor = c;
@@ -24,14 +25,24 @@ void Mouse::update(SDL_Event *e, SDL_Point xyrel)
 
 	pos.x=xyrel.x;
 	pos.y=xyrel.y;
+=======
+void Mouse::update(SDL_Event *e)
+{
+	//Posición
+	SDL_GetMouseState(&pos.x, &pos.y);
+>>>>>>> refs/remotes/origin/development
 
 	//Click
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
+<<<<<<< HEAD
 		//SDL_GetMouseState(&press.x, &press.y);
 
 		press.x=xyrel.x;
 		press.y=xyrel.y;
+=======
+		SDL_GetMouseState(&press.x, &press.y);
+>>>>>>> refs/remotes/origin/development
 	}
 	
 	//Rectángulo de selección
@@ -71,8 +82,11 @@ void Mouse::update(SDL_Event *e, SDL_Point xyrel)
 
 void Mouse::render(SDL_Renderer *renderer)
 {
+<<<<<<< HEAD
 	cursor->render(renderer, pos.x, pos.y, NULL);
 
+=======
+>>>>>>> refs/remotes/origin/development
 	if (active) {
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderDrawRect(renderer, &rect);

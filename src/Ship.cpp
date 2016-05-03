@@ -29,7 +29,10 @@ Ship::Ship()
 	marker_color.b = 0x00;
 	marker_color.a = 0x00;
 
+<<<<<<< HEAD
 	tex=NULL;
+=======
+>>>>>>> refs/remotes/origin/development
 }
 
 
@@ -37,6 +40,7 @@ Ship::~Ship()
 {
 }
 
+<<<<<<< HEAD
 void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;
@@ -44,6 +48,11 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 	mx=xyrel.x;
 	my=xyrel.y;
 
+=======
+void Ship::event(SDL_Event* e, SDL_Rect selection)
+{
+	int mx, my;
+>>>>>>> refs/remotes/origin/development
 /*
 	//Botón izquierdo
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT))
@@ -68,7 +77,11 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 	}
 	*/
 	//Selección múltiple
+<<<<<<< HEAD
 	if (e->button.button == SDL_BUTTON_LEFT)
+=======
+	if ((e->type == SDL_MOUSEBUTTONUP) && (e->button.button == SDL_BUTTON_LEFT))
+>>>>>>> refs/remotes/origin/development
 	{
 		if (((cen.x > selection.x - tex->getDim().x/2) && (cen.x < (selection.x + selection.w + tex->getDim().x / 2))))
 		{

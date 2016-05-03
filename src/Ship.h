@@ -14,7 +14,11 @@ public:
 	~Ship();
 
 	//Manejo de eventos
+<<<<<<< HEAD
 	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
+=======
+	void event(SDL_Event* e, SDL_Rect selection);
+>>>>>>> refs/remotes/origin/development
 
 	//Selección
 	void select();
