@@ -10,9 +10,13 @@ Texture::Texture()
 	dim.x = 0;
 	dim.y = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	diag=0;
 =======
 	diag = 0;
+>>>>>>> refs/remotes/origin/development
+=======
+	diag=0;
 >>>>>>> refs/remotes/origin/development
 }
 
@@ -85,11 +89,19 @@ bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor,
 
 	
 	//Open the font
+<<<<<<< HEAD
 	if(fuente==1) gFont = TTF_OpenFont( "SPACEBAR.ttf", tamaño );
 	if(fuente==2) gFont = TTF_OpenFont( "fuente2.ttf", tamaño );	
 	if( gFont == NULL )
 	{
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+=======
+	if(fuente==1) gFont = TTF_OpenFont( "img/SPACEBAR.ttf", tamaño );
+	if(fuente==2) gFont = TTF_OpenFont( "img/fuente2.ttf", tamaño );	
+	if( gFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+>>>>>>> refs/remotes/origin/development
 		success = false;
 	}
 	else
@@ -126,6 +138,9 @@ void Texture::setAlpha(Uint8 alpha)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/development
 
 bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
 {
@@ -188,7 +203,11 @@ void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SD
 	//Espacio de renderizado
 	SDL_Rect renderQuad = { center->x -  w/2, center->y - h/2, w, h};
 
+<<<<<<< HEAD
 	//Espacio final de renderizado de renderizado
+=======
+	//Porción renderizada de la textura
+>>>>>>> refs/remotes/origin/development
 	if (clip != NULL)
 	{
 		renderQuad.w = clip->w;
@@ -200,6 +219,9 @@ void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SD
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/development
 //renderizado por rectangulo y posicion
 void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Rect* clip)
 {
@@ -224,6 +246,9 @@ void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Re
 	//Renderizado
 	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
 }
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/development
 =======
 >>>>>>> refs/remotes/origin/development
 
@@ -239,6 +264,10 @@ float Texture::getDiag()
 	return diag;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+>>>>>>> refs/remotes/origin/development
+=======
+
 >>>>>>> refs/remotes/origin/development

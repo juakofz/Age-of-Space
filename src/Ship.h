@@ -15,9 +15,13 @@ public:
 
 	//Manejo de eventos
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 =======
 	void event(SDL_Event* e, SDL_Rect selection);
+>>>>>>> refs/remotes/origin/development
+=======
+	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 >>>>>>> refs/remotes/origin/development
 
 	//Selección

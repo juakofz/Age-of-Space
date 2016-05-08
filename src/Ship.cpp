@@ -30,8 +30,12 @@ Ship::Ship()
 	marker_color.a = 0x00;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	tex=NULL;
 =======
+>>>>>>> refs/remotes/origin/development
+=======
+	tex=NULL;
 >>>>>>> refs/remotes/origin/development
 }
 
@@ -41,6 +45,9 @@ Ship::~Ship()
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/development
 void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;
@@ -48,10 +55,13 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 	mx=xyrel.x;
 	my=xyrel.y;
 
+<<<<<<< HEAD
 =======
 void Ship::event(SDL_Event* e, SDL_Rect selection)
 {
 	int mx, my;
+>>>>>>> refs/remotes/origin/development
+=======
 >>>>>>> refs/remotes/origin/development
 /*
 	//Botón izquierdo
@@ -78,9 +88,13 @@ void Ship::event(SDL_Event* e, SDL_Rect selection)
 	*/
 	//Selección múltiple
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (e->button.button == SDL_BUTTON_LEFT)
 =======
 	if ((e->type == SDL_MOUSEBUTTONUP) && (e->button.button == SDL_BUTTON_LEFT))
+>>>>>>> refs/remotes/origin/development
+=======
+	if (e->button.button == SDL_BUTTON_LEFT)
 >>>>>>> refs/remotes/origin/development
 	{
 		if (((cen.x > selection.x - tex->getDim().x/2) && (cen.x < (selection.x + selection.w + tex->getDim().x / 2))))
@@ -213,6 +227,7 @@ void Ship::render(SDL_Renderer* renderer)
 		SDL_RenderDrawRect(renderer, &rec_sel);
 	}
 	*/
+<<<<<<< HEAD
 }
 
 void Ship::setMarker(Texture *m)
@@ -220,6 +235,15 @@ void Ship::setMarker(Texture *m)
 	marker = m;
 }
 
+=======
+}
+
+void Ship::setMarker(Texture *m)
+{
+	marker = m;
+}
+
+>>>>>>> refs/remotes/origin/development
 
 //Posición
 Vector2 Ship::GetPos()
