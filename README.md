@@ -39,7 +39,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 
 #### P0.4
 - Screen divided into viewports (again)
-- Viewport sized linked to window size
+- Viewport size linked to window size
 
 #### P0.5
 - Added start screen
@@ -58,6 +58,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Resizeable window
 - Added mouse scrolling
 - Basic map layout
+- Parallax implemented for background
 - Slight code improvements
 - Bug fixes
 - Translated readme file
