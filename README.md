@@ -16,43 +16,20 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Añadido movimiento en línea recta para las naves
 - Fondo negro y nueva textura neón para la nave
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#### P 0.3
-=======
+
 #### P 0.3:
->>>>>>> refs/remotes/origin/development
-=======
-#### P 0.3:
-=======
-#### P 0.3
->>>>>>> parent of c5f816c... WHAAAAAAAAAAAT
->>>>>>> refs/remotes/origin/development
 - Render mejorado
 - Añadida selección múltiple
 - Tamaño de textura ajustable
 - Marcador de selección mejorado
-<<<<<<< HEAD
-<<<<<<< HEAD
 - Funciones globales fuera del main
 - Pantalla dividida en ViewPoints
-=======
->>>>>>> refs/remotes/origin/development
-=======
-=======
 - Funciones globales fuera del main
 - Pantalla dividida en ViewPoints
->>>>>>> parent of c5f816c... WHAAAAAAAAAAAT
->>>>>>> refs/remotes/origin/development
 
 ##### P 0.3.1:
 - Temporizadores
 - Añadido cap y contador de FPS (consola)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> refs/remotes/origin/development
 - Prueba con 900 naves
 
 ##### P 0.3.2
@@ -78,9 +55,10 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P0.7
 - Añadidos recursos
 - Corregidos algunos fallos
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
-=======
->>>>>>> parent of c5f816c... WHAAAAAAAAAAAT
->>>>>>> refs/remotes/origin/development
+
+#### P0.8
+- Ratón encerrado (modo relativo), cursor del juego
+- Ventana redimensionable
+- Scrolling implementado
+- Base para el mapa
+- Fixes menores
