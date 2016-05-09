@@ -18,11 +18,16 @@ public:
 	//Cursor
 	void setCursor(Texture * c);
 	
+<<<<<<< HEAD
 	//Event management
 	bool update(SDL_Event *e, SDL_Point xyrel);
 	
 	//Camera movement (map scrolling)
 	void scroll(Camera &cam, Map map);
+=======
+	//Manejo de eventos
+	bool update(SDL_Event *e, SDL_Point xyrel);
+>>>>>>> origin/master
 
 	//Mouse render
 	void render(SDL_Renderer *renderer, SDL_Point posicion);

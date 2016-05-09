@@ -16,6 +16,14 @@ void Mouse::setCursor(Texture * c)
 	cursor = c;
 }
 
+<<<<<<< HEAD
+=======
+bool Mouse::update(SDL_Event *e, SDL_Point xyrel)
+{
+	//Posición
+
+	//SDL_GetMouseState(&pos.x, &pos.y);
+>>>>>>> origin/master
 
 //Event + relative position
 bool Mouse::update(SDL_Event *e, SDL_Point xyrel)
@@ -27,9 +35,15 @@ bool Mouse::update(SDL_Event *e, SDL_Point xyrel)
 	//Click event
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
+<<<<<<< HEAD
 		//Update relative click position
 		r_press.x = xyrel.x;
 		r_press.y = xyrel.y;
+=======
+		//SDL_GetMouseState(&press.x, &press.y);
+		press.x=xyrel.x;
+		press.y=xyrel.y;
+>>>>>>> origin/master
 	}
 	
 	//Selection rect

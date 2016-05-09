@@ -13,7 +13,11 @@ Game::~Game(void)
 void Game::event(SDL_Event* e)
 {
 	//flag de selección múltiple con el ratón
+<<<<<<< HEAD
 	static bool seleccion = false;
+=======
+	static bool seleccion=false;
+>>>>>>> origin/master
 
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
@@ -26,6 +30,7 @@ void Game::event(SDL_Event* e)
 		eventjuego(e);
 		//printf("en juego");
 		juego.event(e);
+<<<<<<< HEAD
 		if (e->button.button == SDL_BUTTON_LEFT) seleccion = true;
 		if (e->type == SDL_MOUSEBUTTONUP) seleccion = false;
 		//seleccion = mouse.update(e, juego.relatxy());
@@ -55,10 +60,18 @@ void Game::event(SDL_Event* e)
 			}
 		}
 		else mouse.update(e, juego.relatxy());
+=======
+		seleccion = mouse.update(e, juego.relatxy());
+		mouse_selection = mouse.getSel();
+>>>>>>> origin/master
 		numviewport=3;
 	}
 
 	//si estamos haciendo selección en el juego no entra en los otros viewports
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	if(seleccion==false)
 	{
 		if(my<barra.getHeight()) //zona de barra
@@ -141,6 +154,7 @@ void Game::RenderViewPorts()
 {
 	//viewports
 	
+<<<<<<< HEAD
 	
 	barra.render();
 		//elementos que se imprimen en la barra (debe ir detras de la barra)
@@ -151,6 +165,20 @@ void Game::RenderViewPorts()
 	total.Set();
 	mouse.render(gRenderer, posicion);
 
+=======
+	barra.render();
+		//elementos que se imprimen en la barra (debe ir detras de la barra)
+	/*std::stringstream recursos[2];
+	jugador.getRecursos(recursos);
+	menubarra.setRecursos(recursos);*/
+	if(numviewport==1) 	mouse.render(gRenderer);
+		menubarra.render();
+	menus.render();
+	if(numviewport==2) mouse.render(gRenderer);
+	juego.render();
+	renderJuego();
+	if(numviewport==3) mouse.render(gRenderer);
+>>>>>>> origin/master
 }
 
 void Game::RenderTotal()
@@ -220,8 +248,14 @@ void Game::renderJuego()
 	/*//movemos la nave y acualizamos
 	for(int i=0;i<60;i++)
 	{
+<<<<<<< HEAD
 		ship[i].render(gRenderer, cam);
 	}*/
+=======
+	ship[i].move();
+	ship[i].render(gRenderer);
+	}
+>>>>>>> origin/master
 	//mouse.render(gRenderer);
 	if(ast.getSel()) 
 	{
@@ -253,11 +287,14 @@ void Game::eventjuego(SDL_Event* e)
 	}
 	/*if(ast.getSel()) renderMenu();
 	juego.Set();*/
+<<<<<<< HEAD
 }
 
 void Game::main_event()
 {
 	mouse.scroll(cam, map);
+=======
+>>>>>>> origin/master
 }
 
 void Game::initMenu()
