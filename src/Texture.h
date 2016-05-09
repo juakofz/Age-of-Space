@@ -3,7 +3,6 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <cmath>
 #include "Vector2.h"
 //#include "Global.h"
 
@@ -38,26 +37,11 @@ public:
 	//Alpha
 	void setAlpha(Uint8 alpha);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
 	//texto a imagen
 	bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
 
 	//Renderizado
-=======
-	//Renderizado por posición y textura
->>>>>>> refs/remotes/origin/development
 	void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	//Renderizado por centro y rect
-	void render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip = NULL, double angle  = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
-
-	//Renderizado por centro y rect
-	void render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip = NULL, double angle  = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
-
-	//renderizado por rectangulo de renderizado y posicion. no gira
-	void render(SDL_Renderer* renderer, Vector2* Quad=NULL, int x=0, int y=0, SDL_Rect* clip = NULL);
 
 	//Renderizado por centro y rect
 	void render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip = NULL, double angle  = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
@@ -77,15 +61,7 @@ private:
 	SDL_Texture* texture;
 	//Tamaño
 	Vector2 dim;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-	//Diagonal
->>>>>>> refs/remotes/origin/development
-=======
-
->>>>>>> refs/remotes/origin/development
 	float diag;
 };
 

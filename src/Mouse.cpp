@@ -11,156 +11,149 @@ Mouse::~Mouse()
 {
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
 void Mouse::setCursor(Texture * c)
 {
 	cursor = c;
 }
 
-<<<<<<< HEAD
-void Mouse::update(SDL_Event *e, SDL_Point xyrel)
-=======
+
+//Event + relative position
 bool Mouse::update(SDL_Event *e, SDL_Point xyrel)
->>>>>>> refs/remotes/origin/development
 {
-	//Posición
+	//Update relative position
+	r_pos.x = xyrel.x;
+	r_pos.y = xyrel.y;
 
-	//SDL_GetMouseState(&pos.x, &pos.y);
-
-	pos.x=xyrel.x;
-	pos.y=xyrel.y;
-<<<<<<< HEAD
-=======
-void Mouse::update(SDL_Event *e)
-{
-	//Posición
-	SDL_GetMouseState(&pos.x, &pos.y);
->>>>>>> refs/remotes/origin/development
-=======
->>>>>>> refs/remotes/origin/development
-
-	//Click
+	//Click event
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		//SDL_GetMouseState(&press.x, &press.y);
-
-		press.x=xyrel.x;
-		press.y=xyrel.y;
-=======
-		SDL_GetMouseState(&press.x, &press.y);
->>>>>>> refs/remotes/origin/development
-=======
-		//SDL_GetMouseState(&press.x, &press.y);
-		press.x=xyrel.x;
-		press.y=xyrel.y;
->>>>>>> refs/remotes/origin/development
+		//Update relative click position
+		r_press.x = xyrel.x;
+		r_press.y = xyrel.y;
 	}
 	
-	//Rectángulo de selección
+	//Selection rect
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
 		active = true;
-		//Eje x
-		if ((press.x > pos.x))
+
+		//X axis
+		if (r_press.x > r_pos.x)
 		{
-			rect.x = pos.x;
-			rect.w = press.x - pos.x;
+			r_rect.x = r_pos.x;
+			r_rect.w = r_press.x - r_pos.x;
 		}
 		else
 		{
-			rect.x = press.x;
-			rect.w = pos.x - press.x;
+			r_rect.x = r_press.x;
+			r_rect.w = r_pos.x - r_press.x;
 		}
-		//Eje y
-		if ((press.y > pos.y))
+
+		//Y axis
+		if (r_press.y > r_pos.y)
 		{
-			rect.y = pos.y;
-			rect.h = press.y - pos.y;
+			r_rect.y = r_pos.y;
+			r_rect.h = r_press.y - r_pos.y;
 		}
 		else
 		{
-			rect.y = press.y;
-			rect.h = pos.y - press.y;
+			r_rect.y = r_press.y;
+			r_rect.h = r_pos.y - r_press.y;
 		}
+
+		rect_abs = r_rect;
 	}
 
-	//Soltar
+	//Mouse release
 	if (e->type == SDL_MOUSEBUTTONUP)
 	{
 		active = false;
 	}
-<<<<<<< HEAD
-=======
 
 	return active;
 }
 
-void Mouse::scroll(Camera cam)
-{
-	int margin = 10;
-	float speed = 20;
 
+void Mouse::scroll(Camera &cam, Map map)
+{
+	//Scroll blocking while selecting
+	if (active) return;
+
+	//Scroll parameters
+	int margin = 10;
+	float speed = 5;
+
+	//Absolute mouse position
+	SDL_Point pos;
 	SDL_GetMouseState(&pos.x, &pos.y);
 	//cout << "Mouse: --  " << pos.x << " , " << pos.y << endl;
 	
-	//Lineal, no inertia
-	if (cam.getCen().x >= 0)
+	///Lineal scrolling
+	//Left
+	if (pos.x < margin)
 	{
-		if (pos.x < margin)
-		{
+		//Limit
+		if (cam.getCen().x - speed <= 0)
+			cam.setCen(0, cam.getCen().y);
+		else
 			cam.move(-speed, 0);
-			cout << "Left" << endl;
-		}
-		if (pos.x > gWindow.getWidth() - margin)
-		{
-			cam.move(speed, 0);
-			cout << "Right" << endl;
-		}
 	}
+
+	//Right
+	if (pos.x > gWindow.getWidth() - margin)
+	{
+		//Limit
+		if(cam.getCen().x + speed >= map.getSize().x)
+			cam.setCen(map.getSize().x, cam.getCen().y);
+		else
+			cam.move(speed, 0);
+	}
+
 	if (cam.getCen().y >= 0)
 	{
+		//Up
 		if (pos.y < margin)
 		{
-			cam.move(0, -speed);
-			cout << "Up" << endl;
+			//Limit
+			if (cam.getCen().y - speed <= 0)
+				cam.setCen(cam.getCen().x, 0);
+			else
+				cam.move(0, -speed);
 		}
+		//Down
 		if (pos.y > gWindow.getHeight() - margin)
 		{
-			cam.move(0, speed);
-			cout << "Down" << endl;
+			//Limit
+			if (cam.getCen().y + speed >= map.getSize().y)
+				cam.setCen(cam.getCen().x, map.getSize().y);
+			else
+				cam.move(0, speed);
 		}
 	}
-	//cout << "Scroll: --  " << cam.getCen().x << " , " << cam.getCen().y << endl;
->>>>>>> refs/remotes/origin/development
+	//cout << cam.getCen().x << " , " << cam.getCen().y << endl;
 }
 
-void Mouse::render(SDL_Renderer *renderer)
+
+//Cursor and selection render
+void Mouse::render(SDL_Renderer *renderer, SDL_Point posicion)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	cursor->render(renderer, pos.x, pos.y, NULL);
+	//Cursor
+	cursor->render(renderer, posicion.x, posicion.y, NULL);
 
-=======
->>>>>>> refs/remotes/origin/development
+	//Selection rect
 	if (active) {
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-=======
-	cursor->render(renderer, pos.x, pos.y, NULL);
-
-	if (active) {
+		if (r_press.y < r_pos.y)
+			rect_abs.y = r_press.y + (posicion.y - r_pos.y);
+		else
+			rect_abs.y = posicion.y;
+		//Render
 		SDL_SetRenderDrawColor(renderer, 0x0, 0xFF, 0xFF, 0xFF);
->>>>>>> refs/remotes/origin/development
-		SDL_RenderDrawRect(renderer, &rect);
+		SDL_RenderDrawRect(renderer, &rect_abs);
 	}
 }
 
 
 SDL_Rect Mouse::getSel()
 {
-	return rect;
+	return r_rect;
 }

@@ -29,14 +29,7 @@ Ship::Ship()
 	marker_color.b = 0x00;
 	marker_color.a = 0x00;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	tex=NULL;
-=======
->>>>>>> refs/remotes/origin/development
-=======
-	tex=NULL;
->>>>>>> refs/remotes/origin/development
 }
 
 
@@ -44,10 +37,6 @@ Ship::~Ship()
 {
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
 void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;
@@ -55,14 +44,6 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 	mx=xyrel.x;
 	my=xyrel.y;
 
-<<<<<<< HEAD
-=======
-void Ship::event(SDL_Event* e, SDL_Rect selection)
-{
-	int mx, my;
->>>>>>> refs/remotes/origin/development
-=======
->>>>>>> refs/remotes/origin/development
 /*
 	//Botón izquierdo
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT))
@@ -87,15 +68,7 @@ void Ship::event(SDL_Event* e, SDL_Rect selection)
 	}
 	*/
 	//Selección múltiple
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if (e->button.button == SDL_BUTTON_LEFT)
-=======
-	if ((e->type == SDL_MOUSEBUTTONUP) && (e->button.button == SDL_BUTTON_LEFT))
->>>>>>> refs/remotes/origin/development
-=======
-	if (e->button.button == SDL_BUTTON_LEFT)
->>>>>>> refs/remotes/origin/development
 	{
 		if (((cen.x > selection.x - tex->getDim().x/2) && (cen.x < (selection.x + selection.w + tex->getDim().x / 2))))
 		{
@@ -186,48 +159,25 @@ bool Ship::moveTo(int x, int y)
 }
 
 //Renderizado (con rotación y selección)
-void Ship::render(SDL_Renderer* renderer)
+void Ship::render(SDL_Renderer* renderer, Camera cam)
 {
-	//tex->render(renderer, pos.x, pos.y, NULL, angle+90);
-	tex->render(renderer, &cen.convert_int(), width, height, NULL, angle + 90);
-
-	/*//Marcador de selección (esquinas)
 	SDL_Point center;
-	center.x = cen.x;
-	center.y = cen.y;
-	sel_marker.center = center;
-	sel_marker.color = marker_color;
-	sel_marker.width = tex->getDim().x;
-	sel_marker.height = tex->getDim().y;
-	sel_marker.update();
-	*/
+	center.x = cen.x - cam.getPos().x;
+	center.y = cen.y - cam.getPos().y;
+
+	tex->render(renderer, &center, width, height, NULL, angle + 90);
 
 	SDL_Rect selection;
 	selection.x = pos.x - size*0.1;
 	selection.y = pos.y - size*0.1;
 	selection.w = selection.h = size * 1.2;
-	SDL_Point centro = cen.convert_int();
 
 	if (sel)
 	{
-		marker->render(renderer, &centro, selection.w, selection.h, NULL, sel_angle);
+		marker->render(renderer, &center, selection.w, selection.h, NULL, sel_angle);
 		if (sel_angle > 360) sel_angle = 0;
 		else sel_angle++;
 	}
-
-/*	//Marcador de selección rectangular
-	if (sel == true)
-	{
-		SDL_Rect rec_sel;
-		rec_sel.x = pos.x;
-		rec_sel.y = pos.y;
-		rec_sel.h = tex->getDim().x;
-		rec_sel.w = tex->getDim().y;
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &rec_sel);
-	}
-	*/
-<<<<<<< HEAD
 }
 
 void Ship::setMarker(Texture *m)
@@ -235,15 +185,6 @@ void Ship::setMarker(Texture *m)
 	marker = m;
 }
 
-=======
-}
-
-void Ship::setMarker(Texture *m)
-{
-	marker = m;
-}
-
->>>>>>> refs/remotes/origin/development
 
 //Posición
 Vector2 Ship::GetPos()

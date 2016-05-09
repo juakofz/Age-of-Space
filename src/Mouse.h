@@ -2,17 +2,12 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
-<<<<<<< HEAD
-<<<<<<< HEAD
-#include "Texture.h"
-=======
->>>>>>> refs/remotes/origin/development
-=======
 #include "Texture.h"
 #include "Camera.h"
+#include "Map.h"
 
 class Camera;
->>>>>>> refs/remotes/origin/development
+class Map;
 
 class Mouse
 {
@@ -20,51 +15,37 @@ public:
 	Mouse();
 	~Mouse();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
 	//Cursor
 	void setCursor(Texture * c);
 	
-	//Manejo de eventos
-<<<<<<< HEAD
-	void update(SDL_Event *e, SDL_Point xyrel);
-=======
-	//Manejo de eventos
-	void update(SDL_Event *e);
->>>>>>> refs/remotes/origin/development
-=======
+	//Event management
 	bool update(SDL_Event *e, SDL_Point xyrel);
 	
-	//Movimiendo de cámara
-	void scroll(Camera cam);
->>>>>>> refs/remotes/origin/development
+	//Camera movement (map scrolling)
+	void scroll(Camera &cam, Map map);
 
-	//Render de efectos
-	void render(SDL_Renderer *renderer);
-	//Selección múltiple
-	//void selection();
+	//Mouse render
+	void render(SDL_Renderer *renderer, SDL_Point posicion);
 
-	//Devuelve selección
+	//Get relative selection
 	SDL_Rect getSel();
 
 private:
-<<<<<<< HEAD
-<<<<<<< HEAD
+	//Cursor texture
 	Texture *cursor;
 
-=======
->>>>>>> refs/remotes/origin/development
-=======
-	Texture *cursor;
+	//Relative to viewpory
+		//Mouse position
+		SDL_Point r_pos;
+		//Press position
+		SDL_Point r_press;	
+		//Selection rect
+		SDL_Rect r_rect;
 
->>>>>>> refs/remotes/origin/development
-	SDL_Point pos;
-	SDL_Point press;
-	SDL_Point release;
+	//Selection rect - ?
+	SDL_Rect rect_abs;
 
-	SDL_Rect rect;
+	//Selection marker
 	bool active;
 };
 

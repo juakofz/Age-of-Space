@@ -9,15 +9,7 @@ Texture::Texture()
 	texture = NULL;
 	dim.x = 0;
 	dim.y = 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	diag=0;
-=======
-	diag = 0;
->>>>>>> refs/remotes/origin/development
-=======
-	diag=0;
->>>>>>> refs/remotes/origin/development
 }
 
 //Destructor
@@ -44,7 +36,7 @@ bool Texture::load(std::string path, SDL_Renderer* renderer)
 	}
 	else
 	{
-		//Color keying (blanco)
+		//Color keying
 		SDL_SetColorKey(img, SDL_TRUE, SDL_MapRGB(img->format, 0xFF, 0xFF, 0xFF));
 
 		//Crear la textura desde la imagen
@@ -89,19 +81,11 @@ bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor,
 
 	
 	//Open the font
-<<<<<<< HEAD
-	if(fuente==1) gFont = TTF_OpenFont( "SPACEBAR.ttf", tamaño );
-	if(fuente==2) gFont = TTF_OpenFont( "fuente2.ttf", tamaño );	
-	if( gFont == NULL )
-	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-=======
 	if(fuente==1) gFont = TTF_OpenFont( "img/SPACEBAR.ttf", tamaño );
 	if(fuente==2) gFont = TTF_OpenFont( "img/fuente2.ttf", tamaño );	
 	if( gFont == NULL )
 	{
 		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
->>>>>>> refs/remotes/origin/development
 		success = false;
 	}
 	else
@@ -137,10 +121,6 @@ void Texture::setAlpha(Uint8 alpha)
 	SDL_SetTextureAlphaMod(texture, alpha);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
 
 bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
 {
@@ -177,9 +157,6 @@ bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor
 }
 
 //Renderizado
-=======
-//Renderizado por posición y textura
->>>>>>> refs/remotes/origin/development
 void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
 	//Espacio de renderizado
@@ -203,11 +180,7 @@ void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SD
 	//Espacio de renderizado
 	SDL_Rect renderQuad = { center->x -  w/2, center->y - h/2, w, h};
 
-<<<<<<< HEAD
-	//Espacio final de renderizado de renderizado
-=======
 	//Porción renderizada de la textura
->>>>>>> refs/remotes/origin/development
 	if (clip != NULL)
 	{
 		renderQuad.w = clip->w;
@@ -218,10 +191,6 @@ void Texture::render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SD
 	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, NULL, flip);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
 //renderizado por rectangulo y posicion
 void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Rect* clip)
 {
@@ -246,11 +215,6 @@ void Texture::render(SDL_Renderer* renderer, Vector2* Quad, int x, int y, SDL_Re
 	//Renderizado
 	SDL_RenderCopy(renderer, texture, clip, &renderQuad);
 }
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/development
-=======
->>>>>>> refs/remotes/origin/development
 
 //Dimensiones
 Vector2 Texture::getDim() 
@@ -263,11 +227,4 @@ float Texture::getDiag()
 {
 	return diag;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/remotes/origin/development
-=======
-
->>>>>>> refs/remotes/origin/development

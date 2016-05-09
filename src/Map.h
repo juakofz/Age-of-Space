@@ -3,6 +3,8 @@
 #include "Texture.h"
 #include "Camera.h"
 
+class Camera;
+
 class Map
 {
 public:
@@ -20,7 +22,7 @@ public:
 
 	//Render
 	void renderBg(Camera cam);
-	void renderParallax(Camera cam);
+	void renderGrid(Camera cam);
 
 private:
 	Vector2 size;

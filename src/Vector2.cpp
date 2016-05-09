@@ -13,14 +13,6 @@ Vector2::~Vector2()
 {
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-//SDL_Point
-
->>>>>>> refs/remotes/origin/development
-=======
->>>>>>> refs/remotes/origin/development
 SDL_Point Vector2::convert_int()
 {
 	SDL_Point ret;

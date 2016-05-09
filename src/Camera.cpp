@@ -2,12 +2,8 @@
 
 Camera::Camera()
 {
-	cen.x = 100;
-	cen.y = 100;
-
-	frame.w = frame.h = frame.x = frame.y = 0;
+	cen.x = cen.y = frame.w = frame.h = frame.x = frame.y = 0;
 	zoom = 1;
-	//cout << "Constructor" << endl;
 }
 
 
@@ -34,7 +30,6 @@ void Camera::move(float mx, float my)
 
 	frame.x += mx;
 	frame.y += my;
-	//cout << "Move" << endl;
 }
 
 void Camera::changeZoom(float z)
@@ -45,6 +40,7 @@ void Camera::changeZoom(float z)
 //Margen de renderizado
 bool Camera::isVisible(Vector2 pos, int margin)
 {
+	margin = -margin;
 	if ((pos.x - margin >= frame.x) && (pos.x + margin <= frame.x + frame.w))
 	{
 		if ((pos.y - margin >= frame.y) && (pos.y + margin <= frame.y + frame.h))
@@ -70,8 +66,6 @@ void Camera::setPos(float x, float y)
 
 	cen.x = frame.x + frame.w / 2;
 	cen.y = frame.y + frame.h / 2;
-
-	//cout << "setPos" << endl;
 }
 
 //Centro
@@ -87,8 +81,6 @@ void Camera::setCen(float x, float y)
 
 	frame.x = cen.x - frame.w / 2;
 	frame.y = cen.y - frame.h / 2;
-
-	//cout << "setCen" << endl;
 }
 
 //Tamaño
@@ -99,8 +91,6 @@ void Camera::setSize(int w, int h)
 
 	frame.x = cen.x - frame.w / 2;
 	frame.y = cen.y - frame.h / 2;
-
-	//cout << "setSize" << endl;
 }
 
 Vector2 Camera::getSize()
