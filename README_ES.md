@@ -61,4 +61,4 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Ventana redimensionable
 - Scrolling implementado
 - Base para el mapa
-- Fixes menores
+- Pequeñas mejoras de código
