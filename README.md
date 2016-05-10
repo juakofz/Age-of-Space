@@ -62,3 +62,8 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Slight code improvements
 - Bug fixes
 - Translated readme file
+
+##### P0.8.1
+- Fixed mouse class so it makes a bit more sense
+- Ships now can be selected and moved correctly
+- Added some bugs
