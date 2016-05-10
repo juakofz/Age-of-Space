@@ -83,6 +83,7 @@ void ViewPort::Set()
 }
 
 
+//Returns mouse position relative to viewport
 SDL_Point ViewPort::relatxy()
 {
 	SDL_Point xyrel;
@@ -93,9 +94,10 @@ SDL_Point ViewPort::relatxy()
 	return xyrel;
 }
 
-void ViewPort::event(SDL_Event* e)
+SDL_Point ViewPort::relatxy(int x, int y)
 {
-
-	
+	SDL_Point xyrel;
+	xyrel.x = x - param.x;
+	xyrel.y = y - param.y;
+	return xyrel;
 }
-

@@ -156,7 +156,7 @@ int main(int argc, char* args[])
 					}
 
 					
-					std::cout<< "FPS: " << avgFPS << '\r';
+					//std::cout<< "FPS: " << avgFPS << '\r';
 					
 
 					//si ha cambiado el tamaño de la ventana actualizamos los parámetros que dependen de ella.

@@ -43,9 +43,7 @@ public:
 
 	//relativiza la posicion del raton a sus coordenadas
 	SDL_Point relatxy();
-
-	//handle event
-	void event(SDL_Event* e);
+	SDL_Point relatxy(int x, int y);
 
 };
 
