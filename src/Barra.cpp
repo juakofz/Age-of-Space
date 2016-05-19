@@ -14,7 +14,7 @@ Barra::~Barra(void)
 void Barra::render()
 {
 	//actRecursos();
-	
+	viewport.render();
 
 	renderName();
 	renderRecursos();
@@ -42,8 +42,8 @@ void Barra::renderRecursos()
 	//iconos del oro y la energia
 	Texture energia, oro;
 	Texture energiaVal, oroVal;
-	energia.load("energy3.png", gRenderer);
-	oro.load("gold.png", gRenderer);
+	energia.load("img/energy3.png", gRenderer);
+	oro.load("img/gold.png", gRenderer);
 
 	//tamaño de los iconos
 	Vector2 tamañoiconos;
@@ -69,7 +69,8 @@ void Barra::setRecursos(std::stringstream recursos[])
 	energianum.loadText(recursos[1].str().c_str(), 10, color, 2);
 }
 
-void Barra::event(SDL_Event* e, SDL_Point xyrel)
+int Barra::event(SDL_Event* e, SDL_Point xyrel)
 {
+	return 1;
 
 }

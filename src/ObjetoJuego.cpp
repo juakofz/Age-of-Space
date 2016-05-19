@@ -1,28 +1,31 @@
-#include "Asteroid.h"
+#include "ObjetoJuego.h"
 
-#include <cmath>
-#include <iostream>
 
-using namespace std;
+Texture* ObjetoJuego::tex=NULL;
+Texture* ObjetoJuego::marker=NULL;
 
-//Texture* Asteroid::tex=NULL;
-//Texture* Asteroid::marker=NULL;
-
-Asteroid::Asteroid(): GameObject(true)
+ObjetoJuego::ObjetoJuego()
 {
-	
+	sel = false;
+
+	//color del marcador
+	/*marker_color.r = 0x00;
+	marker_color.g = 0xFF;
+	marker_color.b = 0x00;
+	marker_color.a = 0x00;*/
+	sel_angle=0;
 }
 
 
-Asteroid::~Asteroid()
+ObjetoJuego::~ObjetoJuego()
 {
 }
 
-/*void Asteroid::setMarker(Texture *m)
+void ObjetoJuego::setMarker(Texture *m)
 {
 	marker = m;
-}*/
-void Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
+}
+void ObjetoJuego::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;
 
@@ -51,52 +54,46 @@ void Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 	}
 }
 
-/*void Asteroid::select()
+void ObjetoJuego::select()
 {
 	sel = true;
 	sel_angle = 0;
 }
 
-void Asteroid::deselect()
+void ObjetoJuego::deselect()
 {
 	sel = false;
-}*/
+}
 
 //Renderizado
-/*void Asteroid::render(Camera cam)
+void ObjetoJuego::render()
 {
-	SDL_Point center;
-	center.x = cen.x - cam.getPos().x;
-	center.y = cen.y - cam.getPos().y;
+	//renderizado de la textura
+	tex->render(gRenderer,(int)pos.x,(int)pos.y);
 
-	
-	tex->render(gRenderer, &center, width, height, NULL, angle + 90);
 
-	if(seleccionable)
+	SDL_Rect selection;
+	selection.x = pos.x - size*0.1;
+	selection.y = pos.y - size*0.1;
+	selection.w = selection.h = size * 1.2;
+	SDL_Point centro = cen.convert_int();
+
+	//Marcador de selección
+	if (sel == true)
 	{
-		SDL_Rect selection;
-		selection.x = pos.x - size*0.1;
-		selection.y = pos.y - size*0.1;
-		selection.w = selection.h = size * 1.2;
-
-		if (sel)
-		{
-			marker->render(gRenderer, &center, selection.w, selection.h, NULL, sel_angle);
-			if (sel_angle > 360) sel_angle = 0;
-			else sel_angle++;
-		}
+		marker->render(gRenderer, &centro, selection.w, selection.h, NULL, sel_angle);
+		if (sel_angle > 360) sel_angle = 0;
+		else sel_angle++;
 	}
 }
 
-
 //Posición
-
-Vector2 Asteroid::GetPos()
+Vector2 ObjetoJuego::GetPos()
 {
 	return pos;
 }
 
-void Asteroid::SetPos(float x, float y)
+void ObjetoJuego::SetPos(float x, float y)
 {
 	pos.x = x;
 	pos.y = y;
@@ -106,13 +103,13 @@ void Asteroid::SetPos(float x, float y)
 
 
 //Centro
-Vector2 Asteroid::GetCen()
+Vector2 ObjetoJuego::GetCen()
 {
 	return cen;
 }
 
 //Cambia el centro y la posición
-void Asteroid::SetCen(float x, float y)
+void ObjetoJuego::SetCen(float x, float y)
 {
 	cen.x = x;
 	cen.y = y;
@@ -121,20 +118,17 @@ void Asteroid::SetCen(float x, float y)
 }
 
 //Asignación de textura
-void Asteroid::SetTex(Texture *t)
+void ObjetoJuego::SetTex(Texture *t)
 {
 	tex = t;
-
 }
 
-
-bool Asteroid::getSel()
+bool ObjetoJuego::getSel()
 {
 	return sel;
 }
-
 //Tamaño
-void Asteroid::setSize(int s)
+void ObjetoJuego::setSize(int s)
 {
 	size = s;
 	float scale = s / tex->getDiag();
@@ -142,8 +136,8 @@ void Asteroid::setSize(int s)
 	//height = tex->getDim().y * scale;
 }
 
-int Asteroid::getType()
+int ObjetoJuego::getType()
 {
 
 	return 1;
-}*/
+}

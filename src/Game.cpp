@@ -12,116 +12,169 @@ Game::~Game(void)
 
 void Game::event(SDL_Event* e)
 {
-	//flag de selección múltiple con el ratón
-	static bool seleccion=false;
-
+	
+	//Reading absolute mouse state
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-
-	//Decide en que viewport estamos segun la posicion del raton
-	if(seleccion || (my>barra.getHeight() && my<menus.getY())) //zona de juego
+	
+	//Top bar
+	if (my <= barra.getHeight())
 	{
-		juego.Set();
-		eventjuego(e);
-		//printf("en juego");
-		juego.event(e);
-		seleccion = mouse.update(e, juego.relatxy());
-		mouse_selection = mouse.getSel();
-		numviewport=3;
+		barra.Set();
+		
+		//Absolute
+		mouse.setPos(mx, my);
+
+		//Relative to viewport
+		mouse.setR_pos(mx, my);
+
+		mouse.update(e, false);
+		numviewport = 1;
 	}
 
-	//si estamos haciendo selección en el juego no entra en los otros viewports
-
-	if(seleccion==false)
+	//Game viewport (juego)
+	if(my > barra.getHeight() && my < menu.getY())
 	{
-		if(my<barra.getHeight()) //zona de barra
+		juego.Set();
+		//Game selection events
+		eventjuego(e);
+
+		//Lock mouse while selecting
+		if (mouse.isActive())
 		{
-			barra.Set();
-			//printf("en barra");
-			mouse.update(e, barra.relatxy());
-			numviewport=1;
+			//Upper limit
+			if (my <= barra.getHeight())
+			{
+				//Absolute
+				mouse.setPos(mx, barra.getHeight());
+				//Relative
+				mouse.setR_pos(mx, 0);
+			}
+
+			//Lower limit
+			else if (my >= juego.getHeight() + menu.getHeight())
+			{
+				//Absolute
+				mouse.setPos(mx, barra.getHeight() + juego.getHeight());
+				//Relative
+				mouse.setR_pos(mx, juego.getHeight());
+			}
+
+			else
+			{
+				//Absolute
+				mouse.setPos(mx, my);
+				//Relative
+				mouse.setR_pos(mx, juego.relatxy(mx, my).y);
+			}
+
 		}
-		if(my>menus.getY()) //zona de menus
+		//Not selecting
+		else
 		{
-			menus.Set();
-			//printf("menus");
-			menus.event(e);
-			eventMenu(e);
-			mouse.update(e, menus.relatxy());
-			numviewport=2;
+			//Absolute
+			mouse.setPos(mx, my);
+			//Relative
+			mouse.setR_pos(mx, juego.relatxy(mx, my).y);
 		}
+
+		//Map
+		mouse.setMpos(cam.getPos().x + mouse.getR_pos().x, cam.getPos().y + mouse.getR_pos().y);
+
+		//Update mouse
+		mouse.update(e);
+		numviewport = 3;
+	}
+
+	//Menu area
+	if(my >= juego.getHeight())
+	{
+		menu.Set();
+		eventMenu(e);
+		//Absolute
+		mouse.setPos(mx, my);
+		//Relative
+		mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
+
+		mouse.update(e, false);
+		numviewport = 2;
 	}		
 }
 
 void Game::cargarTexturas()
 {
-	tex[0].load("Nave1.png");
-	tex[1].load("asteroide.png");
-	tex[2].load("edificio.png");
-	tex[3].load("markerW.png");
-	tex[4].load("markerW.png");
-	tex[5].load("Cursor.png");
+	tex[0].load("img/Nave1.png");
+	tex[1].load("img/asteroide.png");
+	tex[2].load("img/edificio.png");
+	tex[3].load("img/markerW.png");
+	tex[4].load("img/markerW.png");
+	tex[5].load("img/Cursor.png");
+	tex[6].load("img/Background.jpg");
+	tex[7].load("img/grid2.png");
 
 	tex[3].setColor(255, 100, 0);
 	tex[4].setColor(0, 255, 0);
 
 
-	texOpciones[0].load("edificio.png");
-	texOpciones[1].load("markerW.png");
-	texOpciones[2].load("Nave1.png");
-	texOpciones[3].load("atras.png");
-	texOpciones[4].load("cerrar.png");
+	texOpciones[0].load("img/edificio.png");
+	texOpciones[1].load("img/markerW.png");
+	texOpciones[2].load("img/Nave1.png");
+	texOpciones[3].load("img/atras.png");
+	texOpciones[4].load("img/cerrar.png");
 }
 
 void Game::InitViewPorts()
 {
+	zonas[MENU]=&menu;
+	zonas[BARRA]=&barra;
+	zonas[TOTAL]=&total;
+	zonas[JUEGO]=&juego;
 
 	//juego
-	juego.Init(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "space.png");
-	juego.SetRel(0,0.1,1,0.65);
+	zonas[JUEGO]->initViewport(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "");
+	zonas[JUEGO]->SetRel(0,0.1,1,0.65);
 
 	//menus
-	menus.Init(0,3*SCREEN_HEIGHT/4,SCREEN_WIDTH,SCREEN_HEIGHT/4, "menu.png");
-	menus.SetRel(0,0.75,1,0.25);
+	zonas[MENU]->initViewport(0,3*SCREEN_HEIGHT/4,SCREEN_WIDTH,SCREEN_HEIGHT/4, "img/menu.png");
+	zonas[MENU]->SetRel(0,0.75,1,0.25);
+
 
 	//barra
-	barra.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "barra.png");
-	barra.SetRel(0,0,1,0.1);
+	zonas[BARRA]->initViewport(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "img/barra.png");
+	zonas[BARRA]->SetRel(0,0,1,0.1);
 	
 	//pantalla inicial
-	total.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "space2.png");
-	total.SetRel(0,0,1,1);
+	zonas[TOTAL]->initViewport(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "img/space2.png");
+	zonas[TOTAL]->SetRel(0,0,1,1);
+
+	//Actualizar tamaño de cámara
+	cam.update(juego.getViewport());
 }
 
 void Game::ActViewPorts()
 {
-	juego.ActParam();
-	barra.ActParam();
-	menus.ActParam();
-	total.ActParam();
+	//Actualizar viewports
+	for(int i=0;i<NUM_VIEWPORTS;i++) zonas[i]->ActParam();
+
+	//Actualizar tamaño de cámara
+	cam.update(juego.getViewport());
 }
 
 void Game::RenderViewPorts()
 {
 	//viewports
-	
-	barra.render();
-		//elementos que se imprimen en la barra (debe ir detras de la barra)
-	/*std::stringstream recursos[2];
-	jugador.getRecursos(recursos);
-	menubarra.setRecursos(recursos);*/
-	if(numviewport==1) 	mouse.render(gRenderer);
-		menubarra.render();
-	menus.render();
-	if(numviewport==2) mouse.render(gRenderer);
-	juego.render();
+	zonas[BARRA]->render();		
+	zonas[MENU]->render();
+	zonas[JUEGO]->render();
 	renderJuego();
-	if(numviewport==3) mouse.render(gRenderer);
+	total.Set();
+	mouse.render();
+
 }
 
 void Game::RenderTotal()
 {
-	total.render();
+	zonas[TOTAL]->render();
 	//mouse.render(gRenderer);
 }
 
@@ -130,16 +183,23 @@ void Game::initjuego()
 	//Inicialización del cursor
 	mouse.setCursor(tex + 5);
 
+	//Mapa
+	map.setSize(3000, 3000);
+	map.setBg(tex + 6);
+	map.setGrid(tex + 7);
+
+	//Camara
+	cam.setCen(map.getSize().x / 2, map.getSize().y / 2);
+
 	//inicializacion asteroide
 	ast.SetTex(tex+1);
-	ast.SetCen(50,50);
-	
-	ast.setSize(70);
 	ast.setMarker(&(tex[4]));
 
-	//printf("%c", typeid(ast).name());
+	ast.SetCen(50,50);	
+	ast.setSize(70);
 
-	cout << typeid(ast).name()<<'\n';
+
+
 
 	//inicializacion nave
 	for(int i=0;i<60;i++)
@@ -151,9 +211,15 @@ void Game::initjuego()
 	ship[i].stop();
 	}
 
+	prueba1.SetTex(tex);
+	prueba1.setSize(60);
+	prueba1.setMarker(&(tex[3]));
+	prueba1.SetCen(1500, 1500);
+	prueba1.stop();
+
 	std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
-	menubarra.setRecursos(recursos);
+	barra.setRecursos(recursos);
 }
 
 void Game::renderJuego()
@@ -161,23 +227,42 @@ void Game::renderJuego()
 	//viewport de juego
 	juego.Set();
 	
+	//Mapa
+	map.renderBg(cam);
+	map.renderGrid(cam);
 
-	//renderizamos los elementos del juego y la seleccion multiple
-	for(int i=0;i<60;i++) ship[i].render(gRenderer);
-	ast.render();
+	//Movimiento de naves y renderizado
+	for (int i = 0;i < 60;i++)
+	{	
+		ship[i].move();
+		if (cam.isVisible(ship[i].GetCen(), 20))
+		{
+			ship[i].render(gRenderer, cam);
+		}
+	}
+	prueba1.move();
+		if (cam.isVisible(prueba1.GetCen(), 20))
+		{
+			prueba1.render(cam);
+		}
+	if (cam.isVisible(ast.GetCen(), 20))
+		{
+			ast.render(cam);
+		}
+	asteroides.render(cam);
 
-	//movemos la nave y acualizamos
+	/*//movemos la nave y acualizamos
 	for(int i=0;i<60;i++)
 	{
-	ship[i].move();
-	ship[i].render(gRenderer);
-	}
+		ship[i].render(gRenderer, cam);
+	}*/
 	//mouse.render(gRenderer);
 	if(ast.getSel()) 
 	{
 			renderMenu();
 			int type=ast.getType();
 	}
+	if(asteroides.getSel()) renderMenu();
 	juego.Set();
 	
 }
@@ -188,21 +273,27 @@ void Game::setNombre(std::string nombre)
 {
 	//nombrejugador=nombre;
 	jugador.setName(nombre);
-	menubarra.SetName(jugador.getName());
+	barra.SetName(jugador.getName());
 }
 
 void Game::eventjuego(SDL_Event* e)
 {
 	//eventos de los elementos del juego
-	ast.event(e, mouse_selection, juego.relatxy());
-//	ast.render();
+	ast.event(e, mouse.getMrect(), mouse.getMpos());
 	for(int i=0;i<60;i++)
 	{
-	ship[i].event(e, mouse_selection, juego.relatxy());
+	ship[i].event(e, mouse.getMrect(), mouse.getMpos());
 //	ship[i].render(gRenderer);
 	}
+	prueba1.event(e, mouse.getMrect(), mouse.getMpos());
 	/*if(ast.getSel()) renderMenu();
 	juego.Set();*/
+	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
+}
+
+void Game::main_event()
+{
+	mouse.scroll(cam, map);
 }
 
 void Game::initMenu()
@@ -213,18 +304,36 @@ void Game::initMenu()
 
 void Game::renderMenu()
 {
-	//viewport de menu
-	menus.Set();
-
-	//renderizamos el menu
-	menu.render();
+//Abrimos el menu
+	zonas[MENU]->Open();
 
 }
 
 void Game::eventMenu(SDL_Event* e)
 {
 	//eventos del menu
-	menu.event(e, menus.relatxy());
+	switch (menu.event(e, menu.relatxy()))
+	{
+		case 1:
+			{
+			Asteroid* aux = new Asteroid; 	
+			aux->SetTex(tex+1);
+			aux->setMarker(&(tex[4]));
+			aux->SetCen(100,50);  
+			aux->setSize(70);
+
+			asteroides.agregar(aux);
+			break;			
+			}
+		case 3:
+			do{
+			asteroides.eliminarAsteroide(asteroides.getSel()-1);
+			}while(asteroides.getSel());
+			break;
+		case 4:
+			cout<<"cerrar"<<endl;
+			break;
+	}
 	//printf("dentro del menu");
 }
 
@@ -236,7 +345,7 @@ void Game::initCaract()
 void Game::renderCaract()
 {
 	//viewport de menu
-	menus.Set();
+	menu.Set();
 
 	//renderizamos el menu
 	caract.render();
@@ -246,33 +355,34 @@ void Game::renderCaract()
 void Game::eventCaract(SDL_Event* e)
 {
 	//eventos del menu
-	caract.event(e, menus.relatxy());
+	caract.event(e, menu.relatxy());
 	//printf("dentro del menu");
 }
 
 void Game::initBarra()
 {
-	menubarra.SetName(jugador.getName());
+	barra.SetName(jugador.getName());
 
 	std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
-	menubarra.setRecursos(recursos);
+	barra.setRecursos(recursos);
 }
 
 void Game::renderBarra()
 {
 	//viewport de menu
-	barra.Set();
+//	barra.Set();
 
 	//renderizamos el menu
-	menubarra.render();
+//	menubarra.render();
+	barra.render();
 
 }
 
 void Game::eventBarra(SDL_Event* e)
 {
 	//eventos de la barra
-	menubarra.event(e, barra.relatxy());
+	barra.event(e, barra.relatxy());
 
 }
 

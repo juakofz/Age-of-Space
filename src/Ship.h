@@ -1,6 +1,6 @@
 #pragma once
 #include "Texture.h"
-#include "Vector2.h"
+#include "Camera.h"
 
 class Texture;
 
@@ -14,7 +14,7 @@ public:
 	~Ship();
 
 	//Manejo de eventos
-	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
+	void event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
 
 	//Selección
 	void select();
@@ -26,7 +26,7 @@ public:
 	bool moveTo(int x, int y);
 
 	//Renderizado
-	void render(SDL_Renderer* renderer);
+	void render(SDL_Renderer* renderer, Camera cam);
 	void setMarker(Texture *m);
 
 	//Posición
