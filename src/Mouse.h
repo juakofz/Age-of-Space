@@ -3,6 +3,11 @@
 #include <SDL_image.h>
 #include <iostream>
 #include "Texture.h"
+#include "Camera.h"
+#include "Map.h"
+
+class Camera;
+class Map;
 
 class Mouse
 {
@@ -13,25 +18,64 @@ public:
 	//Cursor
 	void setCursor(Texture * c);
 	
-	//Manejo de eventos
-	bool update(SDL_Event *e, SDL_Point xyrel);
+	//Event management
+	void update(SDL_Event *e, bool sel = true);
+	
+	//Camera movement (map scrolling)
+	void scroll(Camera &cam, Map map);
 
-	//Render de efectos
-	void render(SDL_Renderer *renderer);
-	//Selección múltiple
-	//void selection();
+	//Mouse render
+	void render(SDL_Renderer *renderer = gRenderer);
 
-	//Devuelve selección
+
+	//Get relative selection
 	SDL_Rect getSel();
 
+	//Absolute position
+	void setPos(int px, int py);
+	SDL_Point getPos();
+
+	//Relative position (to viewport)
+	void setR_pos(int px, int py);
+	SDL_Point getR_pos();
+	
+	//Map position
+	void setMpos(int px, int py);
+	SDL_Point getMpos();
+	SDL_Rect getMrect();
+
+	//Selection
+	bool isActive();
+
 private:
+	//Cursor texture
 	Texture *cursor;
 
-	SDL_Point pos;
-	SDL_Point press;
-	SDL_Point release;
+	//Absolute
+		//Mouse positio
+		SDL_Point pos;
+		//Press position
+		SDL_Point press;
+		//Selection rect
+		SDL_Rect rect;
 
-	SDL_Rect rect;
+	//Relative to viewpory
+		//Mouse position
+		SDL_Point r_pos;
+		//Press position
+		SDL_Point r_press;	
+		//Selection rect
+		SDL_Rect r_rect;
+
+	//Relative to map
+		//Mouse position
+		SDL_Point m_pos;
+		//Press position
+		SDL_Point m_press;
+		//Selection rect
+		SDL_Rect m_rect;
+
+	//Selection marker
 	bool active;
 };
 

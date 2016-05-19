@@ -38,6 +38,7 @@ LWindow gWindow;
 Texture gTextTexture;
 
 
+
 //inicializa
 bool init()
 {

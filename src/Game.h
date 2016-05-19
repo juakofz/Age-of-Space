@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ViewPort.h"
+
 #include <SDL.h>
 #include "LWindow.h"
-#include "Asteroid.h"
 #include "Barra.h"
 #include "Mouse.h"
 #include "Timer.h"
@@ -12,21 +11,49 @@
 #include "Player.h"
 #include "Caracteristicas.h"
 #include "Global.h"
+#include "Map.h"
+#include "ListaAsteroides.h"
+#include "ZonaPantalla.h"
+#include "Menu.h"
+#include "ObjetoMovil.h"
+
+enum ZONAS
+{
+	BARRA=0,
+	JUEGO=1,
+	MENU=2,
+	TOTAL=3,
+	NUM_VIEWPORTS=4
+};
 
 class Game
 {
 	//viewports del juego
-	ViewPort barra, juego, menus, total;
+//	ViewPort  juego, total;
 	int numviewport;
 
+	ZonaPantalla *zonas[NUM_VIEWPORTS];
+	ZonaPantalla juego, total;
+	//Mapa
+	Map map;
+
+	//Mouse
+	Mouse mouse;
+
+	//Camara
+	Camera cam;
+
 	//elementos del juego
+	ListaAsteroides asteroides;
 	Asteroid ast;
 	Ship ship[60];
+	ObjetoMovil prueba1;
 
-	//añadidos que hay que recolocar
-	Barra menubarra;
-	//string nombrejugador;
+
+
+	//Partes de la pantalla
 	Menu menu;
+	Barra barra;
 	Player jugador;
 	Caracteristicas caract;
 
@@ -34,9 +61,7 @@ class Game
 	Texture tex[10];
 	Texture texOpciones[5];
 
-	//Mouse
-	Mouse mouse;
-	SDL_Rect mouse_selection;
+	SDL_Point posicion;
 
 	characts* chooseElement(int type);
 
@@ -48,7 +73,6 @@ public:
 	//carga las texturas
 	void cargarTexturas();
 
-
 	//funciones con viewports
 	void InitViewPorts(); //inicializa los viewports
 	void ActViewPorts(); //actualiza los viewports con cambio en la ventana
@@ -57,7 +81,9 @@ public:
 	//eventos
 	void event(SDL_Event* e); //reparte los eventos al viewport en el que nos encontremos
 	void RenderTotal(); //renderiza la pantalla de inicio
-
+	
+	//Eventos fuera de cola
+	void main_event();
 
 	//juego
 	void initjuego(); //inicializa los elementos del juego

@@ -90,6 +90,9 @@ int main(int argc, char* args[])
 				//Límite FPS
 				cap_timer.start();
 
+				//Non queue events
+				game.main_event();
+
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -100,6 +103,7 @@ int main(int argc, char* args[])
 					}
 
 					//Si estamos en pantalla de inicio
+
 					if(total) 
 					{
 									
@@ -152,7 +156,7 @@ int main(int argc, char* args[])
 					}
 
 					
-					std::cout<< "FPS: " << avgFPS << '\r';
+					//std::cout<< "FPS: " << avgFPS << '\r';
 					
 
 					//si ha cambiado el tamaño de la ventana actualizamos los parámetros que dependen de ella.
@@ -204,9 +208,8 @@ int main(int argc, char* args[])
 			}
 		}
 	}
-
+	//system("PAUSE");
 	//Free resources and close SDL
 	close();
-	//system("PAUSE");
 	return 0;
 }

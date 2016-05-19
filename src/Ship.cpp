@@ -37,13 +37,14 @@ Ship::~Ship()
 {
 }
 
-void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
+void Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 {
+	/*
 	int mx, my;
 
-	mx=xyrel.x;
-	my=xyrel.y;
-
+	mx=m.x;
+	my=m.y;
+	*/
 /*
 	//Botón izquierdo
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT))
@@ -67,12 +68,13 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 		}
 	}
 	*/
+
 	//Selección múltiple
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
-		if (((cen.x > selection.x - tex->getDim().x/2) && (cen.x < (selection.x + selection.w + tex->getDim().x / 2))))
+		if (((cen.x > m_sel.x - tex->getDim().x/2) && (cen.x < (m_sel.x + m_sel.w + tex->getDim().x / 2))))
 		{
-			if (((cen.y > selection.y - tex->getDim().y / 2) && (cen.y < (selection.y + selection.h + tex->getDim().y / 2))))
+			if (((cen.y > m_sel.y - tex->getDim().y / 2) && (cen.y < (m_sel.y + m_sel.h + tex->getDim().y / 2))))
 			{
 				select();
 			}
@@ -86,8 +88,8 @@ void Ship::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
 	{
 		//SDL_GetMouseState(&mx, &my);
-		dest.x = mx;
-		dest.y = my;
+		dest.x = m.x;
+		dest.y = m.y;
 
 		//Dirección
 		dir.x = dest.x - cen.x;
@@ -159,47 +161,25 @@ bool Ship::moveTo(int x, int y)
 }
 
 //Renderizado (con rotación y selección)
-void Ship::render(SDL_Renderer* renderer)
+void Ship::render(SDL_Renderer* renderer, Camera cam)
 {
-	//tex->render(renderer, pos.x, pos.y, NULL, angle+90);
-	tex->render(renderer, &cen.convert_int(), width, height, NULL, angle + 90);
-
-	/*//Marcador de selección (esquinas)
 	SDL_Point center;
-	center.x = cen.x;
-	center.y = cen.y;
-	sel_marker.center = center;
-	sel_marker.color = marker_color;
-	sel_marker.width = tex->getDim().x;
-	sel_marker.height = tex->getDim().y;
-	sel_marker.update();
-	*/
+	center.x = cen.x - cam.getPos().x;
+	center.y = cen.y - cam.getPos().y;
+
+	tex->render(renderer, &center, width, height, NULL, angle + 90);
 
 	SDL_Rect selection;
 	selection.x = pos.x - size*0.1;
 	selection.y = pos.y - size*0.1;
 	selection.w = selection.h = size * 1.2;
-	SDL_Point centro = cen.convert_int();
 
 	if (sel)
 	{
-		marker->render(renderer, &centro, selection.w, selection.h, NULL, sel_angle);
+		marker->render(renderer, &center, selection.w, selection.h, NULL, sel_angle);
 		if (sel_angle > 360) sel_angle = 0;
 		else sel_angle++;
 	}
-
-/*	//Marcador de selección rectangular
-	if (sel == true)
-	{
-		SDL_Rect rec_sel;
-		rec_sel.x = pos.x;
-		rec_sel.y = pos.y;
-		rec_sel.h = tex->getDim().x;
-		rec_sel.w = tex->getDim().y;
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &rec_sel);
-	}
-	*/
 }
 
 void Ship::setMarker(Texture *m)

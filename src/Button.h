@@ -27,7 +27,7 @@ public:
 	void setPos( int x, int y );
 
 	//Handles mouse event
-	void event( SDL_Event* e, SDL_Point xyrel );
+	bool event( SDL_Event* e, SDL_Point xyrel );
 	
 	//Shows button sprite
 	void render(Vector2 botondim);

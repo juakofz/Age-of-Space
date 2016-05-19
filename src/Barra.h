@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include "Texture.h"
+#include "ZonaPantalla.h"
 
 //esta clase todavia esta en pañales, no hay que hacerle mucho caso
 
-class Barra
+class Barra: public ZonaPantalla
 {
 	// name;
 	Texture nombrejugador, opciones, recursos, energianum, oronum;
@@ -27,6 +28,6 @@ public:
 
 	//void renderOpciones();
 
-	void event(SDL_Event* e, SDL_Point xyrel);
+	int event(SDL_Event* e, SDL_Point xyrel);
 };
 

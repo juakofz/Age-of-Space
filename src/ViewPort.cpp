@@ -3,7 +3,7 @@
 
 ViewPort::ViewPort(void)
 {
-	param.x=param.y=param.h=param.w=0;
+	param.x = param.y = param.h = param.w = 0;
 
 }
 
@@ -15,28 +15,30 @@ ViewPort::~ViewPort(void)
 //parametros
 void ViewPort::SetParam(int w, int h, int x, int y)
 {
-	param.x=x;
-	param.y=y;
-	param.h=h;
-	param.w=w;
+	param.w = w;
+	param.h = h;
+	
+	param.x = x;
+	param.y = y;
 }
 
 void ViewPort::ActParam()
 {
-	param.x=gWindow.getWidth()*origen.x;
-	param.y=gWindow.getHeight()*origen.y;
-	tamañofin.x=param.w=gWindow.getWidth()*tamaño.x;
-	tamañofin.y=param.h=gWindow.getHeight()*tamaño.y;
+	param.x = gWindow.getWidth() * origen.x;
+	param.y = gWindow.getHeight() * origen.y;
+	tamañofin.x = param.w = gWindow.getWidth() * tamaño.x;
+	tamañofin.y = param.h = gWindow.getHeight() * tamaño.y;
 
 }
 
 
 void ViewPort::SetRel(float x, float y, float w, float h)
 {
-	origen.x=x;
-	origen.y=y;
-	tamaño.x=w;
-	tamaño.y=h;
+	origen.x = x;
+	origen.y = y;
+
+	tamaño.x = w;
+	tamaño.y = h;
 
 }
 
@@ -68,10 +70,10 @@ int ViewPort::getY()
 
 void ViewPort::Init(int x, int y, int w, int h, std::string path)
 {
-	param.x=x;
-	param.y=y;
-	param.h=h;
-	param.w=w;
+	param.x = x;
+	param.y = y;
+	param.h = h;
+	param.w = w;
 	tex.load(path, gRenderer);
 }
 
@@ -81,19 +83,21 @@ void ViewPort::Set()
 }
 
 
+//Returns mouse position relative to viewport
 SDL_Point ViewPort::relatxy()
 {
 	SDL_Point xyrel;
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-	xyrel.x=mx-param.x;
-	xyrel.y=my-param.y;
+	xyrel.x = mx - param.x;
+	xyrel.y = my - param.y;
 	return xyrel;
 }
 
-void ViewPort::event(SDL_Event* e)
+SDL_Point ViewPort::relatxy(int x, int y)
 {
-
-	
+	SDL_Point xyrel;
+	xyrel.x = x - param.x;
+	xyrel.y = y - param.y;
+	return xyrel;
 }
-
