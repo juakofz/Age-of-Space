@@ -14,7 +14,11 @@ Barra::~Barra(void)
 void Barra::render()
 {
 	//actRecursos();
+<<<<<<< HEAD
 	
+=======
+	viewport.render();
+>>>>>>> refs/remotes/origin/pr/8
 
 	renderName();
 	renderRecursos();
@@ -69,7 +73,13 @@ void Barra::setRecursos(std::stringstream recursos[])
 	energianum.loadText(recursos[1].str().c_str(), 10, color, 2);
 }
 
+<<<<<<< HEAD
 void Barra::event(SDL_Event* e, SDL_Point xyrel)
 {
+=======
+int Barra::event(SDL_Event* e, SDL_Point xyrel)
+{
+	return 1;
+>>>>>>> refs/remotes/origin/pr/8
 
 }

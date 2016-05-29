@@ -20,7 +20,11 @@ void Button::setPos( int x, int y )
 }
 
 //Handles mouse event
+<<<<<<< HEAD
 void Button::event( SDL_Event* e, SDL_Point xyrel )
+=======
+bool Button::event( SDL_Event* e, SDL_Point xyrel )
+>>>>>>> refs/remotes/origin/pr/8
 {
 	//If mouse event happened
 	if(clickOn(e, xyrel))
@@ -29,7 +33,11 @@ void Button::event( SDL_Event* e, SDL_Point xyrel )
 		switch( e->button.button )
 		{
 			case SDL_BUTTON_LEFT:
+<<<<<<< HEAD
 			printf("pulsado boton izquierdo sobre el boton \n");
+=======
+			printf("pulsado boton izquierdo sobre el boton \n"); return 1;
+>>>>>>> refs/remotes/origin/pr/8
 			break;
 			
 			case SDL_BUTTON_RIGHT:
