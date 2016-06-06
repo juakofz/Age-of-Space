@@ -1,9 +1,5 @@
 #pragma once
 #include "Texture.h"
-<<<<<<< HEAD
-#include "Vector2.h"
-=======
->>>>>>> refs/remotes/origin/pr/8
 #include "Camera.h"
 
 class Texture;

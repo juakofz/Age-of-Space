@@ -60,11 +60,7 @@ bool init()
 		}
 
 		//Set mouse mode to relative
-<<<<<<< HEAD
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-=======
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
->>>>>>> refs/remotes/origin/pr/8
 
 		//Create window
 		if( !gWindow.init() )

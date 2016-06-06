@@ -3,10 +3,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "Global.h"
-<<<<<<< HEAD
-#include "Asteroid.h"
-=======
->>>>>>> refs/remotes/origin/pr/8
 
 
 class ViewPort

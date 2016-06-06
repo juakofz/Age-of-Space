@@ -27,11 +27,7 @@ public:
 	void setPos( int x, int y );
 
 	//Handles mouse event
-<<<<<<< HEAD
-	void event( SDL_Event* e, SDL_Point xyrel );
-=======
 	bool event( SDL_Event* e, SDL_Point xyrel );
->>>>>>> refs/remotes/origin/pr/8
 	
 	//Shows button sprite
 	void render(Vector2 botondim);

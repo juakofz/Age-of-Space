@@ -1,8 +1,4 @@
 #pragma once
-<<<<<<< HEAD
-#include "Vector2.h"
-=======
->>>>>>> refs/remotes/origin/pr/8
 #include "Texture.h"
 #include "Camera.h"
 

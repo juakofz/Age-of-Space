@@ -27,15 +27,6 @@ void Game::event(SDL_Event* e)
 
 		//Relative to viewport
 		mouse.setR_pos(mx, my);
-<<<<<<< HEAD
-
-		mouse.update(e, false);
-		numviewport = 1;
-	}
-
-	//Game viewport (juego)
-	if(my > barra.getHeight() && my < menus.getY())
-=======
 
 		mouse.update(e, false);
 		numviewport = 1;
@@ -43,7 +34,6 @@ void Game::event(SDL_Event* e)
 
 	//Game viewport (juego)
 	if(my > barra.getHeight() && my < menu.getY())
->>>>>>> refs/remotes/origin/pr/8
 	{
 		juego.Set();
 		//Game selection events
@@ -62,11 +52,7 @@ void Game::event(SDL_Event* e)
 			}
 
 			//Lower limit
-<<<<<<< HEAD
-			else if (my >= juego.getHeight() + menus.getHeight())
-=======
 			else if (my >= juego.getHeight() + menu.getHeight())
->>>>>>> refs/remotes/origin/pr/8
 			{
 				//Absolute
 				mouse.setPos(mx, barra.getHeight() + juego.getHeight());
@@ -103,21 +89,12 @@ void Game::event(SDL_Event* e)
 	//Menu area
 	if(my >= juego.getHeight())
 	{
-<<<<<<< HEAD
-		menus.Set();
-
-		//Absolute
-		mouse.setPos(mx, my);
-		//Relative
-		mouse.setR_pos(menus.relatxy(mx, my).x, menus.relatxy(mx, my).y);
-=======
 		menu.Set();
 		eventMenu(e);
 		//Absolute
 		mouse.setPos(mx, my);
 		//Relative
 		mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
->>>>>>> refs/remotes/origin/pr/8
 
 		mouse.update(e, false);
 		numviewport = 2;
@@ -154,25 +131,6 @@ void Game::InitViewPorts()
 	zonas[JUEGO]=&juego;
 
 	//juego
-<<<<<<< HEAD
-	juego.Init(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "");
-	juego.SetRel(0,0.1,1,0.65);
-
-	//menus
-	menus.Init(0,3*SCREEN_HEIGHT/4,SCREEN_WIDTH,SCREEN_HEIGHT/4, "img/menu.png");
-	menus.SetRel(0,0.75,1,0.25);
-
-	//barra
-	barra.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "img/barra.png");
-	barra.SetRel(0,0,1,0.1);
-	
-	//pantalla inicial
-	total.Init(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "img/space2.png");
-	total.SetRel(0,0,1,1);
-
-	//Actualizar tamaño de cámara
-	cam.update(juego);
-=======
 	zonas[JUEGO]->initViewport(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "");
 	zonas[JUEGO]->SetRel(0,0.1,1,0.65);
 
@@ -191,44 +149,23 @@ void Game::InitViewPorts()
 
 	//Actualizar tamaño de cámara
 	cam.update(juego.getViewport());
->>>>>>> refs/remotes/origin/pr/8
 }
 
 void Game::ActViewPorts()
 {
 	//Actualizar viewports
-<<<<<<< HEAD
-	juego.ActParam();
-	barra.ActParam();
-	menus.ActParam();
-	total.ActParam();
-
-	//Actualizar tamaño de cámara
-	cam.update(juego);
-=======
 	for(int i=0;i<NUM_VIEWPORTS;i++) zonas[i]->ActParam();
 
 	//Actualizar tamaño de cámara
 	cam.update(juego.getViewport());
->>>>>>> refs/remotes/origin/pr/8
 }
 
 void Game::RenderViewPorts()
 {
 	//viewports
-<<<<<<< HEAD
-	
-	
-	barra.render();
-		//elementos que se imprimen en la barra (debe ir detras de la barra)
-	menubarra.render();		
-	menus.render();
-	juego.render();
-=======
 	zonas[BARRA]->render();		
 	zonas[MENU]->render();
 	zonas[JUEGO]->render();
->>>>>>> refs/remotes/origin/pr/8
 	renderJuego();
 	total.Set();
 	mouse.render();
@@ -258,16 +195,11 @@ void Game::initjuego()
 	ast.SetTex(tex+1);
 	ast.setMarker(&(tex[4]));
 
-<<<<<<< HEAD
-
-	//cout << typeid(ast).name()<<'\n';
-=======
 	ast.SetCen(50,50);	
 	ast.setSize(70);
 
 
 
->>>>>>> refs/remotes/origin/pr/8
 
 	//inicializacion nave
 	for(int i=0;i<60;i++)
@@ -308,9 +240,6 @@ void Game::renderJuego()
 			ship[i].render(gRenderer, cam);
 		}
 	}
-<<<<<<< HEAD
-	ast.render();
-=======
 	prueba1.move();
 		if (cam.isVisible(prueba1.GetCen(), 20))
 		{
@@ -321,7 +250,6 @@ void Game::renderJuego()
 			ast.render(cam);
 		}
 	asteroides.render(cam);
->>>>>>> refs/remotes/origin/pr/8
 
 	/*//movemos la nave y acualizamos
 	for(int i=0;i<60;i++)
@@ -351,12 +279,7 @@ void Game::setNombre(std::string nombre)
 void Game::eventjuego(SDL_Event* e)
 {
 	//eventos de los elementos del juego
-<<<<<<< HEAD
-	ast.event(e, mouse.getSel(), juego.relatxy());
-//	ast.render();
-=======
 	ast.event(e, mouse.getMrect(), mouse.getMpos());
->>>>>>> refs/remotes/origin/pr/8
 	for(int i=0;i<60;i++)
 	{
 	ship[i].event(e, mouse.getMrect(), mouse.getMpos());
@@ -366,11 +289,6 @@ void Game::eventjuego(SDL_Event* e)
 	/*if(ast.getSel()) renderMenu();
 	juego.Set();*/
 	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
-}
-
-void Game::main_event()
-{
-	mouse.scroll(cam, map);
 }
 
 void Game::main_event()
