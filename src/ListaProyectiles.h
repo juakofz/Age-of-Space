@@ -7,7 +7,7 @@
 
 class ListaProyectiles
 {
-
+	friend class Interacciones;
 	std::vector<Proyectil*> lista;
 public:
 

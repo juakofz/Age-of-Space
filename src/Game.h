@@ -20,6 +20,7 @@
 #include "ZonaPantalla.h"
 #include "Menu.h"
 #include "ObjetoMovil.h"
+#include "Interacciones.h"
 
 enum ZONAS
 {

@@ -15,7 +15,7 @@ public:
 	void render(Camera cam);
 
 	//Movimiento
-	void move();
+	virtual bool move();
 	void stop();
 	bool moveTo(int x, int y);
 

@@ -9,5 +9,6 @@ class Proyectil :
 public:
 	Proyectil(void);
 	~Proyectil(void);
+	bool move();
 };
 

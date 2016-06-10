@@ -21,17 +21,15 @@ void ListaNaves::render(Camera cam)
 { 
     for(int i=0;i<lista.size();i++)
 	{
-		if (cam.isVisible(lista[i]->GetCen(), 20))
-		{
-			lista[i]->render(cam);
-		}       
+		lista[i]->move();
+		lista[i]->render(cam);   
 	}
 } 
 
 void ListaNaves::eliminarNave(int ind) 
 { 
     if((ind<0)||(ind>=lista.size())) return;              
-   // delete lista[ind];    
+    delete lista[ind];    
     lista.erase(lista.begin()+ind);    
 } 
 
@@ -39,7 +37,6 @@ int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
 	int j=0;
 	for(int i=0;i<lista.size();i++) if( lista[i]->event(e, selection, xyrel) ==1) j=1;
-	cout<<j<<endl;
 	return j;
 }
 
@@ -58,6 +55,11 @@ int ListaNaves::getSel()
 Vector2 ListaNaves::getCen(int i)
 {
 	return lista[i]->GetCen();
+}
+
+Vector2 ListaNaves::getPointyEnd(int i)
+{
+	return lista[i]->getPointyEnd();
 }
 
 int ListaNaves::getSels()
@@ -79,3 +81,4 @@ bool ListaNaves::impactos(Proyectil p)
 	}
 	return 0;
 }
+

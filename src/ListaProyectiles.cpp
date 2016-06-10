@@ -23,12 +23,11 @@ bool ListaProyectiles::agregar (Proyectil *ast)
 
 void ListaProyectiles::render(Camera cam) 
 { 
+	
     for(int i=0;i<lista.size();i++)
 	{
-		if (cam.isVisible(lista[i]->GetCen(), 20))
-		{
-			lista[i]->render(cam);
-		}       
+		if(lista[i]->move()) eliminarProyectil(i);
+		else lista[i]->render(cam);      
 	}
 } 
 
