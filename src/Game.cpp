@@ -322,7 +322,7 @@ void Game::eventjuego(SDL_Event* e)
 				aux->setSize(20);
 				//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
 
-				aux->SetCen(naves.getCen(i).x, naves.getCen(i).y);
+				aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
 				aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
 				
 				proyectiles.agregar(aux);
@@ -335,6 +335,7 @@ void Game::eventjuego(SDL_Event* e)
 	}
 	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
 	//proyectiles.impacto(naves);
+	Interacciones::impactoListas(naves, proyectiles);
 }
 
 void Game::main_event()

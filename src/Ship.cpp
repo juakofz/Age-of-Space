@@ -133,6 +133,14 @@ bool Ship::disparada(Proyectil p)
 	return Interacciones::impacto(*this, p);
 
 }
+
+Vector2 Ship::getPointyEnd()
+{
+	Vector2 aux;
+	aux.x= cen.x + tex->getDim().x / 2;
+	aux.y= cen.y + tex->getDim().y / 2;
+	return aux;
+}
 /*void Ship::select()
 {
 	sel = true;

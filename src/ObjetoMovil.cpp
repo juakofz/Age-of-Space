@@ -31,6 +31,7 @@ ObjetoMovil::~ObjetoMovil()
 
 int ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 {
+	
 	//Selección múltiple
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
@@ -65,11 +66,11 @@ int ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 
 void ObjetoMovil::render(Camera cam)
 {
-	move();
+	
 	GameObject::render(cam);
 }
 
-void ObjetoMovil::move()
+bool ObjetoMovil::move()
 {
 	if ((abs(cen.x - dest.x) > max_vel) || (abs(cen.y - dest.y) > max_vel)) {
 
@@ -85,6 +86,7 @@ void ObjetoMovil::move()
 		vel.x = 0;
 		vel.y = 0;
 	}
+	return 0;
 }
 
 void ObjetoMovil::stop()
