@@ -3,6 +3,8 @@
 
 class Vector2
 {
+
+
 public:
 
 	//Constructor
@@ -11,10 +13,13 @@ public:
 	//Destructor
 	~Vector2();
 
+	//Coordenadas
+	float x, y;
+
 	//PAsar a int
 	SDL_Point convert_int();
 
-	//Coordenadas
-	float x, y;
+	float modulo();
+	Vector2 operator-(Vector2 v);
 };
 

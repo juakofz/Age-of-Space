@@ -7,8 +7,8 @@ SDL_Renderer* gRenderer = NULL;
 Texture gSceneTexture;
 
 //tamaño de la pantalla
-const int SCREEN_WIDTH = 960;
-const int SCREEN_HEIGHT = 640;
+const int SCREEN_WIDTH = 150;
+const int SCREEN_HEIGHT = 150;
 
 //Límite FPS
 const int SCREEN_FPS = 60;

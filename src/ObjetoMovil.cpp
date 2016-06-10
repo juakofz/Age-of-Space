@@ -1,7 +1,7 @@
 #include "ObjetoMovil.h"
 
 
-ObjetoMovil::ObjetoMovil(void):GameObject(true)
+ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
 {
 	
 	//Vector2 por defecto 0,0;
@@ -29,7 +29,7 @@ ObjetoMovil::~ObjetoMovil()
 {
 }
 
-void ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
+int ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 {
 	//Selección múltiple
 	if (e->button.button == SDL_BUTTON_LEFT)
@@ -59,7 +59,14 @@ void ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 
 		angle = (180 * atan2(dir.y, dir.x) / M_PI);
 	}
+	return 0;
 
+}
+
+void ObjetoMovil::render(Camera cam)
+{
+	move();
+	GameObject::render(cam);
 }
 
 void ObjetoMovil::move()
@@ -92,6 +99,13 @@ bool ObjetoMovil::moveTo(int x, int y)
 {
 	//vel.x = dir.x;
 	//vel.y = dir.y;
+	dest.x=x;
+	dest.y=y;
+
+	dir.x = dest.x - cen.x;
+	dir.y = dest.y - cen.y;
+
+	angle = (180 * atan2(dir.y, dir.x) / M_PI);
 	return false;
 }
 

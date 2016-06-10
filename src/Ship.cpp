@@ -1,10 +1,11 @@
 #include "Ship.h"
 #include <cmath>
 #include <iostream>
+#include "Interacciones.h"
 
 using namespace std;
 
-Ship::Ship()
+Ship::Ship():ObjetoMovil(true)
 {
 	//Vector2 por defecto 0,0;
 	//Dirección predeterminada
@@ -37,7 +38,7 @@ Ship::~Ship()
 {
 }
 
-void Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
+int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 {
 	/*
 	int mx, my;
@@ -112,11 +113,27 @@ void Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		//Debug
 		//printf("Direccion: %.0f, %.0f\n", dir.x, dir.y);
 		angle = (180 * atan2(dir.y, dir.x) / M_PI);
+		return shoot();
+	}
+	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT) && (sel))
+	{
+		return shoot();
 	}
 
 }
 
-void Ship::select()
+int Ship::shoot()
+{
+	return 1;
+}
+
+
+bool Ship::disparada(Proyectil p)
+{
+	return Interacciones::impacto(*this, p);
+
+}
+/*void Ship::select()
 {
 	sel = true;
 	sel_angle = 0;
@@ -159,9 +176,9 @@ bool Ship::moveTo(int x, int y)
 	//vel.y = dir.y;
 	return false;
 }
-
+*/
 //Renderizado (con rotación y selección)
-void Ship::render(SDL_Renderer* renderer, Camera cam)
+/*void Ship::render(SDL_Renderer* renderer, Camera cam)
 {
 	SDL_Point center;
 	center.x = cen.x - cam.getPos().x;
@@ -255,4 +272,4 @@ void Ship::setSize(int s)
 	float scale = s / tex->getDiag();
 	width = tex->getDim().x * scale;
 	height = tex->getDim().y * scale;
-}
+}*/

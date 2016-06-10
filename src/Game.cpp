@@ -204,11 +204,24 @@ void Game::initjuego()
 	//inicializacion nave
 	for(int i=0;i<60;i++)
 	{
+	
 	ship[i].SetTex(tex);
 	ship[i].setSize(60);
 	ship[i].setMarker(&(tex[3]));
 	ship[i].SetCen(15*i, 200);
 	ship[i].stop();
+	}
+
+	for(int i=0;i<20;i++)
+	{
+		Ship* aux = new Ship;
+		aux->SetTex(tex);
+		aux->setSize(60);
+		aux->setMarker(&(tex[3]));
+		aux->SetCen(150*i, 1500);
+		aux->stop();
+
+		naves.agregar(aux);
 	}
 
 	prueba1.SetTex(tex);
@@ -237,10 +250,10 @@ void Game::renderJuego()
 		ship[i].move();
 		if (cam.isVisible(ship[i].GetCen(), 20))
 		{
-			ship[i].render(gRenderer, cam);
+			ship[i].render(cam);
 		}
 	}
-	prueba1.move();
+	//prueba1.move();
 		if (cam.isVisible(prueba1.GetCen(), 20))
 		{
 			prueba1.render(cam);
@@ -250,6 +263,10 @@ void Game::renderJuego()
 			ast.render(cam);
 		}
 	asteroides.render(cam);
+	naves.render(cam);
+	objetos_prueba.render(cam);
+	proyectiles.render(cam);
+
 
 	/*//movemos la nave y acualizamos
 	for(int i=0;i<60;i++)
@@ -289,6 +306,35 @@ void Game::eventjuego(SDL_Event* e)
 	/*if(ast.getSel()) renderMenu();
 	juego.Set();*/
 	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
+	//naves.event(e, mouse.getMrect(), mouse.getMpos());
+	switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
+	{
+		case 1:
+		{
+			int i=0, j=0;
+			do{
+				
+				if(naves.getSel(i))
+				{
+				
+				Proyectil* aux = new Proyectil;
+				aux->SetTex(tex+2);
+				aux->setSize(20);
+				//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
+
+				aux->SetCen(naves.getCen(i).x, naves.getCen(i).y);
+				aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
+				
+				proyectiles.agregar(aux);
+				j++;
+				}
+				i++;
+			}while(naves.getSels()>j);
+			
+		}
+	}
+	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
+	//proyectiles.impacto(naves);
 }
 
 void Game::main_event()
@@ -316,10 +362,11 @@ void Game::eventMenu(SDL_Event* e)
 	{
 		case 1:
 			{
+			static int i=0;
 			Asteroid* aux = new Asteroid; 	
 			aux->SetTex(tex+1);
 			aux->setMarker(&(tex[4]));
-			aux->SetCen(100,50);  
+			aux->SetCen(50*i++, 100);  
 			aux->setSize(70);
 
 			asteroides.agregar(aux);

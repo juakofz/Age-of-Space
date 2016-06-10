@@ -13,6 +13,10 @@
 #include "Global.h"
 #include "Map.h"
 #include "ListaAsteroides.h"
+#include "ListaNaves.h"
+#include "ListaProyectiles.h"
+#include "ListaObjetos.h"
+#include "Proyectil.h"
 #include "ZonaPantalla.h"
 #include "Menu.h"
 #include "ObjetoMovil.h"
@@ -45,6 +49,9 @@ class Game
 
 	//elementos del juego
 	ListaAsteroides asteroides;
+	ListaNaves naves;
+	ListaObjetos objetos_prueba;
+	ListaProyectiles proyectiles;
 	Asteroid ast;
 	Ship ship[60];
 	ObjetoMovil prueba1;

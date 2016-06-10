@@ -14,7 +14,7 @@ public:
 	virtual ~GameObject(void);
 
 	//Manejo de eventos
-	virtual void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)=0;
+	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)=0;
 
 	//Selección
 	void select();
@@ -55,7 +55,10 @@ protected:
 
 	//flag de seleccion
 	bool sel;
-	bool seleccionable;
+
 	int sel_angle;
+
+private:
+	bool seleccionable;
 };
 

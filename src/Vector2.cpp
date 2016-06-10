@@ -1,5 +1,5 @@
 #include "Vector2.h"
-
+#include <math.h>
 
 //Constructor
 Vector2::Vector2(float px, float py)
@@ -20,4 +20,13 @@ SDL_Point Vector2::convert_int()
 	ret.y = y;
 
 	return ret;
+}
+
+float Vector2::modulo()
+{
+	return sqrt(x*x + y*y);
+}
+Vector2 Vector2::operator-(Vector2 v)
+{
+	return Vector2(x-v.x, y-v.y);
 }

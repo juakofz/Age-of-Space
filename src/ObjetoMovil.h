@@ -8,10 +8,11 @@ public:
 
 
 
-	ObjetoMovil(void);
+	ObjetoMovil(bool selec=true);
 	~ObjetoMovil(void);
 
-	void event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
+	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
+	void render(Camera cam);
 
 	//Movimiento
 	void move();

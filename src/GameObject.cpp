@@ -21,9 +21,9 @@ GameObject::~GameObject(void)
 }
 
 
-void GameObject::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
+int GameObject::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 {
-
+	return 0;
 }
 
 void GameObject::select()
@@ -45,25 +45,28 @@ void GameObject::deselect()
 void GameObject::render(Camera cam)
 {
 
-	SDL_Point center;
-	center.x = cen.x - cam.getPos().x;
-	center.y = cen.y - cam.getPos().y;
+	if (cam.isVisible(GetCen(), 20))
+	{
+		SDL_Point center;
+		center.x = cen.x - cam.getPos().x;
+		center.y = cen.y - cam.getPos().y;
 
 	
-	tex->render(gRenderer, &center, width, height, NULL, angle + 90);
+		tex->render(gRenderer, &center, width, height, NULL, angle + 90);
 
-	if(seleccionable)
-	{
-		SDL_Rect selection;
-		selection.x = pos.x - size*0.1;
-		selection.y = pos.y - size*0.1;
-		selection.w = selection.h = size * 1.2;
-
-		if (sel)
+		if(seleccionable)
 		{
-			marker->render(gRenderer, &center, selection.w, selection.h, NULL, sel_angle);
-			if (sel_angle > 360) sel_angle = 0;
-			else sel_angle++;
+			SDL_Rect selection;
+			selection.x = pos.x - size*0.1;
+			selection.y = pos.y - size*0.1;
+			selection.w = selection.h = size * 1.2;
+
+			if (sel)
+			{
+				marker->render(gRenderer, &center, selection.w, selection.h, NULL, sel_angle);
+				if (sel_angle > 360) sel_angle = 0;
+				else sel_angle++;
+			}
 		}
 	}
 }
