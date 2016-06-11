@@ -13,6 +13,7 @@ ListaNaves::~ListaNaves(void)
 
 bool ListaNaves::agregar (Ship *nave) 
 { 
+	cout<<lista.size()<<endl;
     lista.push_back(nave);    
     return true;    
 } 

@@ -1,6 +1,10 @@
 #include "Game.h"
 #include <typeinfo>
 
+
+int Game::ataques=0;
+bool Game::atacar=false;
+
 Game::Game(void)
 {
 }
@@ -111,10 +115,11 @@ void Game::cargarTexturas()
 	tex[5].load("img/Cursor.png");
 	tex[6].load("img/Background.jpg");
 	tex[7].load("img/grid2.png");
-
+	tex[8].load("img/Nave1.png");
+	
 	tex[3].setColor(255, 100, 0);
 	tex[4].setColor(0, 255, 0);
-
+	tex[8].setColor(255, 0, 0);
 
 	texOpciones[0].load("img/edificio.png");
 	texOpciones[1].load("img/markerW.png");
@@ -441,3 +446,27 @@ void Game::eventBarra(SDL_Event* e)
 	{
 	case 1:
 		datos.*/
+
+Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
+{
+	cout<<"ataque enemigo"<<endl;
+	cout<<ataques<<endl;
+	ataques++;
+	atacar=true;
+	return interval;
+}
+
+void Game::ataqueEnemigo()
+{
+	if(atacar)
+	{	
+		cout<<"atacando"<<endl;
+		for(int j=0;j<ataques*2;j++)
+		{
+			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15*j, 300+100*ataques), false);
+		
+			naves.agregar(aux);
+		}
+		atacar=false;
+	}
+}

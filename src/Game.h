@@ -73,6 +73,9 @@ class Game
 
 	characts* chooseElement(int type);
 
+	static int ataques;
+	static bool atacar;
+
 public:
 
 	Game(void);
@@ -117,5 +120,9 @@ public:
 
 	//nombre del jugador
 	void setNombre(std::string nombre);
+
+	//Naves enemigas
+	static Uint32 LlamadaAtaqueEnemigo(Uint32 interval, void* param);
+	void ataqueEnemigo();
 };
 

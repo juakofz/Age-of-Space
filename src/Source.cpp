@@ -80,12 +80,16 @@ int main(int argc, char* args[])
 
 			game.initMenu();
 
+
+			SDL_TimerID temporizador = SDL_AddTimer(60*1000, Game::LlamadaAtaqueEnemigo, " ");
+
 			//While application is running
 			while( !quit )
 			{
 				//flag de cambio en el texto introducido
 				bool renderText = false;
 
+				game.ataqueEnemigo();
 
 				//Límite FPS
 				cap_timer.start();

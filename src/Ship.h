@@ -10,7 +10,7 @@ class Ship:public ObjetoMovil
 public:
 	//Constructor
 	Ship();
-
+	Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen, bool amig=true);
 	//Destructor
 	~Ship();
 
@@ -79,4 +79,5 @@ private:
 	//int sel_angle;
 	float sel_radius;
 	Texture sel_circle;
+	bool amiga;
 };

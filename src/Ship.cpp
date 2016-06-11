@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Ship::Ship():ObjetoMovil(true)
+Ship::Ship():ObjetoMovil()
 {
 	//Vector2 por defecto 0,0;
 	//Dirección predeterminada
@@ -13,8 +13,8 @@ Ship::Ship():ObjetoMovil(true)
 	dir.y = 0;
 	angle = 0;
 	//Destino nulo
-	dest.x = cen.x;
-	dest.y = cen.y;
+	dest.x = 0;
+	dest.y = 0;
 	//Velocidad máxima
 	max_vel = 2;
 	//Nave parada
@@ -33,7 +33,33 @@ Ship::Ship():ObjetoMovil(true)
 	tex=NULL;
 }
 
+Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, bool amig):ObjetoMovil(amig)
+{
+	dir.x = 1;
+	dir.y = 0;
+	angle = 0;
+	//Destino nulo
+	dest.x = cen.x;
+	dest.y = cen.y;
+	//Velocidad máxima
+	max_vel = 2;
+	//Nave parada
+	vel.x = 0;
+	vel.y = 0;
 
+	sel = false;
+	sel_angle = 0;
+
+	SetTex(texture);
+	setSize(siz);
+	setMarker(marktex);
+	SetCen(cen2.x, cen2.y);
+	amiga=amig;
+
+	stop();
+
+
+}
 Ship::~Ship()
 {
 }
