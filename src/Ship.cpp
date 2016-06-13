@@ -120,11 +120,7 @@ Vector2 Ship::getPointyEnd()
 	return aux;
 }
 
-bool Ship::getAmiga()
-{
-	return amiga;
 
-}
 
 int Ship::attack(Ship &n)
 {

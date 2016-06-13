@@ -134,8 +134,9 @@ void ObjetoMovil::follow(Vector2 &destino)
 Vector2& ObjetoMovil::getDest()
 {
 	cout<<"    "<<endl;
-	return dest;
 	following=true;
+	return dest;
+
 }
 
 //Velocidad
