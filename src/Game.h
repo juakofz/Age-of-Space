@@ -13,9 +13,15 @@
 #include "Global.h"
 #include "Map.h"
 #include "ListaAsteroides.h"
+#include "ListaNaves.h"
+#include "ListaProyectiles.h"
+#include "ListaObjetos.h"
+#include "ListaExplosiones.h"
+#include "Proyectil.h"
 #include "ZonaPantalla.h"
 #include "Menu.h"
 #include "ObjetoMovil.h"
+#include "Interacciones.h"
 
 enum ZONAS
 {
@@ -45,6 +51,10 @@ class Game
 
 	//elementos del juego
 	ListaAsteroides asteroides;
+	ListaNaves naves;
+	ListaObjetos objetos_prueba;
+	ListaProyectiles proyectiles;
+	ListaExplosiones explosiones;
 	Asteroid ast;
 	Ship ship[60];
 	ObjetoMovil prueba1;
@@ -64,6 +74,9 @@ class Game
 	SDL_Point posicion;
 
 	characts* chooseElement(int type);
+
+	static int ataques;
+	static bool atacar;
 
 public:
 
@@ -109,5 +122,9 @@ public:
 
 	//nombre del jugador
 	void setNombre(std::string nombre);
+
+	//Naves enemigas
+	static Uint32 LlamadaAtaqueEnemigo(Uint32 interval, void* param);
+	void ataqueEnemigo();
 };
 

@@ -14,13 +14,12 @@ public:
 	virtual ~GameObject(void);
 
 	//Manejo de eventos
-	virtual void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)=0;
+	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)=0;
 
 	//Selección
 	void select();
 	void deselect();
 	bool getSel();
-
 
 	//Renderizado
 	virtual void render(Camera cam);
@@ -38,12 +37,17 @@ public:
 
 	//Tamaño
 	void setSize(int s);
+	int getSize();
 
 	int getType();
 
+	//Texturas
+	static void setTextures(Texture *tdisp);
+
 protected:
 
-	Texture *marker, *tex;
+	Texture *marker, *tex, *map_tex;
+	static Texture *tdisparo;
 	//posicion y centro
 	Vector2 pos;
 	Vector2 cen;
@@ -55,7 +59,11 @@ protected:
 
 	//flag de seleccion
 	bool sel;
-	bool seleccionable;
+
 	int sel_angle;
+
+private:
+	bool seleccionable;
+
 };
 

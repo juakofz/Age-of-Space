@@ -1,7 +1,8 @@
 #pragma once
+
+
 #include "GameObject.h"
 
-//pepe
 
 extern SDL_Renderer* gRenderer;
 class Texture;
@@ -17,6 +18,6 @@ public:
 	~Asteroid();
 
 	//Manejo de eventos
-	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
+	int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 
 };

@@ -22,7 +22,7 @@ Asteroid::~Asteroid()
 {
 	marker = m;
 }*/
-void Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
+int Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;
 
@@ -49,6 +49,8 @@ void Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 	{
 		printf("objetivo");
 	}
+
+	return 0;
 }
 
 /*void Asteroid::select()
