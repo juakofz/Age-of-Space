@@ -1,7 +1,7 @@
 #include "Proyectil.h"
 
 
-Proyectil::Proyectil(void):ObjetoMovil(false)
+Proyectil::Proyectil(bool amig):ObjetoMovil(false)
 {
 
 	//Vector2 por defecto 0,0;
@@ -19,9 +19,9 @@ Proyectil::Proyectil(void):ObjetoMovil(false)
 	vel.x = 0;
 	vel.y = 0;
 
-	tex=NULL;
+	tex = NULL;
+	amiga = amig;
 }
-
 
 Proyectil::~Proyectil(void)
 {

@@ -1,5 +1,6 @@
 #include "ListaNaves.h"
 
+
 ListaNaves::ListaNaves(void)
 {
 }
@@ -19,46 +20,46 @@ bool ListaNaves::agregar (Ship *nave)
 
 void ListaNaves::render(Camera cam) 
 { 
-    for(int i=0; i < lista.size(); i++)
+    for(int i = 0; i < lista.size(); i++)
 	{
 		lista[i]->move();
-		lista[i]->render(cam);  
+		lista[i]->render(cam);   
 	}
 	l_expl.render(cam);
 } 
 
 void ListaNaves::eliminarNave(int ind) 
 { 
-    if((ind < 0)||(ind >= lista.size())) return;              
-	
-	Explosion * aux = new Explosion (lista[ind]->GetCen().x, lista[ind]->GetCen().y, lista[ind]->getSize());
-	l_expl.agregar(aux);
+    if((ind < 0)||(ind >= lista.size())) return;
 
-	delete lista[ind];    
-    lista.erase(lista.begin()+ind);
-	
+	Explosion * e_aux = new Explosion(lista[ind]->getCen().x, lista[ind]->getCen().y, lista[ind]->getSize());
+	l_expl.agregar(e_aux);
+
+    delete lista[ind];    
+    lista.erase(lista.begin()+ind);   
+
 } 
 
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
-	int k = 0;
-	for (int i = 0;i<lista.size();i++)
+	int k=0;
+	for(int i=0;i<lista.size();i++)
 	{
-		if (lista[i]->event(e, selection, xyrel))
+		if( lista[i]->event(e, selection, xyrel) )
 		{
-			k = 1;
-			for (int j = 0;j<lista.size();j++)
+			k=1;
+			for(int j=0;j<lista.size();j++)
 			{
-				if (j != i)
+				if(j!=i)
 				{
-					if (lista[j]->clickOn(xyrel))
-					{
-						Vector2 dest;
-						dest = lista[i]->getDest();
-						//lista[i]->follow(lista[j]->getCen());
-						cout << dest.x << "," << dest.y << endl;
-						lista[j]->giveCen(dest);
-						//lista[j]->follow(centro);
+					if(lista[j]->clickOn(xyrel))
+						{
+							//Vector2 dest;
+							//dest=lista[i]->getDest();
+							//lista[i]->follow(lista[j]->getCen());
+							//cout<<dest.x<<","<<dest.y<<endl;
+							//lista[j]->giveCen(dest);
+							//lista[j]->follow(centro);
 					}
 				}
 			}
@@ -76,7 +77,7 @@ bool ListaNaves::getSel(int ind)
 
 int ListaNaves::getSel()
 {
-	for(int i=0; i<lista.size(); i++) if(getSel(i)) return i + 1;
+	for(int i=0;i<lista.size();i++) if(getSel(i)) return i+1;
 	return 0;
 }
 
@@ -97,15 +98,7 @@ int ListaNaves::getSels()
 	return i;
 }
 
-bool ListaNaves::impactos(Proyectil p)
+bool ListaNaves::getAmiga(int i)
 {
-	for (int i=0;i<lista.size();i++)
-	{
-			if(lista[i]->disparada(p))
-			{
-				eliminarNave(i);
-				return 1;
-			}
-	}
-	return 0;
+	return lista[i]->getAmiga();
 }

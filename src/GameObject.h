@@ -47,8 +47,13 @@ public:
 
 	int getType();
 
+
 	//Texturas
 	static void setTextures(Texture *tdisp);
+
+	//propia
+	bool getAmiga();
+	void setAmiga(bool amig);
 
 protected:
 
@@ -68,7 +73,11 @@ protected:
 
 	int sel_angle;
 
+	//propia
+	bool amiga;
+
 private:
 	bool seleccionable;
+
 };
 

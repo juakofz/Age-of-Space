@@ -1,8 +1,11 @@
 #pragma once
+
 #include "Texture.h"
 #include "Camera.h"
 #include "ObjetoMovil.h"
 #include "Proyectil.h"
+
+
 class Texture;
 
 class Ship:public ObjetoMovil
@@ -20,8 +23,6 @@ public:
 	bool disparada(Proyectil p);
 	Vector2 getPointyEnd();
 
-	bool getAmiga();
-
 	int attack(Ship &n);
 
 private:
@@ -30,5 +31,4 @@ private:
 
 	float sel_radius;
 	Texture sel_circle;
-	bool amiga;
 };

@@ -5,13 +5,17 @@ Texture * GameObject::tdisparo = 0;
 
 GameObject::GameObject(void)
 {
+
 	sel = false;
 	sel_angle = 0;
+	amiga = false;
+
 }
 
-GameObject::GameObject(bool selec)
+GameObject::GameObject( bool selec)
 {
 	seleccionable = selec;
+	if(seleccionable) amiga = true;
 	sel = false;
 	sel_angle = 0;
 }
@@ -169,7 +173,18 @@ int GameObject::getType()
 	return 1;
 }
 
+
 void GameObject::setTextures(Texture *tdisp)
 {
 	tdisparo = tdisp;
+}
+
+bool GameObject::getAmiga()
+{
+	return amiga;
+}
+
+void GameObject::setAmiga(bool amig)
+{
+	amiga = amig;
 }

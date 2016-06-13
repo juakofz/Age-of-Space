@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <SDL.h>
 #include "LWindow.h"
 #include "Barra.h"
@@ -21,14 +22,16 @@
 #include "Menu.h"
 #include "ObjetoMovil.h"
 #include "Interacciones.h"
+#include "Edificio.h"
 
 enum ZONAS
 {
 	BARRA=0,
 	JUEGO=1,
 	MENU=2,
-	TOTAL=3,
-	NUM_VIEWPORTS=4
+	MINIMAPA=3,
+	TOTAL=4,
+	NUM_VIEWPORTS=5
 };
 
 class Game
@@ -38,7 +41,7 @@ class Game
 	int numviewport;
 
 	ZonaPantalla *zonas[NUM_VIEWPORTS];
-	ZonaPantalla juego, total;
+	ZonaPantalla juego, total, minimapa;
 	//Mapa
 	Map map;
 
@@ -49,20 +52,19 @@ class Game
 	Camera cam;
 
 	//elementos del juego
+	Edificio edificio;
 	ListaAsteroides asteroides;
 	ListaNaves naves;
 	ListaObjetos objetos_prueba;
 	ListaProyectiles proyectiles;
-	ListaExplosiones explosiones;
 	Asteroid ast;
-	Ship ship[60];
-	ObjetoMovil prueba1;
 
 
 
 	//Partes de la pantalla
 	Menu menu;
 	Barra barra;
+
 	Player jugador;
 	Caracteristicas caract;
 

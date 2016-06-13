@@ -1,10 +1,10 @@
 #pragma once
+
 #include <vector>
 #include "Ship.h"
 #include "Camera.h"
 #include "Proyectil.h"
 #include "ListaExplosiones.h"
-
 
 class ListaNaves
 
@@ -27,9 +27,8 @@ public:
 	int getSels();
 	Vector2 getCen(int i);
 
-	bool impactos(Proyectil p);
-	
+	bool getAmiga(int i);
+
 private:
 	ListaExplosiones l_expl;
-
 };

@@ -134,14 +134,15 @@ void Game::InitViewPorts()
 	zonas[BARRA]=&barra;
 	zonas[TOTAL]=&total;
 	zonas[JUEGO]=&juego;
+	zonas[MINIMAPA]=&minimapa;
 
 	//juego
 	zonas[JUEGO]->initViewport(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "");
 	zonas[JUEGO]->SetRel(0,0.1,1,0.65);
 
 	//menus
-	zonas[MENU]->initViewport(0,3*SCREEN_HEIGHT/4,SCREEN_WIDTH,SCREEN_HEIGHT/4, "img/menu.png");
-	zonas[MENU]->SetRel(0,0.75,1,0.25);
+	zonas[MENU]->initViewport(0,3*SCREEN_HEIGHT/4,3*SCREEN_WIDTH/4,SCREEN_HEIGHT/4, "img/menu.png");
+	zonas[MENU]->SetRel(0,0.75,0.75,0.25);
 
 
 	//barra
@@ -151,6 +152,10 @@ void Game::InitViewPorts()
 	//pantalla inicial
 	zonas[TOTAL]->initViewport(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "img/space2.png");
 	zonas[TOTAL]->SetRel(0,0,1,1);
+
+	//minimapa
+	zonas[MINIMAPA]->initViewport(3*SCREEN_WIDTH/4,3*SCREEN_HEIGHT/4,SCREEN_WIDTH/4, SCREEN_HEIGHT/4, "img/space2.png");
+	zonas[MINIMAPA]->SetRel(0.75,0.75,0.25,0.25);
 
 	//Actualizar tamaño de cámara
 	cam.update(juego.getViewport());
@@ -171,6 +176,7 @@ void Game::RenderViewPorts()
 	zonas[BARRA]->render();		
 	zonas[MENU]->render();
 	zonas[JUEGO]->render();
+	zonas[MINIMAPA]->render();
 	renderJuego();
 	total.Set();
 	mouse.render();
@@ -204,22 +210,16 @@ void Game::initjuego()
 	ast.SetTex(tex+1);
 	ast.setMarker(&(tex[4]));
 
-	ast.SetCen(50,50);	
-	ast.setSize(70);
+	ast.SetCen(1500,1500);	
+	ast.setSize(500);
 
-
+	edificio.SetTex(tex+2);
+	edificio.setMarker(tex+4);
+	edificio.SetCen(1500, 1500);
+	edificio.setSize(100);
 
 
 	//inicializacion nave
-	for(int i=0;i<60;i++)
-	{
-	
-	ship[i].SetTex(tex);
-	ship[i].setSize(60);
-	ship[i].setMarker(&(tex[3]));
-	ship[i].SetCen(15*i, 200);
-	ship[i].stop();
-	}
 
 	for(int i=0;i<20;i++)
 	{
@@ -232,12 +232,6 @@ void Game::initjuego()
 
 		naves.agregar(aux);
 	}
-
-	prueba1.SetTex(tex);
-	prueba1.setSize(60);
-	prueba1.setMarker(&(tex[3]));
-	prueba1.SetCen(1500, 1500);
-	prueba1.stop();
 
 	std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
@@ -253,25 +247,12 @@ void Game::renderJuego()
 	map.renderBg(cam);
 	map.renderGrid(cam);
 
-	//Movimiento de naves y renderizado
-	for (int i = 0; i < 60; i++)
-	{	
-		ship[i].move();
-		if (cam.isVisible(ship[i].GetCen(), 20))
-		{
-			ship[i].render(cam);
-		}
-	}
-	//prueba1.move();
-		if (cam.isVisible(prueba1.GetCen(), 20))
-		{
-			prueba1.render(cam);
-		}
 	if (cam.isVisible(ast.GetCen(), 20))
 		{
 			ast.render(cam);
 		}
 	asteroides.render(cam);
+	edificio.render(cam);
 	naves.render(cam);
 	objetos_prueba.render(cam);
 	proyectiles.render(cam);
@@ -299,14 +280,7 @@ void Game::eventjuego(SDL_Event* e)
 {
 	//eventos de los elementos del juego
 	ast.event(e, mouse.getMrect(), mouse.getMpos());
-	
-	for(int i=0;i<60;i++)
-	{
-	ship[i].event(e, mouse.getMrect(), mouse.getMpos());
-	}
 
-	prueba1.event(e, mouse.getMrect(), mouse.getMpos());
-	
 	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
 	
 	switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
@@ -318,13 +292,15 @@ void Game::eventjuego(SDL_Event* e)
 				
 				if(naves.getSel(i))
 				{
-					Proyectil* aux = new Proyectil;
+
+					Proyectil* aux = new Proyectil(naves.getAmiga(i));
 					aux->SetTex(tex+2);
 					aux->setSize(20);
-				
+					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
+
 					aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
 					aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
-				
+
 					proyectiles.agregar(aux);
 					j++;
 				}
@@ -334,8 +310,13 @@ void Game::eventjuego(SDL_Event* e)
 	}
 
 	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
-	
+
 	Interacciones::impactoListas(naves, proyectiles);
+	edificio.event(e, mouse.getMrect(), mouse.getMpos());
+	if(Interacciones::impacto(edificio, proyectiles)) cout<<"muerto"<<endl;
+	
+	
+		
 }
 
 void Game::main_event()
