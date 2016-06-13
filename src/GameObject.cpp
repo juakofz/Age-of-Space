@@ -93,6 +93,17 @@ Vector2 GameObject::GetCen()
 	return cen;
 }
 
+Vector2& GameObject::getCen()
+{
+	return cen;
+}
+
+/*void GameObject::getCen(float &x, float &y)
+{
+	&x=&cen.x;
+	&y=&cen.y;
+}*/
+
 //Cambia el centro y la posición
 void GameObject::SetCen(float x, float y)
 {
@@ -102,6 +113,10 @@ void GameObject::SetCen(float x, float y)
 	pos.y = cen.y - tex->getDim().y / 2;
 }
 
+void GameObject::giveCen(Vector2 &dest)
+{
+	dest=cen;
+}
 //Asignación de textura
 void GameObject::SetTex(Texture *t)
 {
@@ -120,6 +135,14 @@ bool GameObject::getSel()
 {
 	return sel;
 }
+
+bool GameObject::clickOn(SDL_Point mxy)
+{
+	if ((((mxy.x >= pos.x) && (mxy.x <= (pos.x + tex->getDim().x))) && ((mxy.y >= pos.y) && (mxy.y <= (pos.y + tex->getDim().y)))))  return true;
+		
+	else return false;
+}
+
 //Tamaño
 void GameObject::setSize(int s)
 {
@@ -127,6 +150,17 @@ void GameObject::setSize(int s)
 	float scale = s / tex->getDiag();
 	width = tex->getDim().x * scale;
 	height = tex->getDim().y * scale;
+}
+
+
+int GameObject::getSize()
+{
+	return size;
+}
+
+Vector2 GameObject::getDim()
+{
+	return tex->getDim();
 }
 
 int GameObject::getType()

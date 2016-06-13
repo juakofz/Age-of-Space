@@ -12,8 +12,13 @@ Interacciones::~Interacciones(void)
 
 bool Interacciones::impacto(Ship nave, Proyectil disparo)
 {
-	if ((nave.GetCen()-disparo.GetCen()).modulo() < 1) return 1;
+	if ((nave.GetCen()-disparo.GetCen()).modulo() < (5 ))
+		{
+			cout<<"impacto"<<endl;
+			return 1;
+	}
 	return 0;
+	//nave.getSize() / 4 + disparo.getSize() / 4
 }
 
 bool Interacciones::impactoListas(ListaNaves &n, ListaProyectiles &p)

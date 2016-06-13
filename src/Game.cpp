@@ -463,8 +463,7 @@ void Game::ataqueEnemigo()
 		cout<<"atacando"<<endl;
 		for(int j=0;j<ataques*2;j++)
 		{
-			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15*j, 300+100*ataques), false);
-		
+			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15*j, 300+100*ataques), false);		
 			naves.agregar(aux);
 		}
 		atacar=false;

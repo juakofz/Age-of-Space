@@ -95,7 +95,7 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		}
 	}
 	*/
-
+	int accion=0;
 	//Selección múltiple
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
@@ -139,13 +139,14 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		//Debug
 		//printf("Direccion: %.0f, %.0f\n", dir.x, dir.y);
 		angle = (180 * atan2(dir.y, dir.x) / M_PI);
-		return shoot();
+		accion=1;
 	}
-	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT) && (sel))
+/*	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_LEFT) && (sel))
 	{
-		return shoot();
-	}
-
+		//return shoot();
+		return 0;
+	}*/
+	return accion;
 }
 
 int Ship::shoot()
@@ -163,10 +164,24 @@ bool Ship::disparada(Proyectil p)
 Vector2 Ship::getPointyEnd()
 {
 	Vector2 aux;
-	aux.x= cen.x + tex->getDim().x / 2;
-	aux.y= cen.y + tex->getDim().y / 2;
+	aux.x= cen.x + (tex->getDim().x / 2) * cos(angle*M_PI/180);
+	aux.y= cen.y - (tex->getDim().y / 2) * sin(angle*M_PI/180);
 	return aux;
 }
+
+bool Ship::getAmiga()
+{
+	return amiga;
+
+}
+
+int Ship::attack(Ship &n)
+{
+	moveTo(n.GetCen().x, n.GetCen().y);
+	//*dest_movil=n->GetCen();
+	return 2;
+}
+
 /*void Ship::select()
 {
 	sel = true;

@@ -19,6 +19,9 @@ public:
 	int shoot();
 	bool disparada(Proyectil p);
 	Vector2 getPointyEnd();
+	bool getAmiga();
+
+	int attack(Ship &n);
 	//Selección
 	//void select();
 	//void deselect();

@@ -13,7 +13,7 @@ Proyectil::Proyectil(void):ObjetoMovil(false)
 	dest.x = cen.x;
 	dest.y = cen.y;
 	//Velocidad máxima
-	max_vel = 5;
+	max_vel = 6;
 	//Nave parada
 	vel.x = 0;
 	vel.y = 0;
