@@ -18,4 +18,3 @@ public:
 	bool getSel(int ind);
 	int getSel();
 };
-

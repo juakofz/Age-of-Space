@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <SDL.h>
 #include "LWindow.h"
 #include "Barra.h"
@@ -127,4 +126,3 @@ public:
 	static Uint32 LlamadaAtaqueEnemigo(Uint32 interval, void* param);
 	void ataqueEnemigo();
 };
-

@@ -3,8 +3,7 @@
 #include <vector>
 #include "Proyectil.h"
 #include "Camera.h"
-
-class ListaNaves;
+#include "ListaNaves.h"
 
 class ListaProyectiles
 {
@@ -24,4 +23,3 @@ public:
 
 	void impacto(ListaNaves l);
 };
-

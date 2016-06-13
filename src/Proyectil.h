@@ -11,4 +11,3 @@ public:
 	~Proyectil(void);
 	bool move();
 };
-

@@ -1,7 +1,6 @@
 #include "Game.h"
 #include <typeinfo>
 
-
 int Game::ataques=0;
 bool Game::atacar=false;
 
@@ -120,7 +119,7 @@ void Game::cargarTexturas()
 	
 	tex[3].setColor(255, 100, 0);
 	tex[4].setColor(0, 255, 0);
-	tex[8].setColor(255, 100, 100);
+	tex[8].setColor(210, 50, 50);
 
 	texOpciones[0].load("img/edificio.png");
 	texOpciones[1].load("img/markerW.png");
@@ -255,7 +254,7 @@ void Game::renderJuego()
 	map.renderGrid(cam);
 
 	//Movimiento de naves y renderizado
-	for (int i = 0;i < 60;i++)
+	for (int i = 0; i < 60; i++)
 	{	
 		ship[i].move();
 		if (cam.isVisible(ship[i].GetCen(), 20))
@@ -276,23 +275,15 @@ void Game::renderJuego()
 	naves.render(cam);
 	objetos_prueba.render(cam);
 	proyectiles.render(cam);
-	explosiones.render(cam);
 
-
-	/*//movemos la nave y acualizamos
-	for(int i=0;i<60;i++)
-	{
-		ship[i].render(gRenderer, cam);
-	}*/
-	//mouse.render(gRenderer);
 	if(ast.getSel()) 
 	{
 			renderMenu();
 			int type=ast.getType();
 	}
+	
 	if(asteroides.getSel()) renderMenu();
 	juego.Set();
-	
 }
 
 
@@ -308,16 +299,16 @@ void Game::eventjuego(SDL_Event* e)
 {
 	//eventos de los elementos del juego
 	ast.event(e, mouse.getMrect(), mouse.getMpos());
+	
 	for(int i=0;i<60;i++)
 	{
 	ship[i].event(e, mouse.getMrect(), mouse.getMpos());
-//	ship[i].render(gRenderer);
 	}
+
 	prueba1.event(e, mouse.getMrect(), mouse.getMpos());
-	/*if(ast.getSel()) renderMenu();
-	juego.Set();*/
+	
 	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
-	//naves.event(e, mouse.getMrect(), mouse.getMpos());
+	
 	switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
 	{
 		case 1:
@@ -327,25 +318,23 @@ void Game::eventjuego(SDL_Event* e)
 				
 				if(naves.getSel(i))
 				{
+					Proyectil* aux = new Proyectil;
+					aux->SetTex(tex+2);
+					aux->setSize(20);
 				
-				Proyectil* aux = new Proyectil;
-				aux->SetTex(tex+2);
-				aux->setSize(20);
-				//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
-
-				aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
-				aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
+					aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
+					aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
 				
-				proyectiles.agregar(aux);
-				j++;
+					proyectiles.agregar(aux);
+					j++;
 				}
 				i++;
 			}while(naves.getSels()>j);
-			
 		}
 	}
+
 	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
-	//proyectiles.impacto(naves);
+	
 	Interacciones::impactoListas(naves, proyectiles);
 }
 
@@ -362,7 +351,7 @@ void Game::initMenu()
 
 void Game::renderMenu()
 {
-//Abrimos el menu
+	//Abrimos el menu
 	zonas[MENU]->Open();
 
 }
@@ -374,26 +363,27 @@ void Game::eventMenu(SDL_Event* e)
 	{
 		case 1:
 			{
-			static int i=0;
-			Asteroid* aux = new Asteroid; 	
-			aux->SetTex(tex+1);
-			aux->setMarker(&(tex[4]));
-			aux->SetCen(50*i++, 100);  
-			aux->setSize(70);
+				static int i=0;
+				Asteroid* aux = new Asteroid; 	
+				aux->SetTex(tex+1);
+				aux->setMarker(&(tex[4]));
+				aux->SetCen(50 * i++, 100);  
+				aux->setSize(70);
 
-			asteroides.agregar(aux);
-			break;			
+				asteroides.agregar(aux);
+				break;			
 			}
+
 		case 3:
 			do{
-			asteroides.eliminarAsteroide(asteroides.getSel()-1);
-			}while(asteroides.getSel());
+				asteroides.eliminarAsteroide(asteroides.getSel()-1);
+			} while(asteroides.getSel());
 			break;
+		
 		case 4:
 			cout<<"cerrar"<<endl;
 			break;
 	}
-	//printf("dentro del menu");
 }
 
 void Game::initCaract()
@@ -408,7 +398,6 @@ void Game::renderCaract()
 
 	//renderizamos el menu
 	caract.render();
-
 }
 
 void Game::eventCaract(SDL_Event* e)
@@ -445,14 +434,6 @@ void Game::eventBarra(SDL_Event* e)
 
 }
 
-/*characts* Game::chooseElement(int type)
-{
-	characts datos;
-	switch (type)
-	{
-	case 1:
-		datos.*/
-
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 {
 	cout<<"ataque enemigo"<<endl;
@@ -467,12 +448,13 @@ void Game::ataqueEnemigo()
 	if(atacar)
 	{	
 		cout<<"atacando"<<endl;
-		for(int j=0;j<ataques*2;j++)
+		for(int j = 0; j<ataques * 2; j++)
 		{
-			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15*j, 300+100*ataques), false);
+
+			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), false);
 		
 			naves.agregar(aux);
 		}
-		atacar=false;
+		atacar = false;
 	}
 }

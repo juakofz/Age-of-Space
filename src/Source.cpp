@@ -80,8 +80,7 @@ int main(int argc, char* args[])
 
 			game.initMenu();
 
-
-			SDL_TimerID temporizador = SDL_AddTimer(60*100, Game::LlamadaAtaqueEnemigo, " ");
+			SDL_TimerID temporizador = SDL_AddTimer(6 * 1000, Game::LlamadaAtaqueEnemigo, " ");
 
 			//While application is running
 			while( !quit )
@@ -98,7 +97,7 @@ int main(int argc, char* args[])
 				game.main_event();
 
 				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 )
+				while( SDL_PollEvent(&e) != 0 )
 				{
 					//User requests quit
 					if( e.type == SDL_QUIT )

@@ -1,6 +1,5 @@
 #include "ListaNaves.h"
 
-
 ListaNaves::ListaNaves(void)
 {
 }
@@ -32,7 +31,7 @@ void ListaNaves::eliminarNave(int ind)
 { 
     if((ind<0)||(ind>=lista.size())) return;              
 	
-	Explosion * aux = new Explosion(lista[ind]->GetCen().x, lista[ind]->GetCen().y, lista[ind]->getSize());
+	Explosion * aux = new Explosion (lista[ind]->GetCen().x, lista[ind]->GetCen().y, lista[ind]->getSize());
 	l_expl.agregar(aux);
 
 	delete lista[ind];    
@@ -42,9 +41,31 @@ void ListaNaves::eliminarNave(int ind)
 
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
-	int j=0;
-	for(int i=0;i<lista.size();i++) if( lista[i]->event(e, selection, xyrel) ==1) j=1;
-	return j;
+	int k = 0;
+	for (int i = 0;i<lista.size();i++)
+	{
+		if (lista[i]->event(e, selection, xyrel))
+		{
+			k = 1;
+			for (int j = 0;j<lista.size();j++)
+			{
+				if (j != i)
+				{
+					if (lista[j]->clickOn(xyrel))
+					{
+						Vector2 dest;
+						dest = lista[i]->getDest();
+						//lista[i]->follow(lista[j]->getCen());
+						cout << dest.x << "," << dest.y << endl;
+						lista[j]->giveCen(dest);
+						//lista[j]->follow(centro);
+					}
+				}
+			}
+		}
+	}
+
+	return k;
 }
 
 bool ListaNaves::getSel(int ind)
@@ -55,7 +76,7 @@ bool ListaNaves::getSel(int ind)
 
 int ListaNaves::getSel()
 {
-	for(int i=0;i<lista.size();i++) if(getSel(i)) return i+1;
+	for(int i=0; i<lista.size(); i++) if(getSel(i)) return i + 1;
 	return 0;
 }
 
@@ -88,4 +109,3 @@ bool ListaNaves::impactos(Proyectil p)
 	}
 	return 0;
 }
-

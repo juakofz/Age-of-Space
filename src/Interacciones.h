@@ -14,4 +14,3 @@ public:
 	static bool impactoListas(ListaNaves &n, ListaProyectiles &p);
 
 };
-

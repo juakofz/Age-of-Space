@@ -20,6 +20,7 @@ public:
 	void select();
 	void deselect();
 	bool getSel();
+	bool clickOn(SDL_Point pos);
 
 	//Renderizado
 	virtual void render(Camera cam);
@@ -31,6 +32,9 @@ public:
 
 	//Centro
 	Vector2 GetCen();
+	Vector2& getCen(); 
+	void giveCen(Vector2 &dest);
+	void getCen(float &x, float &y);
 	virtual void SetCen(float x, float y);
 
 	void SetTex(Texture *t);
@@ -38,6 +42,8 @@ public:
 	//Tamaño
 	void setSize(int s);
 	int getSize();
+	Vector2 getDim();
+
 
 	int getType();
 
@@ -64,6 +70,5 @@ protected:
 
 private:
 	bool seleccionable;
-
 };
 

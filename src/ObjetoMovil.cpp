@@ -12,6 +12,8 @@ ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
 	//Destino nulo
 	dest.x = cen.x;
 	dest.y = cen.y;
+	following=0;
+
 	//Velocidad máxima
 	max_vel = 2;
 	//Nave parada
@@ -72,6 +74,16 @@ void ObjetoMovil::render(Camera cam)
 
 bool ObjetoMovil::move()
 {
+	if(following)
+	{
+		//Dirección
+		cout<<"entro"<<endl;
+		dir.x = dest.x - cen.x;
+		dir.y = dest.y - cen.y;
+		angle = (180 * atan2(dir.y, dir.x) / M_PI);
+		cout<<dest.x<<" "<<dest.y<<endl;
+	}
+
 	if ((abs(cen.x - dest.x) > max_vel) || (abs(cen.y - dest.y) > max_vel)) {
 
 		//Ajuste de velocidades
@@ -83,6 +95,8 @@ bool ObjetoMovil::move()
 	}
 	else
 	{
+
+		//following=false;
 		vel.x = 0;
 		vel.y = 0;
 	}
@@ -109,6 +123,20 @@ bool ObjetoMovil::moveTo(int x, int y)
 
 	angle = (180 * atan2(dir.y, dir.x) / M_PI);
 	return false;
+}
+
+void ObjetoMovil::follow(Vector2 &destino)
+{
+	dest=destino;
+	cout<<dest.x<<" "<<dest.y<<endl;
+	following=true;
+}
+
+Vector2& ObjetoMovil::getDest()
+{
+	cout<<"    "<<endl;
+	return dest;
+	following=true;
 }
 
 //Velocidad

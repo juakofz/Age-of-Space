@@ -1,6 +1,5 @@
 #include "Edificio.h"
 
-
 Edificio::Edificio(void): GameObject(true)
 {
 }
@@ -31,7 +30,6 @@ int Edificio::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 		}
 		else deselect();
 	}
-
 
 	//Botón derecho
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
