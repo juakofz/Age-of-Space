@@ -1,9 +1,9 @@
 #pragma once
-
 #include <vector>
 #include "Proyectil.h"
 #include "Camera.h"
-#include "ListaNaves.h"
+
+class ListaNaves;
 
 class ListaProyectiles
 {
@@ -20,6 +20,4 @@ public:
 	bool getSel(int ind);
 	int getSel();
 	int getSize();
-
-	void impacto(ListaNaves l);
 };

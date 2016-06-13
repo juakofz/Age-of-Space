@@ -12,7 +12,7 @@ ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
 	//Destino nulo
 	dest.x = cen.x;
 	dest.y = cen.y;
-	following=0;
+	following = 0;
 
 	//Velocidad máxima
 	max_vel = 2;
@@ -23,7 +23,7 @@ ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
 	sel = false;
 	sel_angle = 0;
 
-	tex=NULL;
+	tex = NULL;
 }
 
 
@@ -68,7 +68,6 @@ int ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 
 void ObjetoMovil::render(Camera cam)
 {
-	
 	GameObject::render(cam);
 }
 

@@ -7,10 +7,14 @@ Explosion::Explosion()
 {
 }
 
-
+Explosion::~Explosion()
+{
+	cout << "no pum" << endl;
+}
 
 Explosion::Explosion(int x, int y, int size)
 {
+	cout << "pum" << endl;
 	//Posición
 	pos.x = x;
 	pos.y = y;
@@ -20,11 +24,13 @@ Explosion::Explosion(int x, int y, int size)
 
 	//Crear array de proyectiles
 	Proyectil * proy = new Proyectil[p_num];
+	cout << p_num << " pums" << endl;
 	for (int i = 0; i < p_num; i++)
 	{
 		//Textura
 		proy[i].SetTex(tex);
-		
+		proy[i].setSize(15);
+
 		//Posición
 		proy[i].SetPos(x, y);
 		
@@ -38,7 +44,8 @@ Explosion::Explosion(int x, int y, int size)
 		proy[i].SetDir(dir_x, dir_y);
 		
 		//Destino
-		float reach = size * 10 * ((rand() % 100) / 50);
+		float reach = size * 0.1 * ((rand() % 100) / 5);
+		cout << reach <<" de lejos" << endl;
 		float dest_x = pos.x + dir_x * reach;
 		float dest_y = pos.y + dir_y * reach;
 		

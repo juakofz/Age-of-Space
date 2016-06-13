@@ -5,21 +5,21 @@ Texture * GameObject::tdisparo = 0;
 
 GameObject::GameObject(void)
 {
-	sel=false;
-	sel_angle=0;
+	sel = false;
+	sel_angle = 0;
 }
 
 GameObject::GameObject(bool selec)
 {
-	seleccionable=selec;
-	sel=false;
-	sel_angle=0;
+	seleccionable = selec;
+	sel = false;
+	sel_angle = 0;
 }
 
 GameObject::~GameObject(void)
 {
-	sel=false;
-	sel_angle=0;
+	sel = false;
+	sel_angle = 0;
 }
 
 
@@ -153,12 +153,6 @@ void GameObject::setSize(int s)
 	width = tex->getDim().x * scale;
 	height = tex->getDim().y * scale;
 }	
-
-int GameObject::getSize()
-{
-	return size;
-}
-
 
 int GameObject::getSize()
 {

@@ -12,14 +12,14 @@ ListaNaves::~ListaNaves(void)
 
 bool ListaNaves::agregar (Ship *nave) 
 { 
-	cout<<lista.size()<<endl;
+	cout << lista.size() << endl;
     lista.push_back(nave);    
     return true;    
 } 
 
 void ListaNaves::render(Camera cam) 
 { 
-    for(int i=0;i<lista.size();i++)
+    for(int i=0; i < lista.size(); i++)
 	{
 		lista[i]->move();
 		lista[i]->render(cam);  
@@ -29,7 +29,7 @@ void ListaNaves::render(Camera cam)
 
 void ListaNaves::eliminarNave(int ind) 
 { 
-    if((ind<0)||(ind>=lista.size())) return;              
+    if((ind < 0)||(ind >= lista.size())) return;              
 	
 	Explosion * aux = new Explosion (lista[ind]->GetCen().x, lista[ind]->GetCen().y, lista[ind]->getSize());
 	l_expl.agregar(aux);

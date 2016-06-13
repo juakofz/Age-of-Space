@@ -34,13 +34,17 @@ void ListaProyectiles::render(Camera cam)
 void ListaProyectiles::eliminarProyectil(int ind) 
 { 
     if((ind<0)||(ind>=lista.size())) return;              
-    delete lista[ind];    
-    lista.erase(lista.begin()+ind);    
+	
+	//PROBLEMO
+	//delete lista[ind];    
+    //FIN PROBLEMO
+	
+	lista.erase(lista.begin() + ind);    
 } 
 
 void ListaProyectiles::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
-	for(int i=0;i<lista.size();i++) lista[i]->event(e, selection, xyrel);
+	for(int i = 0; i < lista.size(); i++) lista[i]->event(e, selection, xyrel);
 }
 
 bool ListaProyectiles::getSel(int ind)
@@ -55,16 +59,6 @@ int ListaProyectiles::getSel()
 	return 0;
 }
 
-void ListaProyectiles::impacto(ListaNaves l)
-{
-	for(int i=0;i<lista.size();i++)
-	{
-		if(l.impactos(*lista[i])) 
-		{
-			eliminarProyectil(i);
-		}
-	}
-}
 
 int ListaProyectiles::getSize()
 {

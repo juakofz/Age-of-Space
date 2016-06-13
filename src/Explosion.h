@@ -8,8 +8,8 @@ class Explosion
 {
 public:
 	Explosion();
-
 	Explosion(int x, int y, int size);
+	~Explosion();
 
 	bool render(Camera cam);
 	
@@ -18,7 +18,7 @@ public:
 private:
 	static Texture *tex;
 	int size;
-	const int scale = 5;
+	const float scale = 0.6;
 	ListaProyectiles l_proy;
 	Vector2 pos;
 };
