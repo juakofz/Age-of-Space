@@ -54,14 +54,3 @@ int ListaProyectiles::getSel()
 	for(int i=0;i<lista.size();i++) if(getSel(i)) return i+1;
 	return 0;
 }
-
-void ListaProyectiles::impacto(ListaNaves l)
-{
-	for(int i=0;i<lista.size();i++)
-	{
-		if(l.impactos(*lista[i])) 
-		{
-			eliminarProyectil(i);
-		}
-	}
-}

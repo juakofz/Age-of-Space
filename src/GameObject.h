@@ -46,6 +46,10 @@ public:
 
 	int getType();
 
+	//propia
+	bool getAmiga();
+	void setAmiga(bool amig);
+
 protected:
 
 	Texture *marker, *tex;
@@ -63,7 +67,11 @@ protected:
 
 	int sel_angle;
 
+	//propia
+	bool amiga;
+
 private:
 	bool seleccionable;
+
 };
 

@@ -30,7 +30,7 @@ public:
 	int getSels();
 	Vector2 getCen(int i);
 
-	bool impactos(Proyectil p);
+	bool getAmiga(int i);
 };
 
 

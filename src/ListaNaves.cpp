@@ -48,11 +48,11 @@ int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 				{
 					if(lista[j]->clickOn(xyrel))
 						{
-							Vector2 dest;
-							dest=lista[i]->getDest();
+							//Vector2 dest;
+							//dest=lista[i]->getDest();
 							//lista[i]->follow(lista[j]->getCen());
-							cout<<dest.x<<","<<dest.y<<endl;
-							lista[j]->giveCen(dest);
+							//cout<<dest.x<<","<<dest.y<<endl;
+							//lista[j]->giveCen(dest);
 							//lista[j]->follow(centro);
 					}
 				}
@@ -92,16 +92,7 @@ int ListaNaves::getSels()
 	return i;
 }
 
-bool ListaNaves::impactos(Proyectil p)
+bool ListaNaves::getAmiga(int i)
 {
-	for (int i=0;i<lista.size();i++)
-	{
-			if(lista[i]->disparada(p))
-			{
-				eliminarNave(i);
-				return 1;
-			}
-	}
-	return 0;
+	return lista[i]->getAmiga();
 }
-

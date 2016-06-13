@@ -7,7 +7,7 @@ class Proyectil :
 	public ObjetoMovil
 {
 public:
-	Proyectil(void);
+	Proyectil(bool amig=true);
 	~Proyectil(void);
 	bool move();
 };

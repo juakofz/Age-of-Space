@@ -19,7 +19,6 @@ public:
 	int shoot();
 	bool disparada(Proyectil p);
 	Vector2 getPointyEnd();
-	bool getAmiga();
 
 	int attack(Ship &n);
 	//Selección
@@ -82,5 +81,5 @@ private:
 	//int sel_angle;
 	float sel_radius;
 	Texture sel_circle;
-	bool amiga;
+
 };

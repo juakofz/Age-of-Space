@@ -5,11 +5,13 @@ GameObject::GameObject(void)
 {
 	sel=false;
 	sel_angle=0;
+	amiga=false;
 }
 
-GameObject::GameObject(bool selec)
+GameObject::GameObject( bool selec)
 {
 	seleccionable=selec;
+	if(seleccionable) amiga=true;
 	sel=false;
 	sel_angle=0;
 }
@@ -167,4 +169,15 @@ int GameObject::getType()
 {
 
 	return 1;
+}
+
+bool GameObject::getAmiga()
+{
+	return amiga;
+
+}
+
+void GameObject::setAmiga(bool amig)
+{
+	amiga=amig;
 }

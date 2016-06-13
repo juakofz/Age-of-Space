@@ -3,7 +3,7 @@
 #include <vector>
 #include "Proyectil.h"
 #include "Camera.h"
-#include "ListaNaves.h"
+//#include "ListaNaves.h"
 
 class ListaProyectiles
 {
@@ -20,6 +20,6 @@ public:
 	bool getSel(int ind);
 	int getSel();
 
-	void impacto(ListaNaves l);
+
 };
 
