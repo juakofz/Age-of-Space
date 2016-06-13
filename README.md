@@ -67,3 +67,13 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Fixed mouse class so it makes a bit more sense
 - Ships now can be selected and moved correctly
 - Added some bugs
+
+[Large gap due to work overload]
+
+#### P0.9.3
+- A lot of code rewriting
+- Bug fixing
+- Ships now shoot and explode
+- Enemy ships apear every few secconds
+- Getting ready for realese
+- New exciting and elusive bugs
