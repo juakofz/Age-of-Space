@@ -106,20 +106,24 @@ void Game::event(SDL_Event* e)
 
 void Game::cargarTexturas()
 {
-	tex[0].load("img/Nave1.png");
+	tex[0].load("img/Nave.png");
 	tex[1].load("img/asteroide.png");
 	tex[2].load("img/edificio.png");
 	tex[3].load("img/markerW.png");
 	tex[4].load("img/markerW.png");
-	tex[5].load("img/Cursor.png");
+	tex[5].load("img/Cursor1.png");
 	tex[6].load("img/Background.jpg");
-	tex[7].load("img/grid2.png");
-	tex[8].load("img/Nave1.png");
+	tex[7].load("img/grid3.png");
+	tex[8].load("img/Nave.png");
 	tex[9].load("img/disparo.png");
-	
-	tex[3].setColor(255, 100, 0);
-	tex[4].setColor(0, 255, 0);
-	tex[8].setColor(210, 50, 50);
+	tex[10].load("img/disparo.png");
+
+	tex[5].setColor(0, 255, 0); // Cursor Verde
+	tex[0].setColor(30, 210, 240); //Nave cian
+	tex[3].setColor(255, 100, 0); //Marcador naranja
+	tex[4].setColor(0, 255, 0); //Marcador verde
+	tex[8].setColor(210, 50, 50); //Nave roja
+	tex[9].setColor(0, 255, 0); //Disparo verde
 
 	texOpciones[0].load("img/edificio.png");
 	texOpciones[1].load("img/markerW.png");
@@ -195,7 +199,7 @@ void Game::initjuego()
 	mouse.setCursor(tex + 5);
 
 	//Disparos
-	Explosion::setTexture(tex + 9);
+	Explosion::setTexture(tex + 10);
 	GameObject::setTextures(tex + 9);
 
 	//Mapa
@@ -294,8 +298,8 @@ void Game::eventjuego(SDL_Event* e)
 				{
 
 					Proyectil* aux = new Proyectil(naves.getAmiga(i));
-					aux->SetTex(tex+2);
-					aux->setSize(20);
+					aux->SetTex(tex + 9);
+					aux->setSize(25);
 					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
 
 					aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);

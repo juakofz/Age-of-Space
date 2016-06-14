@@ -24,16 +24,17 @@ Explosion::Explosion(int x, int y, int size)
 
 	//Crear array de proyectiles
 	Proyectil * proy = new Proyectil[p_num];
-	cout << p_num << " pums" << endl;
 	for (int i = 0; i < p_num; i++)
 	{
 		//Textura
 		proy[i].SetTex(tex);
-		proy[i].setSize(15);
+		proy[i].setSize(25);
+		tex->setColor(230 + (rand() % 35), 110 + (rand() % 40), (rand () % 30));
 
 		//Posición
 		proy[i].SetPos(x, y);
-		
+		proy[i].SetMaxVel(2);
+
 		//Ángulo
 		float angle = (360 / p_num) * i + (rand() % 11 - 5);
 		
@@ -44,8 +45,7 @@ Explosion::Explosion(int x, int y, int size)
 		proy[i].SetDir(dir_x, dir_y);
 		
 		//Destino
-		float reach = size * 0.1 * ((rand() % 100) / 5);
-		cout << reach <<" de lejos" << endl;
+		float reach = size * 0.05 * ((rand() % 100) / 5);
 		float dest_x = pos.x + dir_x * reach;
 		float dest_y = pos.y + dir_y * reach;
 		

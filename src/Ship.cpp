@@ -54,7 +54,7 @@ Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, bool amig):
 	setSize(siz);
 	setMarker(marktex);
 	SetCen(cen2.x, cen2.y);
-	amiga=amig;
+	amiga = amig;
 
 	stop();
 }
@@ -65,8 +65,8 @@ Ship::~Ship()
 
 int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 {
+	int accion = 0;
 
-	int accion=0;
 	//Selección múltiple
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
@@ -81,7 +81,6 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		else deselect();
 	}
 
-
 	//Botón derecho
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
 	{
@@ -95,16 +94,10 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 
 		angle = (180 * atan2(dir.y, dir.x) / M_PI);
 
-		accion=1;
+		accion = 1;
 	}
 	return accion;
 }
-
-int Ship::shoot()
-{
-	return 1;
-}
-
 
 bool Ship::disparada(Proyectil p)
 {

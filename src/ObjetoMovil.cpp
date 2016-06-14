@@ -151,6 +151,10 @@ void ObjetoMovil::SetVel(float x, float y)
 	vel.y = y;
 }
 
+void ObjetoMovil::SetMaxVel(float v)
+{
+	max_vel = v;
+}
 //Dirección
 Vector2 ObjetoMovil::GetDir()
 {

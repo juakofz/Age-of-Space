@@ -69,7 +69,7 @@ class Game
 	Caracteristicas caract;
 
 	//texturas
-	Texture tex[10];
+	Texture tex[15];
 	Texture texOpciones[5];
 
 	SDL_Point posicion;

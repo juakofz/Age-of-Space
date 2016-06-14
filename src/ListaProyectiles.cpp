@@ -15,7 +15,7 @@ ListaProyectiles::~ListaProyectiles(void)
 	}
 }
 
-bool ListaProyectiles::agregar (Proyectil *ast) 
+bool ListaProyectiles::agregar(Proyectil *ast) 
 { 
     lista.push_back(ast);    
     return true;    
@@ -35,9 +35,9 @@ void ListaProyectiles::eliminarProyectil(int ind)
 { 
     if((ind<0)||(ind>=lista.size())) return;              
 	
-	//PROBLEMO
+	//ELO PROBLEMO
 	//delete lista[ind];    
-    //FIN PROBLEMO
+    //FIN DELO PROBLEMO
 	
 	lista.erase(lista.begin() + ind);    
 } 
