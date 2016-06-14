@@ -8,10 +8,10 @@ ListaProyectiles::ListaProyectiles(void)
 
 ListaProyectiles::~ListaProyectiles(void)
 {
-	for(int i=0;i<lista.size();i++) 
+	for(int i = (lista.size() - 1); i >= 0; i--)
 	{
 		delete lista[i];
-		lista [i]=0;
+		lista [i] = 0;
 	}
 }
 
@@ -33,12 +33,9 @@ void ListaProyectiles::render(Camera cam)
 
 void ListaProyectiles::eliminarProyectil(int ind) 
 { 
-    if((ind<0)||(ind>=lista.size())) return;              
+    if((ind < 0) || (ind >= lista.size())) return;              
 	
-	//ELO PROBLEMO
 	//delete lista[ind];    
-    //FIN DELO PROBLEMO
-	
 	lista.erase(lista.begin() + ind);    
 } 
 

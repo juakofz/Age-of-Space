@@ -297,7 +297,7 @@ void Game::eventjuego(SDL_Event* e)
 				if(naves.getSel(i))
 				{
 
-					Proyectil* aux = new Proyectil(naves.getAmiga(i));
+					Proyectil* aux = new Proyectil(naves.getPlayer(i));
 					aux->SetTex(tex + 9);
 					aux->setSize(25);
 					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
@@ -408,7 +408,7 @@ void Game::renderBarra()
 
 	//renderizamos el menu
 //	menubarra.render();
-	barra.render();
+	//barra.render();
 
 }
 
@@ -417,6 +417,24 @@ void Game::eventBarra(SDL_Event* e)
 	//eventos de la barra
 	barra.event(e, barra.relatxy());
 
+}
+
+
+//Minimapa guapo guapo
+void Game::initMinimapa()
+{
+	//Lista de cositas?
+
+}
+
+void Game::renderMinimapa()
+{
+	minimapa.render();
+	//Renderizar minicositas
+}
+
+void Game::eventMinimapa(SDL_Event* e)
+{
 }
 
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)

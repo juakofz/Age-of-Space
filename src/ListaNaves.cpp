@@ -98,7 +98,8 @@ int ListaNaves::getSels()
 	return i;
 }
 
-bool ListaNaves::getAmiga(int i)
+
+int ListaNaves::getPlayer(int ind)
 {
-	return lista[i]->getAmiga();
+	return lista[ind]->getPlayer();
 }

@@ -39,6 +39,9 @@ extern bool loadText();
 extern Texture gPromptTextTexture;
 extern Texture gInputTextTexture;
 
+//Object codes
+extern enum Items;
+
 //Globally used font
 extern TTF_Font *gFont;
 

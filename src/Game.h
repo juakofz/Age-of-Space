@@ -104,12 +104,10 @@ public:
 	void renderJuego(); //renderiza los elementos del juego
 	void eventjuego(SDL_Event* e); //eventos en el viewport del juego 
 
-
 	//menu
 	void initMenu(); //inicializa los elementos del juego
 	void renderMenu(); //renderiza los elementos del juego
 	void eventMenu(SDL_Event* e); //eventos en el viewport del juego 
-
 
 	//caracteristicas
 	void initCaract(); //inicializa los elementos del juego
@@ -120,6 +118,11 @@ public:
 	void initBarra(); //inicializa los elementos del juego
 	void renderBarra(); //renderiza los elementos del juego
 	void eventBarra(SDL_Event* e); //eventos en el viewport del juego 
+	
+	//Minimapa
+	void initMinimapa(); //inicializa los elementos del juego
+	void renderMinimapa(); //renderiza los elementos del juego
+	void eventMinimapa(SDL_Event* e); //eventos en el viewport del juego
 
 	//nombre del jugador
 	void setNombre(std::string nombre);

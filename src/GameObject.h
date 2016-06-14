@@ -44,18 +44,18 @@ public:
 	int getSize();
 	Vector2 getDim();
 
-
 	int getType();
-
 
 	//Texturas
 	static void setTextures(Texture *tdisp);
 
-	//propia
-	bool getAmiga();
-	void setAmiga(bool amig);
+	//Player
+	void setPlayer(int p);
+	int getPlayer();
 
 protected:
+
+	const int type;
 
 	Texture *marker, *tex, *map_tex;
 	static Texture *tdisparo;
@@ -73,8 +73,8 @@ protected:
 
 	int sel_angle;
 
-	//propia
-	bool amiga;
+	//Player
+	int player;
 
 private:
 	bool seleccionable;

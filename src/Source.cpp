@@ -18,6 +18,7 @@
 #include "Game.h"
 #include "Mouse.h"
 #include "Timer.h"
+#include <time.h>
 
 //variables y funciones globales
 #include "Global.h"
@@ -52,6 +53,8 @@ int main(int argc, char* args[])
 			//flag de pantalla de inicio
 			bool total = true;
 
+			//Random seed
+			srand(time(NULL));
 
 			//FPS
 			Timer fps_timer, cap_timer;
@@ -211,7 +214,7 @@ int main(int argc, char* args[])
 			}
 		}
 	}
-	//system("PAUSE");
+
 	//Free resources and close SDL
 	close();
 	return 0;

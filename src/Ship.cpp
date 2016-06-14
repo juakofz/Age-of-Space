@@ -33,7 +33,7 @@ Ship::Ship():ObjetoMovil()
 	tex=NULL;
 }
 
-Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, bool amig):ObjetoMovil(amig)
+Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p):ObjetoMovil(player)
 {
 	dir.x = 1;
 	dir.y = 0;
@@ -54,7 +54,7 @@ Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, bool amig):
 	setSize(siz);
 	setMarker(marktex);
 	SetCen(cen2.x, cen2.y);
-	amiga = amig;
+	player = p;
 
 	stop();
 }

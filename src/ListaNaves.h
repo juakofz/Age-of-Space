@@ -27,7 +27,7 @@ public:
 	int getSels();
 	Vector2 getCen(int i);
 
-	bool getAmiga(int i);
+	int getPlayer(int ind);
 
 private:
 	ListaExplosiones l_expl;

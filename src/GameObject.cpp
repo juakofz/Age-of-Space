@@ -3,19 +3,18 @@
 Texture * GameObject::tdisparo = 0;
 
 
-GameObject::GameObject(void)
+GameObject::GameObject(void):type(-1)
 {
-
 	sel = false;
 	sel_angle = 0;
-	amiga = false;
+	player = 0;
 
 }
 
-GameObject::GameObject( bool selec)
+GameObject::GameObject( bool selec):type(-1)
 {
 	seleccionable = selec;
-	if(seleccionable) amiga = true;
+	if(seleccionable) player = 1;
 	sel = false;
 	sel_angle = 0;
 }
@@ -121,13 +120,13 @@ void GameObject::SetCen(float x, float y)
 
 void GameObject::giveCen(Vector2 &dest)
 {
-	dest=cen;
+	dest = cen;
 }
+
 //Asignación de textura
 void GameObject::SetTex(Texture *t)
 {
 	tex = t;
-
 }
 
 void GameObject::setMarker(Texture *t)
@@ -135,7 +134,6 @@ void GameObject::setMarker(Texture *t)
 	marker = t;
 
 }
-
 
 bool GameObject::getSel()
 {
@@ -170,7 +168,7 @@ Vector2 GameObject::getDim()
 
 int GameObject::getType()
 {
-	return 1;
+	return type;
 }
 
 
@@ -179,12 +177,13 @@ void GameObject::setTextures(Texture *tdisp)
 	tdisparo = tdisp;
 }
 
-bool GameObject::getAmiga()
+//Player
+void GameObject::setPlayer(int p)
 {
-	return amiga;
+	player = p;
 }
 
-void GameObject::setAmiga(bool amig)
+int GameObject::getPlayer()
 {
-	amiga = amig;
+	return player;
 }
