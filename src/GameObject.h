@@ -47,7 +47,6 @@ public:
 
 	int getType();
 
-<<<<<<< HEAD
 	//Texturas
 	static void setTextures(Texture *tdisp);
 

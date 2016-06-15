@@ -33,7 +33,7 @@ Ship::Ship():ObjetoMovil(1)
 	tex = NULL;
 }
 
-Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p):ObjetoMovil(player)
+Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p, bool sel):ObjetoMovil(player, sel)
 {
 	dir.x = 1;
 	dir.y = 0;

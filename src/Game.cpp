@@ -111,6 +111,7 @@ int Game::event(SDL_Event* e)
 			mouse.setR_pos(minimapa.relatxy(mx, my).x, minimapa.relatxy(mx, my).y);
 		}
 	}
+	return flag;
 }
 
 void Game::cargarTexturas()
@@ -588,14 +589,13 @@ Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 void Game::ataqueEnemigo()
 {
 	
-		cout<<"atacando"<<endl;
-		for(int j = 0; j<ataques * 2; j++)
-		{
+	cout<<"atacando"<<endl;
+	for(int j = 0; j<ataques * 2; j++)
+	{
 
-			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), 2);
+		Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), 2, false);
 		
-			naves.agregar(aux);
-		}
-		atacar = false;
+		naves.agregar(aux);
 	}
+	atacar = false;
 }
