@@ -62,6 +62,11 @@ int ViewPort::getHeight()
 	return tamañofin.y;
 }
 
+int ViewPort::getWidth()
+{
+	return tamañofin.x;
+}
+
 int ViewPort::getY()
 {
 	return param.y;

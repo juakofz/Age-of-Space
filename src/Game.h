@@ -38,7 +38,6 @@ class Game
 {
 	//viewports del juego
 //	ViewPort  juego, total;
-	int numviewport;
 
 	ZonaPantalla *zonas[NUM_VIEWPORTS];
 	ZonaPantalla juego, total, minimapa;

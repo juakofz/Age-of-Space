@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Ship::Ship():ObjetoMovil()
+Ship::Ship():ObjetoMovil(1)
 {
 	//Vector2 por defecto 0,0;
 	//Dirección predeterminada

@@ -3,7 +3,7 @@
 Texture * GameObject::tdisparo = 0;
 
 
-GameObject::GameObject(void):type(-1)
+GameObject::GameObject(int t):type(t)
 {
 	sel = false;
 	sel_angle = 0;
@@ -11,7 +11,7 @@ GameObject::GameObject(void):type(-1)
 
 }
 
-GameObject::GameObject( bool selec):type(-1)
+GameObject::GameObject(int t, bool selec):type(t)
 {
 	seleccionable = selec;
 	if(seleccionable) player = 1;

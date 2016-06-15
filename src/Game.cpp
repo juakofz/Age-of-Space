@@ -32,7 +32,6 @@ void Game::event(SDL_Event* e)
 		mouse.setR_pos(mx, my);
 
 		mouse.update(e, false);
-		numviewport = 1;
 	}
 
 	//Game viewport (juego)
@@ -86,22 +85,33 @@ void Game::event(SDL_Event* e)
 
 		//Update mouse
 		mouse.update(e);
-		numviewport = 3;
 	}
 
-	//Menu area
-	if(my >= juego.getHeight())
-	{
-		menu.Set();
-		eventMenu(e);
-		//Absolute
-		mouse.setPos(mx, my);
-		//Relative
-		mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
 
-		mouse.update(e, false);
-		numviewport = 2;
-	}		
+	if (my >= juego.getHeight())
+	{
+		//Menu area
+		if (mx < menu.getWidth())
+		{
+			menu.Set();
+			eventMenu(e);
+			//Absolute
+			mouse.setPos(mx, my);
+			//Relative
+			mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
+
+			mouse.update(e, false);
+		}
+		else
+		{
+			minimapa.Set();
+			eventMinimapa(e);
+			//Absolute
+			mouse.setPos(mx, my);
+			//Relative
+			mouse.setR_pos(minimapa.relatxy(mx, my).x, minimapa.relatxy(mx, my).y);
+		}
+	}
 }
 
 void Game::cargarTexturas()
@@ -182,6 +192,7 @@ void Game::RenderViewPorts()
 	zonas[JUEGO]->render();
 	zonas[MINIMAPA]->render();
 	renderJuego();
+	renderMinimapa();
 	total.Set();
 	mouse.render();
 
@@ -424,17 +435,87 @@ void Game::eventBarra(SDL_Event* e)
 void Game::initMinimapa()
 {
 	//Lista de cositas?
-
 }
 
 void Game::renderMinimapa()
 {
 	minimapa.render();
+	int margen = 10;
+	int h = minimapa.getHeight();
+	int w = minimapa.getWidth();
+
+	//Map border
+	SDL_Rect mapRect = {margen, margen, w - 2 * margen, h - 2 * margen };
+	SDL_SetRenderDrawColor(gRenderer, 0, 128, 255, 255);
+	SDL_RenderDrawRect(gRenderer, &mapRect);
+
+	if (naves.getSize()) {
+		for (int i = (naves.getSize() - 1); i >= 0; i--)
+		{
+			Vector2 p = naves.getCen(i);
+			Vector2 rp;
+			rp.x = (p.x / map.getSize().x) * (w - 2 * margen) + margen;
+			rp.y = (p.y / map.getSize().y) * (h - 2 * margen) + margen;
+
+			SDL_Rect fillRect = {rp.x, rp.y, 2, 2};
+			switch (naves.getPlayer(i))
+			{
+			case 1:
+				SDL_SetRenderDrawColor(gRenderer, 0, 255, 255, 0);
+				break;
+			case 2:
+				SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, 0);
+				break;
+			default:
+				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+			}
+			SDL_RenderFillRect(gRenderer, &fillRect);
+		}
+	}
+
+	//Camera rect
+	Vector2 c, rc, s, rs;
+	
+	c = cam.getPos();
+	rc.x = (c.x / map.getSize().x) * (w - 2 * margen) + margen;
+	rc.y = (c.y / map.getSize().y) * (h - 2 * margen) + margen;
+	
+	s = cam.getSize();
+	rs.x = s.x / 13;
+	rs.y = s.y / 10;
+
+	SDL_Rect camRect = {rc.x, rc.y, rs.x, rs.y};
+	SDL_SetRenderDrawColor( gRenderer, 255, 255, 255, 150);        
+	SDL_RenderDrawRect( gRenderer, &camRect );
+
 	//Renderizar minicositas
+
 }
 
 void Game::eventMinimapa(SDL_Event* e)
 {
+	int margen = 10;
+	//Movimiento de cámara
+	if (e->button.button == SDL_BUTTON_LEFT)
+	{
+		//Dentro en x
+		if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= minimapa.getWidth() + margen))
+		{
+			//Dentro en y
+			if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= minimapa.getHeight() + margen))
+			{
+				SDL_Point p;
+				p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (minimapa.getWidth() - 2 * margen);
+				p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (minimapa.getHeight() - 2 * margen);
+				cam.setCen(p.x, p.y);
+			}
+		}
+	}
+
+	//Movimiento de naves
+	if (e->button.button == SDL_BUTTON_RIGHT)
+	{
+	}
 }
 
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
@@ -442,7 +523,7 @@ Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 	cout<<"ataque enemigo"<<endl;
 	cout<<ataques<<endl;
 	ataques++;
-	atacar=true;
+	atacar = true;
 	return interval;
 }
 
@@ -454,7 +535,7 @@ void Game::ataqueEnemigo()
 		for(int j = 0; j<ataques * 2; j++)
 		{
 
-			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), false);
+			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), 2);
 		
 			naves.agregar(aux);
 		}

@@ -98,6 +98,10 @@ int ListaNaves::getSels()
 	return i;
 }
 
+int ListaNaves::getSize()
+{
+	return lista.size();
+}
 
 int ListaNaves::getPlayer(int ind)
 {

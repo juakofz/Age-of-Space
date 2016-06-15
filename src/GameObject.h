@@ -9,8 +9,8 @@ class GameObject
 public:
 
 	//constructor y destructor
-	GameObject(void);
-	GameObject(bool selec=true);
+	GameObject(int t);
+	GameObject(int t, bool selec = true);
 	virtual ~GameObject(void);
 
 	//Manejo de eventos

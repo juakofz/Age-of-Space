@@ -30,6 +30,7 @@ public:
 	void Set();
 	int getY();
 	int getHeight();
+	int getWidth();
 
 	ViewPort getViewport();
 

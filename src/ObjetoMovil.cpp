@@ -1,7 +1,7 @@
 #include "ObjetoMovil.h"
 
 
-ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
+ObjetoMovil::ObjetoMovil(int t, bool selec):GameObject(t, selec)
 {
 	
 	//Vector2 por defecto 0,0;
@@ -49,7 +49,7 @@ int ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 	}
 
 
-	//Botón derecho
+	//Botón derecho (movimiento)
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
 	{
 		//SDL_GetMouseState(&mx, &my);

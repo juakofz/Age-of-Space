@@ -8,9 +8,8 @@ using namespace std;
 //Texture* Asteroid::tex=NULL;
 //Texture* Asteroid::marker=NULL;
 
-Asteroid::Asteroid(): GameObject(true)
+Asteroid::Asteroid(): GameObject(1, true)
 {
-	
 }
 
 

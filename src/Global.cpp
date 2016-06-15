@@ -19,7 +19,7 @@ const enum Items {
 	AST = 0,
 	NAVE = 1,
 	EDIF = 2,
-	DISP = 3,
+	PROY = 3,
 	EXPL = 4
 };
 

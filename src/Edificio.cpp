@@ -1,7 +1,7 @@
 #include "Edificio.h"
 
 
-Edificio::Edificio(void): GameObject(true)
+Edificio::Edificio(void): GameObject(2, true)
 {
 	vida = 10;
 }

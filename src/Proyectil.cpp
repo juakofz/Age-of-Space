@@ -1,7 +1,7 @@
 #include "Proyectil.h"
 
 
-Proyectil::Proyectil(int p):ObjetoMovil(false)
+Proyectil::Proyectil(int p):ObjetoMovil(3, false)
 {
 
 	//Vector2 por defecto 0,0;

@@ -26,7 +26,7 @@ public:
 	int getSel();
 	int getSels();
 	Vector2 getCen(int i);
-
+	int getSize();
 	int getPlayer(int ind);
 
 private:
