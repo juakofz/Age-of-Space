@@ -4,7 +4,7 @@ using namespace std;
 
 Player::Player(void)
 {
-	oro=energia=1000;
+	oro=energia=100;
 	name="jugador";
 }
 
@@ -32,4 +32,12 @@ void Player::getRecursos(std::stringstream recursos[])
 	recursos[1] << energia;
 	//cout<< "energia:"<< energia<<'\n';
 	//cout<<recursos[0].str()<<'\n'<<recursos[1].str()<<'\n';
+}
+
+void Player::cambiarRecursos(int oro_cambio, int energia_cambio)
+{
+	oro+=oro_cambio;
+	energia+=energia_cambio;
+
+
 }

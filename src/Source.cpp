@@ -18,6 +18,7 @@
 #include "Game.h"
 #include "Mouse.h"
 #include "Timer.h"
+#include "Coordinator.h"
 
 //variables y funciones globales
 #include "Global.h"
@@ -62,43 +63,46 @@ int main(int argc, char* args[])
 			SDL_Event e;
 
 			//Nombre del jugador
-			SDL_Color textColor = { 0, 0, 255};
+	/*		SDL_Color textColor = { 0, 0, 255};
 			int tamaño = 28;
 			std::string inputText = "Jugador";
 			gInputTextTexture.loadText(inputText.c_str(), tamaño, textColor);
+			*/
 
 			//flag de cambio de tamaño de pantalla
 			bool size=false;
 
 			//game master
-			Game game;
+		//	Game game;
+			Coordinator coordinador;
 
 			//inicializamos los elementos del juego
-			game.cargarTexturas();
+			coordinador.initGame();
+		/*	game.cargarTexturas();
 			game.InitViewPorts();
 			game.initjuego();
 
 			game.initMenu();
-
-
-			SDL_TimerID temporizador = SDL_AddTimer(5*1000, Game::LlamadaAtaqueEnemigo, " ");
+		*/
+		//	SDL_TimerID temporizador = SDL_AddTimer(5*1000, Game::LlamadaAtaqueEnemigo, " ");
 
 			//While application is running
 			while( !quit )
 			{
-				//flag de cambio en el texto introducido
-				bool renderText = false;
 
-				game.ataqueEnemigo();
+				//flag de cambio en el texto introducido
+			//	bool renderText = false;
+		//		game.ataqueEnemigo();
 
 				//Límite FPS
 				cap_timer.start();
 
 				//Non queue events
-				game.main_event();
+			//	game.main_event();
+				coordinador.mainEvent();
 
 				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 )
+				while( SDL_PollEvent(&e) != 0 )
 				{
 					//User requests quit
 					if( e.type == SDL_QUIT )
@@ -106,9 +110,13 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
+
+					coordinador.event(&e);
+
+					size=gWindow.handleEvent( e );
 					//Si estamos en pantalla de inicio
 
-					if(total) 
+				/*	if(total) 
 					{
 									
 						//eventos del cambio de pantalla
@@ -131,9 +139,10 @@ int main(int argc, char* args[])
 						//Handle window events
 						size=gWindow.handleEvent( e );
 
-					}
+					}*/
 					
 				}
+				
 
 				//Only draw when not minimized
 				if( !gWindow.isMinimized() )
@@ -167,7 +176,8 @@ int main(int argc, char* args[])
 					if(size)
 					{
 						
-						game.ActViewPorts();
+					//	game.ActViewPorts();
+						coordinador.actViewports();
 
 						//ajustar el tamaño a la ventana.					
 						WindowQuad.x=gWindow.getWidth();
@@ -176,6 +186,8 @@ int main(int argc, char* args[])
 						size=false;
 					}
 
+					coordinador.render();
+					/*
 					//Update screen		
 					if(total)
 					{
@@ -194,6 +206,7 @@ int main(int argc, char* args[])
 							//game.renderJuego();
 						
 					}
+					*/
 
 					//actualizamos renderizado total
 					SDL_RenderPresent( gRenderer );
@@ -207,8 +220,8 @@ int main(int argc, char* args[])
 						SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 					}
 
-
 				}
+				
 			}
 		}
 	}

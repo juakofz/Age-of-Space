@@ -12,7 +12,8 @@ ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
 	//Destino nulo
 	dest.x = cen.x;
 	dest.y = cen.y;
-	following=0;
+	following = 0;
+
 	//Velocidad máxima
 	max_vel = 2;
 	//Nave parada
@@ -22,7 +23,7 @@ ObjetoMovil::ObjetoMovil(bool selec):GameObject(selec)
 	sel = false;
 	sel_angle = 0;
 
-	tex=NULL;
+	tex = NULL;
 }
 
 
@@ -67,7 +68,6 @@ int ObjetoMovil::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 
 void ObjetoMovil::render(Camera cam)
 {
-	
 	GameObject::render(cam);
 }
 
@@ -94,6 +94,7 @@ bool ObjetoMovil::move()
 	}
 	else
 	{
+
 		//following=false;
 		vel.x = 0;
 		vel.y = 0;
@@ -137,6 +138,7 @@ Vector2& ObjetoMovil::getDest()
 	return dest;
 
 }
+
 //Velocidad
 Vector2 ObjetoMovil::GetVel()
 {
@@ -149,6 +151,10 @@ void ObjetoMovil::SetVel(float x, float y)
 	vel.y = y;
 }
 
+void ObjetoMovil::SetMaxVel(float v)
+{
+	max_vel = v;
+}
 //Dirección
 Vector2 ObjetoMovil::GetDir()
 {

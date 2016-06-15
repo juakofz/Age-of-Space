@@ -6,8 +6,6 @@ class ObjetoMovil :
 {
 public:
 
-
-
 	ObjetoMovil(bool selec=true);
 	~ObjetoMovil(void);
 
@@ -24,6 +22,7 @@ public:
 	//Velocidad
 	Vector2 GetVel();
 	void SetVel(float x, float y);
+	void SetMaxVel(float v);
 
 	//Dirección
 	Vector2 GetDir();

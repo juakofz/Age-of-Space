@@ -44,7 +44,12 @@ public:
 	int getSize();
 	Vector2 getDim();
 
+
 	int getType();
+
+
+	//Texturas
+	static void setTextures(Texture *tdisp);
 
 	//propia
 	bool getAmiga();
@@ -52,7 +57,8 @@ public:
 
 protected:
 
-	Texture *marker, *tex;
+	Texture *marker, *tex, *map_tex;
+	static Texture *tdisparo;
 	//posicion y centro
 	Vector2 pos;
 	Vector2 cen;

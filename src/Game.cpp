@@ -1,7 +1,6 @@
 #include "Game.h"
 #include <typeinfo>
 
-
 int Game::ataques=0;
 bool Game::atacar=false;
 
@@ -14,9 +13,9 @@ Game::~Game(void)
 {
 }
 
-void Game::event(SDL_Event* e)
+int Game::event(SDL_Event* e)
 {
-	
+	int flag=false;
 	//Reading absolute mouse state
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
@@ -41,7 +40,7 @@ void Game::event(SDL_Event* e)
 	{
 		juego.Set();
 		//Game selection events
-		eventjuego(e);
+		flag = eventjuego(e);
 
 		//Lock mouse while selecting
 		if (mouse.isActive())
@@ -103,23 +102,29 @@ void Game::event(SDL_Event* e)
 		mouse.update(e, false);
 		numviewport = 2;
 	}		
+	return flag;
 }
 
 void Game::cargarTexturas()
 {
-	tex[0].load("img/Nave1.png");
+	tex[0].load("img/Nave.png");
 	tex[1].load("img/asteroide.png");
 	tex[2].load("img/edificio.png");
 	tex[3].load("img/markerW.png");
 	tex[4].load("img/markerW.png");
-	tex[5].load("img/Cursor.png");
+	tex[5].load("img/Cursor1.png");
 	tex[6].load("img/Background.jpg");
-	tex[7].load("img/grid2.png");
-	tex[8].load("img/Nave1.png");
-	
-	tex[3].setColor(255, 100, 0);
-	tex[4].setColor(0, 255, 0);
-	tex[8].setColor(210, 50, 50);
+	tex[7].load("img/grid3.png");
+	tex[8].load("img/Nave.png");
+	tex[9].load("img/disparo.png");
+	tex[10].load("img/disparo.png");
+
+	tex[5].setColor(0, 255, 0); // Cursor Verde
+	tex[0].setColor(30, 210, 240); //Nave cian
+	tex[3].setColor(255, 100, 0); //Marcador naranja
+	tex[4].setColor(0, 255, 0); //Marcador verde
+	tex[8].setColor(210, 50, 50); //Nave roja
+	tex[9].setColor(0, 255, 0); //Disparo verde
 
 	texOpciones[0].load("img/edificio.png");
 	texOpciones[1].load("img/markerW.png");
@@ -174,6 +179,7 @@ void Game::RenderViewPorts()
 {
 	//viewports
 	zonas[BARRA]->render();		
+	renderBarra();
 	zonas[MENU]->render();
 	zonas[JUEGO]->render();
 	zonas[MINIMAPA]->render();
@@ -193,6 +199,10 @@ void Game::initjuego()
 {
 	//Inicialización del cursor
 	mouse.setCursor(tex + 5);
+
+	//Disparos
+	Explosion::setTexture(tex + 10);
+	GameObject::setTextures(tex + 9);
 
 	//Mapa
 	map.setSize(3000, 3000);
@@ -234,6 +244,41 @@ void Game::initjuego()
 	barra.setRecursos(recursos);
 }
 
+void Game::reinitjuego()
+{
+	ataques = 1;
+
+	ast.SetCen(1500,1500);	
+	edificio.SetCen(1500, 1500);
+	edificio.setVida(10);
+
+
+
+	proyectiles.eliminarContenido();
+	naves.eliminarContenido();
+
+	for(int i=0;i<20;i++)
+	{
+		Ship* aux = new Ship;
+		aux->SetTex(tex);
+		aux->setSize(60);
+		aux->setMarker(&(tex[3]));
+		aux->SetCen(150*i, 1500);
+		aux->stop();
+
+		naves.agregar(aux);
+	}
+
+	std::stringstream recursos[2];
+	jugador.getRecursos(recursos);
+	barra.setRecursos(recursos);
+}
+
+void Game::nuevafase(int i)
+{
+	jugador.cambiarRecursos(0, 50);
+
+}
 void Game::renderJuego()
 {
 	//viewport de juego
@@ -253,21 +298,14 @@ void Game::renderJuego()
 	objetos_prueba.render(cam);
 	proyectiles.render(cam);
 
-
-	/*//movemos la nave y acualizamos
-	for(int i=0;i<60;i++)
-	{
-		ship[i].render(gRenderer, cam);
-	}*/
-	//mouse.render(gRenderer);
 	if(ast.getSel()) 
 	{
 			renderMenu();
 			int type=ast.getType();
 	}
+	
 	if(asteroides.getSel()) renderMenu();
 	juego.Set();
-	
 }
 
 
@@ -279,14 +317,13 @@ void Game::setNombre(std::string nombre)
 	barra.SetName(jugador.getName());
 }
 
-void Game::eventjuego(SDL_Event* e)
+int Game::eventjuego(SDL_Event* e)
 {
 	//eventos de los elementos del juego
 	ast.event(e, mouse.getMrect(), mouse.getMpos());
-	/*if(ast.getSel()) renderMenu();
-	juego.Set();*/
+
 	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
-	//naves.event(e, mouse.getMrect(), mouse.getMpos());
+	
 	switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
 	{
 		case 1:
@@ -296,27 +333,39 @@ void Game::eventjuego(SDL_Event* e)
 				
 				if(naves.getSel(i))
 				{
-				
-				Proyectil* aux = new Proyectil(naves.getAmiga(i));
-				aux->SetTex(tex+2);
-				aux->setSize(20);
-				//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
 
-				aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
-				aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
-				
-				proyectiles.agregar(aux);
-				j++;
+					Proyectil* aux = new Proyectil(naves.getAmiga(i));
+					aux->SetTex(tex + 9);
+					aux->setSize(25);
+					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
+
+					aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
+					aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
+
+					proyectiles.agregar(aux);
+					j++;
 				}
 				i++;
 			}while(naves.getSels()>j);
-			
 		}
 	}
+
 	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
-	Interacciones::impactoListas(naves, proyectiles);
+
+	int oro=Interacciones::impactoListas(naves, proyectiles);
+	if(oro)
+	{
+			jugador.cambiarRecursos(oro, 0);
+			act_barra = true;
+	}
 	edificio.event(e, mouse.getMrect(), mouse.getMpos());
-	if(Interacciones::impacto(edificio, proyectiles)) cout<<"muerto"<<endl;
+	if(Interacciones::impacto(edificio, proyectiles))
+	{
+		
+		return 2;
+		
+	}
+	else return 0;
 	
 	
 		
@@ -335,7 +384,7 @@ void Game::initMenu()
 
 void Game::renderMenu()
 {
-//Abrimos el menu
+	//Abrimos el menu
 	zonas[MENU]->Open();
 
 }
@@ -345,28 +394,27 @@ void Game::eventMenu(SDL_Event* e)
 	//eventos del menu
 	switch (menu.event(e, menu.relatxy()))
 	{
-		case 1:
+		case 2:
 			{
-			static int i=0;
-			Asteroid* aux = new Asteroid; 	
-			aux->SetTex(tex+1);
-			aux->setMarker(&(tex[4]));
-			aux->SetCen(50*i++, 100);  
-			aux->setSize(70);
-
-			asteroides.agregar(aux);
-			break;			
+				static int i=0;
+				//Ship* aux = new Ship; 	
+				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), true);
+				jugador.cambiarRecursos(-5, -1);
+				act_barra=true;
+				naves.agregar(aux);
+				break;			
 			}
+
 		case 3:
 			do{
-			asteroides.eliminarAsteroide(asteroides.getSel()-1);
-			}while(asteroides.getSel());
+				asteroides.eliminarAsteroide(asteroides.getSel()-1);
+			} while(asteroides.getSel());
 			break;
+		
 		case 4:
 			cout<<"cerrar"<<endl;
 			break;
 	}
-	//printf("dentro del menu");
 }
 
 void Game::initCaract()
@@ -381,7 +429,6 @@ void Game::renderCaract()
 
 	//renderizamos el menu
 	caract.render();
-
 }
 
 void Game::eventCaract(SDL_Event* e)
@@ -404,6 +451,14 @@ void Game::renderBarra()
 {
 	//viewport de menu
 //	barra.Set();
+	if(act_barra)
+	{
+		std::stringstream recursos[2];
+		jugador.getRecursos(recursos);
+		barra.setRecursos(recursos);
+	//	cout<<"actualizar"<<endl;
+		act_barra=false;
+	}
 
 	//renderizamos el menu
 //	menubarra.render();
@@ -418,14 +473,6 @@ void Game::eventBarra(SDL_Event* e)
 
 }
 
-/*characts* Game::chooseElement(int type)
-{
-	characts datos;
-	switch (type)
-	{
-	case 1:
-		datos.*/
-
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 {
 	cout<<"ataque enemigo"<<endl;
@@ -437,14 +484,15 @@ Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 
 void Game::ataqueEnemigo()
 {
-	if(atacar)
-	{	
+	
 		cout<<"atacando"<<endl;
-		for(int j=0;j<ataques*2;j++)
+		for(int j = 0; j<ataques * 2; j++)
 		{
-			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15*j, 300+100*ataques), false);		
+
+			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), false);
+		
 			naves.agregar(aux);
 		}
-		atacar=false;
-	}
+
+		ataques++;
 }

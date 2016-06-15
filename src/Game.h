@@ -16,6 +16,7 @@
 #include "ListaNaves.h"
 #include "ListaProyectiles.h"
 #include "ListaObjetos.h"
+#include "ListaExplosiones.h"
 #include "Proyectil.h"
 #include "ZonaPantalla.h"
 #include "Menu.h"
@@ -64,11 +65,13 @@ class Game
 	Menu menu;
 	Barra barra;
 
+	bool act_barra;
+
 	Player jugador;
 	Caracteristicas caract;
 
 	//texturas
-	Texture tex[10];
+	Texture tex[15];
 	Texture texOpciones[5];
 
 	SDL_Point posicion;
@@ -92,7 +95,7 @@ public:
 	void RenderViewPorts(); //renderiza los viewports
 
 	//eventos
-	void event(SDL_Event* e); //reparte los eventos al viewport en el que nos encontremos
+	int event(SDL_Event* e); //reparte los eventos al viewport en el que nos encontremos
 	void RenderTotal(); //renderiza la pantalla de inicio
 	
 	//Eventos fuera de cola
@@ -100,8 +103,10 @@ public:
 
 	//juego
 	void initjuego(); //inicializa los elementos del juego
+	void reinitjuego(); //devuelve los objetos a su posicion original
+	void nuevafase(int i);
 	void renderJuego(); //renderiza los elementos del juego
-	void eventjuego(SDL_Event* e); //eventos en el viewport del juego 
+	int eventjuego(SDL_Event* e); //eventos en el viewport del juego 
 
 
 	//menu
@@ -127,4 +132,3 @@ public:
 	static Uint32 LlamadaAtaqueEnemigo(Uint32 interval, void* param);
 	void ataqueEnemigo();
 };
-

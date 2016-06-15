@@ -14,14 +14,14 @@ Proyectil::Proyectil(bool amig):ObjetoMovil(false)
 	dest.y = cen.y;
 	//Velocidad máxima
 	max_vel = 6;
+
 	//Nave parada
 	vel.x = 0;
 	vel.y = 0;
 
-	tex=NULL;
-	amiga=amig;
+	tex = NULL;
+	amiga = amig;
 }
-
 
 Proyectil::~Proyectil(void)
 {

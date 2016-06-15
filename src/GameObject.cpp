@@ -1,25 +1,29 @@
 #include "GameObject.h"
 
+Texture * GameObject::tdisparo = 0;
+
 
 GameObject::GameObject(void)
 {
-	sel=false;
-	sel_angle=0;
-	amiga=false;
+
+	sel = false;
+	sel_angle = 0;
+	amiga = false;
+
 }
 
-GameObject::GameObject( bool selec)
+GameObject::GameObject(bool selec)
 {
-	seleccionable=selec;
-	if(seleccionable) amiga=true;
-	sel=false;
-	sel_angle=0;
+	seleccionable = selec;
+	if(seleccionable) amiga = true;
+	sel = false;
+	sel_angle = 0;
 }
 
 GameObject::~GameObject(void)
 {
-	sel=false;
-	sel_angle=0;
+	sel = false;
+	sel_angle = 0;
 }
 
 
@@ -152,8 +156,7 @@ void GameObject::setSize(int s)
 	float scale = s / tex->getDiag();
 	width = tex->getDim().x * scale;
 	height = tex->getDim().y * scale;
-}
-
+}	
 
 int GameObject::getSize()
 {
@@ -167,17 +170,21 @@ Vector2 GameObject::getDim()
 
 int GameObject::getType()
 {
-
 	return 1;
+}
+
+
+void GameObject::setTextures(Texture *tdisp)
+{
+	tdisparo = tdisp;
 }
 
 bool GameObject::getAmiga()
 {
 	return amiga;
-
 }
 
 void GameObject::setAmiga(bool amig)
 {
-	amiga=amig;
+	amiga = amig;
 }

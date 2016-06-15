@@ -1,13 +1,10 @@
 #pragma once
 
-
 #include <vector>
 #include "Ship.h"
 #include "Camera.h"
 #include "Proyectil.h"
-
-
-
+#include "ListaExplosiones.h"
 
 class ListaNaves
 
@@ -22,7 +19,10 @@ public:
 
 	bool agregar(Ship *nave);
 	void render(Camera cam);
+
 	void eliminarNave(int ind);
+	void eliminarContenido();
+
 	int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 	bool getSel(int ind);
 	Vector2 getPointyEnd(int i);
@@ -31,7 +31,7 @@ public:
 	Vector2 getCen(int i);
 
 	bool getAmiga(int i);
+
+private:
+	ListaExplosiones l_expl;
 };
-
-
-

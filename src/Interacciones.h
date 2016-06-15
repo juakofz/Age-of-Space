@@ -12,9 +12,8 @@ public:
 	Interacciones(void);
 	~Interacciones(void);
 	static bool impacto(Ship nave, Proyectil disparo);
-	static bool impactoListas(ListaNaves &n, ListaProyectiles &p);
+	static int impactoListas(ListaNaves &n, ListaProyectiles &p);
 	static bool impacto(Edificio &edif, ListaProyectiles &disparo);
 	static bool impacto(Edificio edif, Proyectil disparo);
 
 };
-
