@@ -1,6 +1,7 @@
 #include "Proyectil.h"
 
 
+
 Proyectil::Proyectil(int p):ObjetoMovil(3, false)
 {
 
@@ -20,6 +21,7 @@ Proyectil::Proyectil(int p):ObjetoMovil(3, false)
 	vel.y = 0;
 
 	tex = NULL;
+
 	player = p;
 }
 

@@ -30,7 +30,7 @@ Ship::Ship():ObjetoMovil(1)
 	marker_color.b = 0x00;
 	marker_color.a = 0x00;
 
-	tex=NULL;
+	tex = NULL;
 }
 
 Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p):ObjetoMovil(player)
@@ -55,6 +55,7 @@ Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p):Obje
 	setMarker(marktex);
 	SetCen(cen2.x, cen2.y);
 	player = p;
+
 
 	stop();
 }

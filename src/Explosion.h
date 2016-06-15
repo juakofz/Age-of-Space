@@ -18,7 +18,9 @@ public:
 private:
 	static Texture *tex;
 	int size;
-	const float scale = 0.6;
+
+	static float scale;
+
 	ListaProyectiles l_proy;
 	Vector2 pos;
 };

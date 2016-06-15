@@ -33,11 +33,24 @@ void ListaProyectiles::render(Camera cam)
 
 void ListaProyectiles::eliminarProyectil(int ind) 
 { 
-    if((ind < 0) || (ind >= lista.size())) return;              
+    if((ind<0)||(ind>=lista.size())) return;              
 	
+	//O PROBLEMO
 	//delete lista[ind];    
+	
 	lista.erase(lista.begin() + ind);    
 } 
+
+void ListaProyectiles::eliminarContenido()
+{
+	for(int i = lista.size() - 1; i >= 0 ;i--)
+	{
+		delete lista[i];    
+		lista.erase(lista.begin()+i);   
+	}
+
+}
+
 
 void ListaProyectiles::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {

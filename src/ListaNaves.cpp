@@ -13,7 +13,6 @@ ListaNaves::~ListaNaves(void)
 
 bool ListaNaves::agregar (Ship *nave) 
 { 
-	cout << lista.size() << endl;
     lista.push_back(nave);    
     return true;    
 } 
@@ -39,6 +38,17 @@ void ListaNaves::eliminarNave(int ind)
     lista.erase(lista.begin()+ind);   
 
 } 
+
+void ListaNaves::eliminarContenido()
+{
+	for(int i = lista.size() - 1; i >= 0 ;i--)
+	{
+		delete lista[i];    
+		lista.erase(lista.begin()+i);   
+	}
+
+	cout<<"tamaño despues de borrar"<<lista.size()<<endl;
+}
 
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {

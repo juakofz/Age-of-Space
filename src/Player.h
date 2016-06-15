@@ -18,5 +18,6 @@ public:
 	std::string getName(void);
 
 	void getRecursos(std::stringstream recursos[]);
+	void cambiarRecursos(int oro_cambio, int energia_cambio);
 };
 

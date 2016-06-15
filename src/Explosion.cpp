@@ -2,6 +2,8 @@
 
 Texture * Explosion::tex = 0;
 
+float Explosion::scale=0.6;
+
 
 Explosion::Explosion()
 {
@@ -26,12 +28,14 @@ Explosion::Explosion(int x, int y, int size)
 	{
 		//Textura
 		proy[i].SetTex(tex);
+
 		proy[i].setSize(20);
-		tex->setColor(230 + (rand() % 35), 90 + (rand() % 30), (rand() % 30));
+		tex->setColor(255, 50, 0);
 
 		//Posición
 		proy[i].SetPos(x, y);
 		proy[i].SetMaxVel(3);
+
 
 		//Ángulo
 		float angle = (360 / p_num) * i + (rand() % 11 - 5);

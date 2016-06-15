@@ -1,7 +1,7 @@
 #pragma once
 
 #include "objetomovil.h"
-#include "Global.h"
+
 
 class Proyectil :
 	public ObjetoMovil

@@ -20,6 +20,7 @@ bool Interacciones::impacto(Ship nave, Proyectil disparo)
 	//nave.getSize() / 4 + disparo.getSize() / 4
 }
 
+
 bool Interacciones::impactoListas(ListaNaves &n, ListaProyectiles &p)
 {
 	for (int i = (n.lista.size() - 1); i >= 0; i--)

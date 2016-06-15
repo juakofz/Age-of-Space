@@ -62,6 +62,7 @@ bool Button::clickOn(SDL_Event* e, SDL_Point xyrel) //faltan un par de cambios
 		//Vector2 size = tex->getDim();
 		if((((mx >= pos.x) && (mx <= (pos.x + size.x))) && ((my >= pos.y) && (my <= (pos.y + size.y))))) flag =true;
 	}
+	
 	return flag;
 }
 

@@ -44,8 +44,10 @@ public:
 	int getSize();
 	Vector2 getDim();
 
+
 	int getType();
 
+<<<<<<< HEAD
 	//Texturas
 	static void setTextures(Texture *tdisp);
 

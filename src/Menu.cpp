@@ -49,6 +49,8 @@ int Menu::event(SDL_Event* e, SDL_Point xyrel)
 {
 	for(int i=0; i<NUMERO_BOTONES;i++) if(botones[i].event(e, xyrel)) return i;
 	for(int i=0; i<NUMERO_BOT_GENERALES;i++) if(botonesgenerales[i].event(e, xyrel)) return (i+NUMERO_BOTONES);
+
+	return 0;
 }
 
 /*void Menu::setTexturas(Texture tex[])

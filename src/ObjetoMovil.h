@@ -6,6 +6,7 @@ class ObjetoMovil :
 {
 public:
 
+
 	ObjetoMovil(int t, bool selec = true);
 	~ObjetoMovil(void);
 

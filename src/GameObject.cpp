@@ -2,7 +2,6 @@
 
 Texture * GameObject::tdisparo = 0;
 
-
 GameObject::GameObject(int t):type(t)
 {
 	sel = false;

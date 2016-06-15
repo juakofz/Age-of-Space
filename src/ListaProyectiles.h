@@ -16,7 +16,10 @@ public:
 	~ListaProyectiles(void);
 	bool agregar(Proyectil *proy);
 	void render(Camera cam);
+
 	void eliminarProyectil(int ind);
+	void eliminarContenido();
+
 	void event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 	bool getSel(int ind);
 	int getSel();

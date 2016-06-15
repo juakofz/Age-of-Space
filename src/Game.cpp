@@ -13,9 +13,9 @@ Game::~Game(void)
 {
 }
 
-void Game::event(SDL_Event* e)
+int Game::event(SDL_Event* e)
 {
-	
+	int flag=false;
 	//Reading absolute mouse state
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
@@ -39,7 +39,7 @@ void Game::event(SDL_Event* e)
 	{
 		juego.Set();
 		//Game selection events
-		eventjuego(e);
+		flag = eventjuego(e);
 
 		//Lock mouse while selecting
 		if (mouse.isActive())
@@ -99,7 +99,6 @@ void Game::event(SDL_Event* e)
 			mouse.setPos(mx, my);
 			//Relative
 			mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
-
 			mouse.update(e, false);
 		}
 		else
@@ -188,6 +187,7 @@ void Game::RenderViewPorts()
 {
 	//viewports
 	zonas[BARRA]->render();		
+	renderBarra();
 	zonas[MENU]->render();
 	zonas[JUEGO]->render();
 	zonas[MINIMAPA]->render();
@@ -253,6 +253,41 @@ void Game::initjuego()
 	barra.setRecursos(recursos);
 }
 
+void Game::reinitjuego()
+{
+	ataques = 1;
+
+	ast.SetCen(1500,1500);	
+	edificio.SetCen(1500, 1500);
+	edificio.setVida(10);
+
+
+
+	proyectiles.eliminarContenido();
+	naves.eliminarContenido();
+
+	for(int i=0;i<20;i++)
+	{
+		Ship* aux = new Ship;
+		aux->SetTex(tex);
+		aux->setSize(60);
+		aux->setMarker(&(tex[3]));
+		aux->SetCen(150*i, 1500);
+		aux->stop();
+
+		naves.agregar(aux);
+	}
+
+	std::stringstream recursos[2];
+	jugador.getRecursos(recursos);
+	barra.setRecursos(recursos);
+}
+
+void Game::nuevafase(int i)
+{
+	jugador.cambiarRecursos(0, 50);
+
+}
 void Game::renderJuego()
 {
 	//viewport de juego
@@ -291,7 +326,7 @@ void Game::setNombre(std::string nombre)
 	barra.SetName(jugador.getName());
 }
 
-void Game::eventjuego(SDL_Event* e)
+int Game::eventjuego(SDL_Event* e)
 {
 	//eventos de los elementos del juego
 	ast.event(e, mouse.getMrect(), mouse.getMpos());
@@ -309,6 +344,7 @@ void Game::eventjuego(SDL_Event* e)
 				{
 
 					Proyectil* aux = new Proyectil(naves.getPlayer(i));
+
 					aux->SetTex(tex + 9);
 					aux->setSize(25);
 					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
@@ -326,9 +362,22 @@ void Game::eventjuego(SDL_Event* e)
 
 	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
 
-	Interacciones::impactoListas(naves, proyectiles);
+
+	int oro=Interacciones::impactoListas(naves, proyectiles);
+	if(oro)
+	{
+			jugador.cambiarRecursos(oro, 0);
+			act_barra = true;
+	}
+
 	edificio.event(e, mouse.getMrect(), mouse.getMpos());
-	if(Interacciones::impacto(edificio, proyectiles)) cout<<"muerto"<<endl;
+	if(Interacciones::impacto(edificio, proyectiles))
+	{
+		
+		return 2;
+		
+	}
+	else return 0;
 	
 	
 		
@@ -357,16 +406,16 @@ void Game::eventMenu(SDL_Event* e)
 	//eventos del menu
 	switch (menu.event(e, menu.relatxy()))
 	{
-		case 1:
+		case 2:
 			{
 				static int i=0;
-				Asteroid* aux = new Asteroid; 	
-				aux->SetTex(tex+1);
-				aux->setMarker(&(tex[4]));
-				aux->SetCen(50 * i++, 100);  
-				aux->setSize(70);
 
-				asteroides.agregar(aux);
+				//Ship* aux = new Ship; 	
+				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), true);
+				jugador.cambiarRecursos(-5, -1);
+				act_barra=true;
+				naves.agregar(aux);
+
 				break;			
 			}
 
@@ -416,6 +465,14 @@ void Game::renderBarra()
 {
 	//viewport de menu
 //	barra.Set();
+	if(act_barra)
+	{
+		std::stringstream recursos[2];
+		jugador.getRecursos(recursos);
+		barra.setRecursos(recursos);
+	//	cout<<"actualizar"<<endl;
+		act_barra=false;
+	}
 
 	//renderizamos el menu
 //	menubarra.render();
@@ -518,6 +575,7 @@ void Game::eventMinimapa(SDL_Event* e)
 	}
 }
 
+
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 {
 	cout<<"ataque enemigo"<<endl;
@@ -529,8 +587,7 @@ Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 
 void Game::ataqueEnemigo()
 {
-	if(atacar)
-	{	
+	
 		cout<<"atacando"<<endl;
 		for(int j = 0; j<ataques * 2; j++)
 		{

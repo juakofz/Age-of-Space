@@ -1,6 +1,7 @@
 #include "Edificio.h"
 
 
+
 Edificio::Edificio(void): GameObject(2, true)
 {
 	vida = 10;
@@ -50,4 +51,10 @@ bool Edificio::golpeada()
 
 	if(vida <= 0) return 1;
 	else return 0;
+
+}
+
+void Edificio::setVida(int v)
+{
+	vida = v;
 }

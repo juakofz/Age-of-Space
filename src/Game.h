@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <SDL.h>
 #include "LWindow.h"
 #include "Barra.h"
@@ -24,23 +23,23 @@
 #include "Interacciones.h"
 #include "Edificio.h"
 
+
 enum ZONAS
 {
-	BARRA=0,
-	JUEGO=1,
-	MENU=2,
-	MINIMAPA=3,
-	TOTAL=4,
-	NUM_VIEWPORTS=5
+	BARRA = 0,
+	JUEGO = 1,
+	MENU = 2,
+	MINIMAPA = 3,
+	TOTAL = 4,
+	NUM_VIEWPORTS = 5
 };
 
 class Game
 {
 	//viewports del juego
-//	ViewPort  juego, total;
-
 	ZonaPantalla *zonas[NUM_VIEWPORTS];
 	ZonaPantalla juego, total, minimapa;
+
 	//Mapa
 	Map map;
 
@@ -58,11 +57,11 @@ class Game
 	ListaProyectiles proyectiles;
 	Asteroid ast;
 
-
-
 	//Partes de la pantalla
 	Menu menu;
 	Barra barra;
+
+	bool act_barra;
 
 	Player jugador;
 	Caracteristicas caract;
@@ -92,7 +91,7 @@ public:
 	void RenderViewPorts(); //renderiza los viewports
 
 	//eventos
-	void event(SDL_Event* e); //reparte los eventos al viewport en el que nos encontremos
+	int event(SDL_Event* e); //reparte los eventos al viewport en el que nos encontremos
 	void RenderTotal(); //renderiza la pantalla de inicio
 	
 	//Eventos fuera de cola
@@ -100,8 +99,11 @@ public:
 
 	//juego
 	void initjuego(); //inicializa los elementos del juego
+	void reinitjuego(); //devuelve los objetos a su posicion original
+	void nuevafase(int i);
 	void renderJuego(); //renderiza los elementos del juego
-	void eventjuego(SDL_Event* e); //eventos en el viewport del juego 
+	int eventjuego(SDL_Event* e); //eventos en el viewport del juego 
+
 
 	//menu
 	void initMenu(); //inicializa los elementos del juego
@@ -122,6 +124,7 @@ public:
 	void initMinimapa(); //inicializa los elementos del juego
 	void renderMinimapa(); //renderiza los elementos del juego
 	void eventMinimapa(SDL_Event* e); //eventos en el viewport del juego
+
 
 	//nombre del jugador
 	void setNombre(std::string nombre);

@@ -33,7 +33,6 @@ void ListaExplosiones::render(Camera cam)
 void ListaExplosiones::eliminar(int ind)
 {
 	if ((ind < 0) || (ind >= lista.size())) return;
-
 	delete lista[ind];
 	lista.erase(lista.begin() + ind);
 }
