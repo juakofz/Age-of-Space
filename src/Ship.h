@@ -13,7 +13,7 @@ class Ship:public ObjetoMovil
 public:
 	//Constructor
 	Ship();
-	Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen, bool amig=true);
+	Ship(Texture *texture, int siz, Texture *marktex, Vector2 cen, int p = 0, bool sel = false);
 	//Destructor
 	~Ship();
 

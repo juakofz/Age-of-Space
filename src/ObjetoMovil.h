@@ -6,7 +6,8 @@ class ObjetoMovil :
 {
 public:
 
-	ObjetoMovil(bool selec=true);
+
+	ObjetoMovil(int t, bool selec = true);
 	~ObjetoMovil(void);
 
 	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);

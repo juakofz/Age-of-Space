@@ -27,7 +27,6 @@ public:
 	//Mouse render
 	void render(SDL_Renderer *renderer = gRenderer);
 
-
 	//Get relative selection
 	SDL_Rect getSel();
 

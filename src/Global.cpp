@@ -14,6 +14,15 @@ const int SCREEN_HEIGHT = 640;
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
+//Object codes
+const enum Items {
+	AST = 0,
+	NAVE = 1,
+	EDIF = 2,
+	PROY = 3,
+	EXPL = 4
+};
+
 //Starts up SDL and creates window
 bool init();
 

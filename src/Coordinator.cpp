@@ -12,6 +12,17 @@ Coordinator::Coordinator(void)
 	tamaño = 28;
 	inputText = "Jugador";
 	gInputTextTexture.loadText(inputText.c_str(), tamaño, textColor);
+
+	texto_cambio.loadText("NUEVA FASE", 28, textColor);
+	fase=0;
+
+	for(int i = INICIO + 1; i < GAMEOVER; i++)
+	{
+		flags[i]=false;
+	}
+
+	flags[INICIO]=true;
+
 }
 
 
@@ -42,12 +53,14 @@ void Coordinator::event(SDL_Event *e)
 		case INICIO:
 			{
 			
+				
 			//vamos a la pantalla de juego al pulsar enter
 			if( e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
 			{
 					//game.reinitjuego(fase);
-					game.reinitjuego();
 					estado = INTRO_FASE;
+					flags[INTRO_FASE]=true;
+
 			}
 
 			//función de entrada de texto y actualización del nombre
@@ -59,26 +72,32 @@ void Coordinator::event(SDL_Event *e)
 
 		case INTRO_FASE:
 			{
+			
 				//tiempo_fase.start();
-				cout<<"fase nueva"<<endl;
+				//cout<<"fase nueva"<<endl;
 
-				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_SPACE)
+				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
 					{
-						game.nuevafase(fase);
 						estado=JUEGO;
-						tiempo_fase.start();
-						tiempo_ataques.start();
+						flags[JUEGO]=true;
 				}
-
 				break;
 			}
 
 		case JUEGO:
 			{
+				/*if(flags[JUEGO])
+				{
+					game.nuevafase(fase);
+					tiempo_fase.start();
+					tiempo_ataques.start();
+					flags[JUEGO]=false;
+				}*/
 				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_SPACE)
 				{
 						tiempo_fase.pause();
 						tiempo_ataques.pause();
+						flags[PAUSE]=true;
 						estado = PAUSE;
 						
 				}
@@ -91,29 +110,16 @@ void Coordinator::event(SDL_Event *e)
 				case 1:
 					{
 						estado=INTRO_FASE;
-						fase++;
+						flags[INTRO_FASE]=true;
 
 						break;
 					}
 				case 2:
 					{
 						estado=GAMEOVER;
-						fase=0;
-
+						flags[GAMEOVER]=true;
 						break;
 					}
-				}
-
-				if(tiempo_ataques.getSecs()>10)
-				{
-					game.ataqueEnemigo();
-					tiempo_ataques.start();
-				}
-				if(tiempo_fase.getSecs()>100)
-					{
-						tiempo_fase.stop();
-						tiempo_ataques.stop();
-						estado= INTRO_FASE;
 				}
 				break;
 			}
@@ -126,6 +132,7 @@ void Coordinator::event(SDL_Event *e)
 				{
 						tiempo_fase.unpause();
 						tiempo_ataques.unpause();
+						flags[JUEGO]=true;
 						estado = JUEGO;
 				}
 				
@@ -135,6 +142,11 @@ void Coordinator::event(SDL_Event *e)
 
 		case GAMEOVER:
 			{
+				/*if(flags[GAMEOVER])
+				{
+						flags[GAMEOVER]=false;
+						fase=0;
+				}*/
 				cout<<"game over baby"<<endl;
 
 				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN) estado = INICIO;
@@ -155,6 +167,11 @@ void Coordinator::render()
 	{
 		case INICIO:
 			{
+				if(flags[INICIO])
+				{
+					game.reinitjuego();
+					flags[INICIO]=false;
+				}
 			//pantalla de inicio
 			game.RenderTotal();
 
@@ -168,17 +185,47 @@ void Coordinator::render()
 
 		case INTRO_FASE:
 			{
+				if(flags[INTRO_FASE])
+				{
+					fase++;
 
-				
-
+					stringstream nfase;
+					nfase.str(" ");
+					nfase<<fase;
+					texto_nfase.loadText(nfase.str(), 28, textColor, 2);
+					tiempo_fase.stop();
+					tiempo_ataques.stop();
+					flags[INTRO_FASE]=false;
+				}
+				texto_cambio.render(gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
+				texto_nfase.render(gRenderer, 0.1*gWindow.getWidth(), 0.6*gWindow.getHeight());
 				break;
 			}
 
 		case JUEGO:
 			{
+				if(flags[JUEGO])
+				{
+					game.nuevafase(fase);
+					tiempo_fase.start();
+					tiempo_ataques.start();
+					flags[JUEGO]=false;
+				}
 				//renderizamos los viewports y los elementos del juego
 				game.RenderViewPorts();
-					break;	
+				
+				if(tiempo_ataques.getSecs()>2)
+			
+				{
+					game.ataqueEnemigo();
+					tiempo_ataques.start();
+				}
+				if(tiempo_fase.getSecs()>30)
+				{
+						estado = INTRO_FASE;
+						flags[INTRO_FASE] = true;
+				}
+				break;	
 			}
 
 		case PAUSE:
@@ -188,7 +235,11 @@ void Coordinator::render()
 			}
 		case GAMEOVER:
 			{
-
+				if(flags[GAMEOVER])
+				{
+						flags[GAMEOVER]=false;
+						fase=0;
+				}
 				
 
 				break;

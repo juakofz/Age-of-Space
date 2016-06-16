@@ -20,23 +20,25 @@ bool Interacciones::impacto(Ship nave, Proyectil disparo)
 	//nave.getSize() / 4 + disparo.getSize() / 4
 }
 
+
 int Interacciones::impactoListas(ListaNaves &n, ListaProyectiles &p)
 {
 	int flag=0;
-	for (int i = n.lista.size() -1; i>=0; i--)
+	for (int i = (n.lista.size() - 1); i >= 0; i--)
 	{
-		for (int j = p.lista.size() -1; j >=0; j--)
+		for (int j = (p.lista.size() - 1); j >= 0; j--)
 		{
-			if(impacto(*n.lista[i], *p.lista[j]) && (n.lista[i]->getAmiga() != p.lista[j]->getAmiga()))
+			if(impacto(*n.lista[i], *p.lista[j]) && (n.lista[i]->getPlayer() != p.lista[j]->getPlayer()))
 			{
 				n.eliminarNave(i);
 				p.eliminarProyectil(j);
 				cout << "impacto" << endl;
 				flag++;
-				break;
+				break;				
 			}
 		}
 	}
+	
 	return flag;
 }
 

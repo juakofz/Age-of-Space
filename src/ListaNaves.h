@@ -19,7 +19,6 @@ public:
 
 	bool agregar(Ship *nave);
 	void render(Camera cam);
-
 	void eliminarNave(int ind);
 	void eliminarContenido();
 
@@ -29,8 +28,8 @@ public:
 	int getSel();
 	int getSels();
 	Vector2 getCen(int i);
-
-	bool getAmiga(int i);
+	int getSize();
+	int getPlayer(int ind);
 
 private:
 	ListaExplosiones l_expl;

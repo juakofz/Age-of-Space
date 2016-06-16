@@ -8,10 +8,10 @@ ListaProyectiles::ListaProyectiles(void)
 
 ListaProyectiles::~ListaProyectiles(void)
 {
-	for(int i=0;i<lista.size();i++) 
+	for(int i = (lista.size() - 1); i >= 0; i--)
 	{
 		delete lista[i];
-		lista [i]=0;
+		lista [i] = 0;
 	}
 }
 
@@ -35,9 +35,8 @@ void ListaProyectiles::eliminarProyectil(int ind)
 { 
     if((ind<0)||(ind>=lista.size())) return;              
 	
-	//ELO PROBLEMO
+	//O PROBLEMO
 	//delete lista[ind];    
-    //FIN DELO PROBLEMO
 	
 	lista.erase(lista.begin() + ind);    
 } 
@@ -51,6 +50,7 @@ void ListaProyectiles::eliminarContenido()
 	}
 
 }
+
 
 void ListaProyectiles::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {

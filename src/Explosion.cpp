@@ -1,7 +1,9 @@
 #include "Explosion.h"
 
 Texture * Explosion::tex = 0;
+
 float Explosion::scale=0.6;
+
 
 Explosion::Explosion()
 {
@@ -9,12 +11,10 @@ Explosion::Explosion()
 
 Explosion::~Explosion()
 {
-	cout << "no pum" << endl;
 }
 
 Explosion::Explosion(int x, int y, int size)
 {
-	cout << "pum" << endl;
 	//Posición
 	pos.x = x;
 	pos.y = y;
@@ -28,12 +28,14 @@ Explosion::Explosion(int x, int y, int size)
 	{
 		//Textura
 		proy[i].SetTex(tex);
-		proy[i].setSize(25);
-		tex->setColor(230 + (rand() % 35), 110 + (rand() % 40), (rand () % 30));
+
+		proy[i].setSize(20);
+		tex->setColor(255, 50, 0);
 
 		//Posición
 		proy[i].SetPos(x, y);
-		proy[i].SetMaxVel(2);
+		proy[i].SetMaxVel(3);
+
 
 		//Ángulo
 		float angle = (360 / p_num) * i + (rand() % 11 - 5);

@@ -9,8 +9,8 @@ class GameObject
 public:
 
 	//constructor y destructor
-	GameObject(void);
-	GameObject(bool selec=true);
+	GameObject(int t);
+	GameObject(int t, bool selec = true);
 	virtual ~GameObject(void);
 
 	//Manejo de eventos
@@ -47,15 +47,16 @@ public:
 
 	int getType();
 
-
 	//Texturas
 	static void setTextures(Texture *tdisp);
 
-	//propia
-	bool getAmiga();
-	void setAmiga(bool amig);
+	//Player
+	void setPlayer(int p);
+	int getPlayer();
 
 protected:
+
+	const int type;
 
 	Texture *marker, *tex, *map_tex;
 	static Texture *tdisparo;
@@ -73,8 +74,8 @@ protected:
 
 	int sel_angle;
 
-	//propia
-	bool amiga;
+	//Player
+	int player;
 
 private:
 	bool seleccionable;

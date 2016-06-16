@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Ship::Ship():ObjetoMovil()
+Ship::Ship():ObjetoMovil(1)
 {
 	//Vector2 por defecto 0,0;
 	//Dirección predeterminada
@@ -30,10 +30,10 @@ Ship::Ship():ObjetoMovil()
 	marker_color.b = 0x00;
 	marker_color.a = 0x00;
 
-	tex=NULL;
+	tex = NULL;
 }
 
-Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, bool amig):ObjetoMovil(amig)
+Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p, bool sel):ObjetoMovil(player, sel)
 {
 	dir.x = 1;
 	dir.y = 0;
@@ -54,7 +54,8 @@ Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, bool amig):
 	setSize(siz);
 	setMarker(marktex);
 	SetCen(cen2.x, cen2.y);
-	amiga = amig;
+	player = p;
+
 
 	stop();
 }

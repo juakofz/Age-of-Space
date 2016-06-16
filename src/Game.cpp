@@ -32,7 +32,6 @@ int Game::event(SDL_Event* e)
 		mouse.setR_pos(mx, my);
 
 		mouse.update(e, false);
-		numviewport = 1;
 	}
 
 	//Game viewport (juego)
@@ -86,22 +85,32 @@ int Game::event(SDL_Event* e)
 
 		//Update mouse
 		mouse.update(e);
-		numviewport = 3;
 	}
 
-	//Menu area
-	if(my >= juego.getHeight())
-	{
-		menu.Set();
-		eventMenu(e);
-		//Absolute
-		mouse.setPos(mx, my);
-		//Relative
-		mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
 
-		mouse.update(e, false);
-		numviewport = 2;
-	}		
+	if (my >= juego.getHeight())
+	{
+		//Menu area
+		if (mx < menu.getWidth())
+		{
+			menu.Set();
+			eventMenu(e);
+			//Absolute
+			mouse.setPos(mx, my);
+			//Relative
+			mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
+			mouse.update(e, false);
+		}
+		else
+		{
+			minimapa.Set();
+			eventMinimapa(e);
+			//Absolute
+			mouse.setPos(mx, my);
+			//Relative
+			mouse.setR_pos(minimapa.relatxy(mx, my).x, minimapa.relatxy(mx, my).y);
+		}
+	}
 	return flag;
 }
 
@@ -184,6 +193,7 @@ void Game::RenderViewPorts()
 	zonas[JUEGO]->render();
 	zonas[MINIMAPA]->render();
 	renderJuego();
+	renderMinimapa();
 	total.Set();
 	mouse.render();
 
@@ -277,6 +287,7 @@ void Game::reinitjuego()
 void Game::nuevafase(int i)
 {
 	jugador.cambiarRecursos(0, 50);
+	ataques=i;
 
 }
 void Game::renderJuego()
@@ -298,17 +309,15 @@ void Game::renderJuego()
 	objetos_prueba.render(cam);
 	proyectiles.render(cam);
 
-	if(ast.getSel()) 
+	if(edificio.getSel()) 
 	{
 			renderMenu();
-			int type=ast.getType();
+			//int type=ast.getType();
 	}
 	
-	if(asteroides.getSel()) renderMenu();
+	//if(asteroides.getSel()) renderMenu();
 	juego.Set();
 }
-
-
 
 void Game::setNombre(std::string nombre)
 {
@@ -334,7 +343,8 @@ int Game::eventjuego(SDL_Event* e)
 				if(naves.getSel(i))
 				{
 
-					Proyectil* aux = new Proyectil(naves.getAmiga(i));
+					Proyectil* aux = new Proyectil(naves.getPlayer(i));
+
 					aux->SetTex(tex + 9);
 					aux->setSize(25);
 					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
@@ -352,12 +362,14 @@ int Game::eventjuego(SDL_Event* e)
 
 	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
 
+
 	int oro=Interacciones::impactoListas(naves, proyectiles);
 	if(oro)
 	{
 			jugador.cambiarRecursos(oro, 0);
 			act_barra = true;
 	}
+
 	edificio.event(e, mouse.getMrect(), mouse.getMpos());
 	if(Interacciones::impacto(edificio, proyectiles))
 	{
@@ -397,18 +409,20 @@ void Game::eventMenu(SDL_Event* e)
 		case 2:
 			{
 				static int i=0;
+
 				//Ship* aux = new Ship; 	
-				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), true);
+				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), 1, true);
 				jugador.cambiarRecursos(-5, -1);
 				act_barra=true;
 				naves.agregar(aux);
+
 				break;			
 			}
 
 		case 3:
 			do{
-				asteroides.eliminarAsteroide(asteroides.getSel()-1);
-			} while(asteroides.getSel());
+				naves.eliminarNave(naves.getSel()-1);
+			} while(naves.getSel());
 			break;
 		
 		case 4:
@@ -460,9 +474,6 @@ void Game::renderBarra()
 		act_barra=false;
 	}
 
-	//renderizamos el menu
-//	menubarra.render();
-	barra.render();
 
 }
 
@@ -473,26 +484,118 @@ void Game::eventBarra(SDL_Event* e)
 
 }
 
+
+//Minimapa guapo guapo
+void Game::initMinimapa()
+{
+	//Lista de cositas?
+}
+
+void Game::renderMinimapa()
+{
+	minimapa.render();
+	int margen = 10;
+	int h = minimapa.getHeight();
+	int w = minimapa.getWidth();
+
+	//Map border
+	SDL_Rect mapRect = {margen, margen, w - 2 * margen, h - 2 * margen };
+	SDL_SetRenderDrawColor(gRenderer, 0, 128, 255, 255);
+	SDL_RenderDrawRect(gRenderer, &mapRect);
+
+	if (naves.getSize()) {
+		for (int i = (naves.getSize() - 1); i >= 0; i--)
+		{
+			Vector2 p = naves.getCen(i);
+			Vector2 rp;
+			rp.x = (p.x / map.getSize().x) * (w - 2 * margen) + margen;
+			rp.y = (p.y / map.getSize().y) * (h - 2 * margen) + margen;
+
+			SDL_Rect fillRect = {rp.x, rp.y, 2, 2};
+			switch (naves.getPlayer(i))
+			{
+			case 1:
+				SDL_SetRenderDrawColor(gRenderer, 0, 255, 255, 0);
+				break;
+			case 2:
+				SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, 0);
+				break;
+			default:
+				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+			}
+			SDL_RenderFillRect(gRenderer, &fillRect);
+		}
+	}
+
+	//Camera rect
+	Vector2 c, rc, s, rs;
+	
+	c = cam.getPos();
+	rc.x = (c.x / map.getSize().x) * (w - 2 * margen) + margen;
+	rc.y = (c.y / map.getSize().y) * (h - 2 * margen) + margen;
+	
+	s = cam.getSize();
+	rs.x = s.x / 13;
+	rs.y = s.y / 10;
+
+	SDL_Rect camRect = {rc.x, rc.y, rs.x, rs.y};
+	SDL_SetRenderDrawColor( gRenderer, 255, 255, 255, 150);        
+	SDL_RenderDrawRect( gRenderer, &camRect );
+
+	//Renderizar minicositas
+
+}
+
+void Game::eventMinimapa(SDL_Event* e)
+{
+	int margen = 10;
+	//Movimiento de cámara
+	if (e->button.button == SDL_BUTTON_LEFT)
+	{
+		//Dentro en x
+		if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= minimapa.getWidth() + margen))
+		{
+			//Dentro en y
+			if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= minimapa.getHeight() + margen))
+			{
+				SDL_Point p;
+				p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (minimapa.getWidth() - 2 * margen);
+				p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (minimapa.getHeight() - 2 * margen);
+				cam.setCen(p.x, p.y);
+			}
+		}
+	}
+
+	//Movimiento de naves
+	if (e->button.button == SDL_BUTTON_RIGHT)
+	{
+	}
+}
+
+
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 {
-	cout<<"ataque enemigo"<<endl;
 	cout<<ataques<<endl;
 	ataques++;
-	atacar=true;
+	atacar = true;
 	return interval;
 }
 
 void Game::ataqueEnemigo()
 {
+	Vector2 centro;
 	
-		cout<<"atacando"<<endl;
-		for(int j = 0; j<ataques * 2; j++)
-		{
+	centro.x=  map.getSize().x / 2;
+	centro.y = map.getSize().y / 2;
+	int radio = ( ((centro.x<centro.y)?centro.x:centro.y) - 100 * ataques );
+	float angulo = (2 * M_PI )/( ataques * 4);
 
-			Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), false);
-		
-			naves.agregar(aux);
-		}
 
-		ataques++;
+	for(int j = 0; j < ataques*4; j++)
+	{
+		Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(centro.x + radio * cos(angulo * j ), centro.y - radio * sin(angulo * j)), 2, false);
+		naves.agregar(aux);
+	}
+	
+	ataques++;
 }

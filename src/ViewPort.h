@@ -34,6 +34,7 @@ public:
 
 	//altura y corrdonada y
 	int getHeight();
+	int getWidth();
 	int getY();
 
 	//renderizar

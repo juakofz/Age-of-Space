@@ -57,6 +57,11 @@ int ZonaPantalla::getHeight()
 	return viewport.getHeight();
 }
 
+int ZonaPantalla::getWidth()
+{
+	return viewport.getWidth();
+}
+
 ViewPort ZonaPantalla::getViewport()
 {
 	return viewport;

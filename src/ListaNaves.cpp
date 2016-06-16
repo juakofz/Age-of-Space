@@ -39,7 +39,6 @@ void ListaNaves::eliminarNave(int ind)
 
 } 
 
-
 void ListaNaves::eliminarContenido()
 {
 	for(int i = lista.size() - 1; i >= 0 ;i--)
@@ -50,6 +49,7 @@ void ListaNaves::eliminarContenido()
 
 	cout<<"tamaño despues de borrar"<<lista.size()<<endl;
 }
+
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
 	int k=0;
@@ -108,7 +108,12 @@ int ListaNaves::getSels()
 	return i;
 }
 
-bool ListaNaves::getAmiga(int i)
+int ListaNaves::getSize()
 {
-	return lista[i]->getAmiga();
+	return lista.size();
+}
+
+int ListaNaves::getPlayer(int ind)
+{
+	return lista[ind]->getPlayer();
 }

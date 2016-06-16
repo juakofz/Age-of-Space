@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <SDL.h>
 #include "LWindow.h"
 #include "Barra.h"
@@ -24,24 +23,23 @@
 #include "Interacciones.h"
 #include "Edificio.h"
 
+
 enum ZONAS
 {
-	BARRA=0,
-	JUEGO=1,
-	MENU=2,
-	MINIMAPA=3,
-	TOTAL=4,
-	NUM_VIEWPORTS=5
+	BARRA = 0,
+	JUEGO = 1,
+	MENU = 2,
+	MINIMAPA = 3,
+	TOTAL = 4,
+	NUM_VIEWPORTS = 5
 };
 
 class Game
 {
 	//viewports del juego
-//	ViewPort  juego, total;
-	int numviewport;
-
 	ZonaPantalla *zonas[NUM_VIEWPORTS];
 	ZonaPantalla juego, total, minimapa;
+
 	//Mapa
 	Map map;
 
@@ -58,8 +56,6 @@ class Game
 	ListaObjetos objetos_prueba;
 	ListaProyectiles proyectiles;
 	Asteroid ast;
-
-
 
 	//Partes de la pantalla
 	Menu menu;
@@ -114,7 +110,6 @@ public:
 	void renderMenu(); //renderiza los elementos del juego
 	void eventMenu(SDL_Event* e); //eventos en el viewport del juego 
 
-
 	//caracteristicas
 	void initCaract(); //inicializa los elementos del juego
 	void renderCaract(); //renderiza los elementos del juego
@@ -124,6 +119,12 @@ public:
 	void initBarra(); //inicializa los elementos del juego
 	void renderBarra(); //renderiza los elementos del juego
 	void eventBarra(SDL_Event* e); //eventos en el viewport del juego 
+	
+	//Minimapa
+	void initMinimapa(); //inicializa los elementos del juego
+	void renderMinimapa(); //renderiza los elementos del juego
+	void eventMinimapa(SDL_Event* e); //eventos en el viewport del juego
+
 
 	//nombre del jugador
 	void setNombre(std::string nombre);

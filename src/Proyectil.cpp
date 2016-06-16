@@ -1,7 +1,8 @@
 #include "Proyectil.h"
 
 
-Proyectil::Proyectil(bool amig):ObjetoMovil(false)
+
+Proyectil::Proyectil(int p):ObjetoMovil(3, false)
 {
 
 	//Vector2 por defecto 0,0;
@@ -20,7 +21,8 @@ Proyectil::Proyectil(bool amig):ObjetoMovil(false)
 	vel.y = 0;
 
 	tex = NULL;
-	amiga = amig;
+
+	player = p;
 }
 
 Proyectil::~Proyectil(void)
