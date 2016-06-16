@@ -52,15 +52,15 @@ void ListaNaves::eliminarContenido()
 
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
-	int k=0;
-	for(int i=0;i<lista.size();i++)
+	int k = 0;
+	for(int i = 0; i < lista.size(); i++)
 	{
 		if( lista[i]->event(e, selection, xyrel) )
 		{
-			k=1;
-			for(int j=0;j<lista.size();j++)
+			k = 1;
+			for(int j = 0; j < lista.size(); j++)
 			{
-				if(j!=i)
+				if(j != i)
 				{
 					if(lista[j]->clickOn(xyrel))
 						{

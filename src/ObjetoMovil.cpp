@@ -16,6 +16,8 @@ ObjetoMovil::ObjetoMovil(int t, bool selec):GameObject(t, selec)
 
 	//Velocidad máxima
 	max_vel = 2;
+	turn_rad = 20;
+
 	//Nave parada
 	vel.x = 0;
 	vel.y = 0;
@@ -102,6 +104,41 @@ bool ObjetoMovil::move()
 	return 0;
 }
 
+bool ObjetoMovil::turn(int x, int y)
+{
+	
+	int turn_error = 3;
+
+	float a_n = max_vel * max_vel / turn_rad;
+	
+	Vector2 aux(x - cen.x, y - cen.y);
+
+	if (abs(angle - aux.argumento()) < turn_error)
+		return true;
+	else
+	{
+		if (angle - aux.argumento() >= turn_error) //Izquierda
+		{
+			accel.x = -dir.x * a_n;
+			accel.y = dir.y * a_n;
+		}
+		if (angle - aux.argumento() <= turn_error) //derecha
+		{
+			accel.x = dir.x * a_n;
+			accel.y = -dir.y * a_n;
+		}
+
+		//Mover
+		vel.x += accel.x;
+		vel.y += accel.y;
+
+		pos.x += vel.x;
+		pos.y += vel.y;
+		
+		return false;
+	}
+}
+
 void ObjetoMovil::stop()
 {
 	dest.x = cen.x;
@@ -114,8 +151,8 @@ bool ObjetoMovil::moveTo(int x, int y)
 {
 	//vel.x = dir.x;
 	//vel.y = dir.y;
-	dest.x=x;
-	dest.y=y;
+	dest.x = x;
+	dest.y = y;
 
 	dir.x = dest.x - cen.x;
 	dir.y = dest.y - cen.y;

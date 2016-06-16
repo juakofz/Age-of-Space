@@ -539,8 +539,8 @@ void Game::renderMinimapa()
 	rc.y = (c.y / map.getSize().y) * (h - 2 * margen) + margen;
 	
 	s = cam.getSize();
-	rs.x = s.x / 13;
-	rs.y = s.y / 10;
+	rs.x = (s.x / map.getSize().x) * (w - 2 * margen);
+	rs.y = (s.y / map.getSize().y) * (h - 2 * margen);
 
 	SDL_Rect camRect = {rc.x, rc.y, rs.x, rs.y};
 	SDL_SetRenderDrawColor( gRenderer, 255, 255, 255, 150);        
@@ -553,34 +553,37 @@ void Game::renderMinimapa()
 void Game::eventMinimapa(SDL_Event* e)
 {
 	int margen = 10;
-	//Movimiento de cámara
-	if (e->button.button == SDL_BUTTON_LEFT)
+
+	//Dentro en x
+	if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= minimapa.getWidth() + margen))
 	{
-		//Dentro en x
-		if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= minimapa.getWidth() + margen))
+		//Dentro en y
+		if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= minimapa.getHeight() + margen))
 		{
-			//Dentro en y
-			if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= minimapa.getHeight() + margen))
+			SDL_Point p;
+			p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (minimapa.getWidth() - 2 * margen);
+			p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (minimapa.getHeight() - 2 * margen);
+			
+			//Movimiento de cámara
+			if (e->button.button == SDL_BUTTON_LEFT)
 			{
-				SDL_Point p;
-				p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (minimapa.getWidth() - 2 * margen);
-				p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (minimapa.getHeight() - 2 * margen);
 				cam.setCen(p.x, p.y);
 			}
-		}
-	}
 
-	//Movimiento de naves
-	if (e->button.button == SDL_BUTTON_RIGHT)
-	{
+			//Movimiento de naves
+			if (e->button.button == SDL_BUTTON_RIGHT)
+			{
+				naves.event(e, mouse.getMrect(), p);
+			}
+		}
 	}
 }
 
 
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 {
-	cout<<"ataque enemigo"<<endl;
-	cout<<ataques<<endl;
+	cout << "ataque enemigo" << endl;
+	cout << ataques << endl;
 	ataques++;
 	atacar = true;
 	return interval;

@@ -1,5 +1,6 @@
 #pragma once
 #include "gameobject.h"
+#include "timer.h"
 
 class ObjetoMovil :
 	public GameObject
@@ -15,9 +16,11 @@ public:
 
 	//Movimiento
 	virtual bool move();
+	bool turn(int x, int y);
 	void stop();
 	bool moveTo(int x, int y);
 	void follow(Vector2 &destino);
+	
 	Vector2& getDest();
 
 	//Velocidad
@@ -33,8 +36,12 @@ protected:
 
 	float max_vel;
 	Vector2 vel;
+	Vector2 accel;
 	Vector2 dir;
 	Vector2 dest;
+	float turn_rad;
+
+	//Seguimiento
 	float* dest_movil_x, *dest_movil_y;
 	bool following;
 };
