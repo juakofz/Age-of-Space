@@ -9,7 +9,7 @@ using namespace std;
 //Texture* Asteroid::marker=NULL;
 
 
-Asteroid::Asteroid(): GameObject(1, true)
+Asteroid::Asteroid(): GameObject(1, false)
 {
 
 }
@@ -23,6 +23,7 @@ Asteroid::~Asteroid()
 {
 	marker = m;
 }*/
+
 int Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;

@@ -287,6 +287,7 @@ void Game::reinitjuego()
 void Game::nuevafase(int i)
 {
 	jugador.cambiarRecursos(0, 50);
+	ataques=i;
 
 }
 void Game::renderJuego()
@@ -308,17 +309,15 @@ void Game::renderJuego()
 	objetos_prueba.render(cam);
 	proyectiles.render(cam);
 
-	if(ast.getSel()) 
+	if(edificio.getSel()) 
 	{
 			renderMenu();
-			int type=ast.getType();
+			//int type=ast.getType();
 	}
 	
-	if(asteroides.getSel()) renderMenu();
+	//if(asteroides.getSel()) renderMenu();
 	juego.Set();
 }
-
-
 
 void Game::setNombre(std::string nombre)
 {
@@ -412,7 +411,7 @@ void Game::eventMenu(SDL_Event* e)
 				static int i=0;
 
 				//Ship* aux = new Ship; 	
-				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), true);
+				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), 1, true);
 				jugador.cambiarRecursos(-5, -1);
 				act_barra=true;
 				naves.agregar(aux);
@@ -422,8 +421,8 @@ void Game::eventMenu(SDL_Event* e)
 
 		case 3:
 			do{
-				asteroides.eliminarAsteroide(asteroides.getSel()-1);
-			} while(asteroides.getSel());
+				naves.eliminarNave(naves.getSel()-1);
+			} while(naves.getSel());
 			break;
 		
 		case 4:
@@ -474,11 +473,6 @@ void Game::renderBarra()
 	//	cout<<"actualizar"<<endl;
 		act_barra=false;
 	}
-
-	//renderizamos el menu
-//	menubarra.render();
-	//barra.render();
-
 }
 
 void Game::eventBarra(SDL_Event* e)
@@ -539,6 +533,7 @@ void Game::renderMinimapa()
 	rc.y = (c.y / map.getSize().y) * (h - 2 * margen) + margen;
 	
 	s = cam.getSize();
+
 	rs.x = (s.x / map.getSize().x) * (w - 2 * margen);
 	rs.y = (s.y / map.getSize().y) * (h - 2 * margen);
 
@@ -582,8 +577,8 @@ void Game::eventMinimapa(SDL_Event* e)
 
 Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 {
-	cout << "ataque enemigo" << endl;
-	cout << ataques << endl;
+	cout<<ataques<<endl;
+
 	ataques++;
 	atacar = true;
 	return interval;
@@ -591,14 +586,19 @@ Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
 
 void Game::ataqueEnemigo()
 {
+	Vector2 centro;
 	
-	cout<<"atacando"<<endl;
-	for(int j = 0; j<ataques * 2; j++)
-	{
+	centro.x=  map.getSize().x / 2;
+	centro.y = map.getSize().y / 2;
+	int radio = ( ((centro.x<centro.y)?centro.x:centro.y) - 100 * ataques );
+	float angulo = (2 * M_PI )/( ataques * 4);
 
-		Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(15 * j, 300+100*ataques), 2, false);
-		
+
+	for(int j = 0; j < ataques*4; j++)
+	{
+		Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(centro.x + radio * cos(angulo * j ), centro.y - radio * sin(angulo * j)), 2, false);
 		naves.agregar(aux);
 	}
-	atacar = false;
+	
+	ataques++;
 }

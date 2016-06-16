@@ -79,28 +79,17 @@ int main(int argc, char* args[])
 
 			//inicializamos los elementos del juego
 			coordinador.initGame();
-		/*	game.cargarTexturas();
-			game.InitViewPorts();
-			game.initjuego();
 
-			game.initMenu();
-		*/
-		//	SDL_TimerID temporizador = SDL_AddTimer(5*1000, Game::LlamadaAtaqueEnemigo, " ");
 
 
 			//While application is running
 			while( !quit )
 			{
 
-				//flag de cambio en el texto introducido
-			//	bool renderText = false;
-		//		game.ataqueEnemigo();
-
 				//Límite FPS
 				cap_timer.start();
 
 				//Non queue events
-			//	game.main_event();
 				coordinador.mainEvent();
 
 				//Handle events on queue
@@ -116,32 +105,6 @@ int main(int argc, char* args[])
 					coordinador.event(&e);
 
 					size=gWindow.handleEvent( e );
-					//Si estamos en pantalla de inicio
-
-				/*	if(total) 
-					{
-									
-						//eventos del cambio de pantalla
-						size=gWindow.handleEvent( e );
-
-						//vamos a la pantalla de juego al pulsar enter
-						if( e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_RETURN) total=false;
-
-						//función de entrada de texto y actualización del nombre
-						renderText=textinput(&inputText, renderText, e);
-						game.setNombre(inputText);
-					}
-
-					//si estamos en la pantalla del juego
-					else
-					{
-
-						game.event(&e);
-
-						//Handle window events
-						size=gWindow.handleEvent( e );
-
-					}*/
 					
 				}
 				
@@ -189,26 +152,6 @@ int main(int argc, char* args[])
 					}
 
 					coordinador.render();
-					/*
-					//Update screen		
-					if(total)
-					{
-						//pantalla de inicio
-						game.RenderTotal();
-
-						//textos del inicio
-						gTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
-						Textrender(inputText, renderText, textColor, tamaño);
-						gInputTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.6*gWindow.getHeight() );
-					}
-					else
-					{
-							//renderizamos los viewports y los elementos del juego
-							game.RenderViewPorts();
-							//game.renderJuego();
-						
-					}
-					*/
 
 					//actualizamos renderizado total
 					SDL_RenderPresent( gRenderer );
