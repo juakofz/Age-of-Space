@@ -47,7 +47,18 @@ void ListaNaves::eliminarContenido()
 		lista.erase(lista.begin()+i);   
 	}
 
-	cout<<"tamaño despues de borrar"<<lista.size()<<endl;
+}
+
+void ListaNaves::eliminarJugador(int j)
+{
+	for(int i = lista.size() - 1; i >= 0 ;i--)
+	{
+		if(lista[i]->getPlayer() == j)
+		{
+			delete lista[i];    
+			lista.erase(lista.begin()+i);   
+		}
+	}
 }
 
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
