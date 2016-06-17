@@ -249,9 +249,10 @@ void Game::initjuego()
 		naves.agregar(aux);
 	}
 
-	std::stringstream recursos[2];
+	initBarra(1);
+	/*std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
-	barra.setRecursos(recursos);
+	barra.setRecursos(recursos);*/
 }
 
 void Game::reinitjuego()
@@ -260,6 +261,7 @@ void Game::reinitjuego()
 
 	ast.SetCen(1500,1500);	
 	edificio.SetCen(1500, 1500);
+
 	edificio.setVida(10);
 
 
@@ -279,15 +281,16 @@ void Game::reinitjuego()
 		naves.agregar(aux);
 	}
 
-	std::stringstream recursos[2];
-	jugador.getRecursos(recursos);
-	barra.setRecursos(recursos);
+	initBarra(1);
+
 }
 
 void Game::nuevafase(int i)
 {
 	jugador.cambiarRecursos(0, 50);
 	ataques=i;
+	initBarra(i);
+	naves.eliminarJugador(2);
 
 }
 void Game::renderJuego()
@@ -410,9 +413,8 @@ void Game::eventMenu(SDL_Event* e)
 			{
 				static int i=0;
 
-				//Ship* aux = new Ship; 	
-				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), 1, true);
-				jugador.cambiarRecursos(-5, -1);
+				if(jugador.cambiarRecursos(-5, -1)) break;
+				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), 1, true);				
 				act_barra=true;
 				naves.agregar(aux);
 
@@ -452,13 +454,16 @@ void Game::eventCaract(SDL_Event* e)
 	//printf("dentro del menu");
 }
 
-void Game::initBarra()
+void Game::initBarra(int fase)
 {
 	barra.SetName(jugador.getName());
 
 	std::stringstream recursos[2];
 	jugador.getRecursos(recursos);
 	barra.setRecursos(recursos);
+
+	barra.SetFase(fase);
+
 }
 
 void Game::renderBarra()
@@ -572,16 +577,6 @@ void Game::eventMinimapa(SDL_Event* e)
 			}
 		}
 	}
-}
-
-
-Uint32 Game::LlamadaAtaqueEnemigo(Uint32 interval, void* param)
-{
-	cout<<ataques<<endl;
-
-	ataques++;
-	atacar = true;
-	return interval;
 }
 
 void Game::ataqueEnemigo()
