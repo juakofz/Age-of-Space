@@ -1,6 +1,6 @@
 #pragma once
-
 #include "Game.h"
+
 
 class Coordinator
 {
@@ -33,8 +33,6 @@ protected:
 	Timer tiempo_fase, tiempo_ataques;
 
 	//texto en el cambio de fase
-	Texture texto_cambio, texto_nfase;
-
-
+	Texture texto_cambio, texto_nfase, texto_gameover, texto_gameover2;
 };
 

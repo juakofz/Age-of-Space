@@ -7,7 +7,7 @@
 class Player
 {
 	std::string name;
-	unsigned int oro, energia;
+	int oro, energia;
 	
 public:
 
@@ -18,6 +18,6 @@ public:
 	std::string getName(void);
 
 	void getRecursos(std::stringstream recursos[]);
-	void cambiarRecursos(int oro_cambio, int energia_cambio);
+	bool cambiarRecursos(int oro_cambio, int energia_cambio);
 };
 

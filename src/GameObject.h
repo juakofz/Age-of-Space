@@ -14,7 +14,7 @@ public:
 	virtual ~GameObject(void);
 
 	//Manejo de eventos
-	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)=0;
+	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel) = 0;
 
 	//Selección
 	void select();

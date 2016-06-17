@@ -81,6 +81,7 @@ int main(int argc, char* args[])
 			coordinador.initGame();
 
 
+
 			//While application is running
 			while( !quit )
 			{

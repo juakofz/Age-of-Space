@@ -21,6 +21,7 @@ public:
 	void render(Camera cam);
 	void eliminarNave(int ind);
 	void eliminarContenido();
+	void eliminarJugador(int i);
 
 	int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 	bool getSel(int ind);

@@ -46,6 +46,8 @@ Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p, bool
 	//Nave parada
 	vel.x = 0;
 	vel.y = 0;
+	//Alcance
+	range = 100;
 
 	sel = false;
 	sel_angle = 0;

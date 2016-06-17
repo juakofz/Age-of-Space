@@ -23,6 +23,7 @@ Asteroid::~Asteroid()
 {
 	marker = m;
 }*/
+
 int Asteroid::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 {
 	int mx, my;

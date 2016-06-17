@@ -47,20 +47,31 @@ void ListaNaves::eliminarContenido()
 		lista.erase(lista.begin()+i);   
 	}
 
-	cout<<"tamaño despues de borrar"<<lista.size()<<endl;
+}
+
+void ListaNaves::eliminarJugador(int j)
+{
+	for(int i = lista.size() - 1; i >= 0 ;i--)
+	{
+		if(lista[i]->getPlayer() == j)
+		{
+			delete lista[i];    
+			lista.erase(lista.begin()+i);   
+		}
+	}
 }
 
 int ListaNaves::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
 {
-	int k=0;
-	for(int i=0;i<lista.size();i++)
+	int k = 0;
+	for(int i = 0; i < lista.size(); i++)
 	{
 		if( lista[i]->event(e, selection, xyrel) )
 		{
-			k=1;
-			for(int j=0;j<lista.size();j++)
+			k = 1;
+			for(int j = 0; j < lista.size(); j++)
 			{
-				if(j!=i)
+				if(j != i)
 				{
 					if(lista[j]->clickOn(xyrel))
 						{

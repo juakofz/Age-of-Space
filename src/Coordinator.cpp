@@ -3,26 +3,27 @@
 
 Coordinator::Coordinator(void)
 {
-	estado=INICIO;
+	estado = INICIO;
 
-	textColor.r=0;
-	textColor.g=0;
-	textColor.b=255;
+	textColor.r = 0;
+	textColor.g = 0;
+	textColor.b = 255;
 
 	tamaño = 28;
 	inputText = "Jugador";
 	gInputTextTexture.loadText(inputText.c_str(), tamaño, textColor);
 
 	texto_cambio.loadText("NUEVA FASE", 28, textColor);
-	fase=0;
+	texto_gameover.loadText("GAMEOVER", 46, textColor);
+	texto_gameover2.loadText("UFF... ES DURO LA VERDAD", 46, textColor);
+	fase = 0;
 
 	for(int i = INICIO + 1; i < GAMEOVER; i++)
 	{
-		flags[i]=false;
+		flags[i] = false;
 	}
 
-	flags[INICIO]=true;
-
+	flags[INICIO] = true;
 }
 
 
@@ -52,7 +53,6 @@ void Coordinator::event(SDL_Event *e)
 	{
 		case INICIO:
 			{
-			
 				
 			//vamos a la pantalla de juego al pulsar enter
 			if( e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
@@ -147,10 +147,12 @@ void Coordinator::event(SDL_Event *e)
 						flags[GAMEOVER]=false;
 						fase=0;
 				}*/
-				cout<<"game over baby"<<endl;
 
-				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN) estado = INICIO;
-
+				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
+				{
+						flags[INICIO]=true;
+						estado = INICIO;
+				}
 				break;
 			}
 	}
@@ -192,11 +194,13 @@ void Coordinator::render()
 					stringstream nfase;
 					nfase.str(" ");
 					nfase<<fase;
-					texto_nfase.loadText(nfase.str(), 28, textColor, 2);
+					texto_nfase.loadText(nfase.str(), 40, textColor, 2);
 					tiempo_fase.stop();
 					tiempo_ataques.stop();
 					flags[INTRO_FASE]=false;
 				}
+				game.RenderTotal();
+
 				texto_cambio.render(gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
 				texto_nfase.render(gRenderer, 0.1*gWindow.getWidth(), 0.6*gWindow.getHeight());
 				break;
@@ -214,13 +218,13 @@ void Coordinator::render()
 				//renderizamos los viewports y los elementos del juego
 				game.RenderViewPorts();
 				
-				if(tiempo_ataques.getSecs()>2)
+				if(tiempo_ataques.getSecs() > (10 - fase))
 			
 				{
 					game.ataqueEnemigo();
 					tiempo_ataques.start();
 				}
-				if(tiempo_fase.getSecs()>30)
+				if(tiempo_fase.getSecs() > (30 + fase*10))
 				{
 						estado = INTRO_FASE;
 						flags[INTRO_FASE] = true;
@@ -238,8 +242,13 @@ void Coordinator::render()
 				if(flags[GAMEOVER])
 				{
 						flags[GAMEOVER]=false;
-						fase=0;
+						fase = 0;
 				}
+
+
+				game.RenderTotal();
+				//texto_gameover.render(gRenderer, 0.3*gWindow.getWidth(), 0.4*gWindow.getHeight());
+				texto_gameover2.render(gRenderer, 5, 0.4*gWindow.getHeight());
 				
 
 				break;
