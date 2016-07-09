@@ -122,7 +122,7 @@ void Game::cargarTexturas()
 	tex[3].load("img/markerW.png");
 	tex[4].load("img/markerW.png");
 	tex[5].load("img/Cursor1.png");
-	tex[6].load("img/Background.jpg");
+	tex[6].load("img/Background.png");
 	tex[7].load("img/grid3.png");
 	tex[8].load("img/Nave.png");
 	tex[9].load("img/disparo.png");
@@ -428,7 +428,7 @@ void Game::eventMenu(SDL_Event* e)
 			break;
 		
 		case 4:
-			cout<<"cerrar"<<endl;
+			//cout<<"cerrar"<<endl;
 			break;
 	}
 }

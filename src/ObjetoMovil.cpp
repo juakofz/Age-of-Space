@@ -78,11 +78,11 @@ bool ObjetoMovil::move()
 	if(following)
 	{
 		//Dirección
-		cout<<"entro"<<endl;
+	//	cout<<"entro"<<endl;
 		dir.x = dest.x - cen.x;
 		dir.y = dest.y - cen.y;
 		angle = (180 * atan2(dir.y, dir.x) / M_PI);
-		cout<<dest.x<<" "<<dest.y<<endl;
+	//	cout<<dest.x<<" "<<dest.y<<endl;
 	}
 
 	if ((abs(cen.x - dest.x) > max_vel) || (abs(cen.y - dest.y) > max_vel)) {
@@ -164,13 +164,13 @@ bool ObjetoMovil::moveTo(int x, int y)
 void ObjetoMovil::follow(Vector2 &destino)
 {
 	dest=destino;
-	cout<<dest.x<<" "<<dest.y<<endl;
+//	cout<<dest.x<<" "<<dest.y<<endl;
 	following=true;
 }
 
 Vector2& ObjetoMovil::getDest()
 {
-	cout<<"    "<<endl;
+//	cout<<"    "<<endl;
 	following=true;
 	return dest;
 
