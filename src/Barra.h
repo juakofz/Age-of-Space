@@ -8,7 +8,7 @@
 class Barra: public ZonaPantalla
 {
 	// name;
-	Texture nombrejugador, opciones, recursos, energianum, oronum, fasenum;
+	Texture nombrejugador, opciones, recursos, energianum, oronum;
 
 
 public:
@@ -23,12 +23,8 @@ public:
 	void setRecursos(std::stringstream recursos[]);
 
 	//nombre del jugador
-	void SetName(std::string fase);
+	void SetName(std::string nombre);
 	void renderName();
-
-	//numero de fase
-	void SetFase(int fase);
-	void renderFase();
 
 	//void renderOpciones();
 

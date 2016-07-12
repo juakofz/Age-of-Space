@@ -29,10 +29,11 @@ bool Button::event( SDL_Event* e, SDL_Point xyrel )
 		switch( e->button.button )
 		{
 			case SDL_BUTTON_LEFT:
-			return 1;
+			printf("pulsado boton izquierdo sobre el boton \n"); return 1;
 			break;
 			
 			case SDL_BUTTON_RIGHT:
+			printf("pulsado boton derecho sobre el boton \n");
 			break;
 				
 		}
