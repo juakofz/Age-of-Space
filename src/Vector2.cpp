@@ -33,7 +33,7 @@ float Vector2::argumento()
 	aux=180 * atan2(y, x) / M_PI;
 	if(aux<0) return (aux+360);
 	else return aux;
-	return (180 * atan2(y, x) / M_PI);
+	//return (180 * atan2(y, x) / M_PI);
 }
 
 Vector2 Vector2::operator - (Vector2 v)
