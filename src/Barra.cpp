@@ -25,7 +25,7 @@ void Barra::render()
 void Barra::renderName()
 {
 	Vector2 tamaño;
-	nombrejugador.render(gRenderer, &nombrejugador.getDim(), gWindow.getWidth()*0.4, 15);
+	nombrejugador.render(gRenderer, &nombrejugador.getDim(),( gWindow.getWidth() - nombrejugador.getDim().x ) / 2, 15);
 }
 
 void Barra::SetName(std::string nombre)

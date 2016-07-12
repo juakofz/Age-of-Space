@@ -38,7 +38,7 @@ bool Player::cambiarRecursos(int oro_cambio, int energia_cambio)
 {
 	if((((oro * energia) == 0) && ((oro_cambio < 0) || (energia_cambio < 0 ))) || (((oro + oro_cambio) < 0 ) || ((energia + energia_cambio) < 0))) return true;
 	//cout<<oro<<" mas "<<oro_cambio<<endl;
-	 cout<<oro + oro_cambio<<" en el if" <<endl;
+	// cout<<oro + oro_cambio<<" en el if" <<endl;
 	if((oro + oro_cambio) < 0 );
 	((oro+oro_cambio)>=0)?(oro+=oro_cambio):0;
 	((energia+energia_cambio)>=0)?(energia+=energia_cambio):0;

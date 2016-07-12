@@ -16,6 +16,13 @@ Coordinator::Coordinator(void)
 	texto_cambio.loadText("NUEVA FASE", 28, textColor);
 	texto_gameover.loadText("GAMEOVER", 46, textColor);
 	texto_gameover2.loadText("UFF... ES DURO LA VERDAD", 46, textColor);
+<<<<<<< HEAD
+=======
+	texto_pause.loadText("PAUSE", 46, textColor);
+	texto_pauseins.loadText("Pulse enter para ir al inicio", 28, textColor);
+	texto_inicioins.loadText("Enter para empezar y esc para salir", 28, textColor);
+	texto_win.loadText("ENHORABUENA, HAS SOBREVIVIDO", 46, textColor);
+>>>>>>> refs/remotes/origin/pr/16
 
 	fase = 0;
 
@@ -48,8 +55,9 @@ void Coordinator::mainEvent()
 	game.main_event();
 }
 
-void Coordinator::event(SDL_Event *e)
+bool Coordinator::event(SDL_Event *e)
 {
+	bool flag=false;
 	switch (estado)
 	{
 		case INICIO:
@@ -64,6 +72,10 @@ void Coordinator::event(SDL_Event *e)
 
 			}
 
+			if( e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_ESCAPE)
+			{
+				flag=true;
+			}
 			//función de entrada de texto y actualización del nombre
 			renderText=textinput(&inputText, renderText, *e);
 			game.setNombre(inputText);
@@ -128,7 +140,6 @@ void Coordinator::event(SDL_Event *e)
 
 		case PAUSE:
 			{
-				cout<<"pause"<<endl;
 				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_SPACE)
 				{
 						tiempo_fase.unpause();
@@ -136,18 +147,28 @@ void Coordinator::event(SDL_Event *e)
 						flags[JUEGO]=true;
 						estado = JUEGO;
 				}
-				
+				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
+				{
+					flags[INICIO]=true;
+					estado=INICIO;
+				}
 
 			break;
 			}
 
+		case WIN:
+			{
+				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
+				{
+						flags[INICIO]=true;
+						estado = INICIO;
+				}
+				break;
+			}
+
+
 		case GAMEOVER:
 			{
-				/*if(flags[GAMEOVER])
-				{
-						flags[GAMEOVER]=false;
-						fase=0;
-				}*/
 
 				if(e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
 				{
@@ -157,6 +178,7 @@ void Coordinator::event(SDL_Event *e)
 				break;
 			}
 	}
+	return flag;
 }
 
 void Coordinator::actViewports()
@@ -172,6 +194,7 @@ void Coordinator::render()
 			{
 				if(flags[INICIO])
 				{
+					fase=0;
 					game.reinitjuego();
 					flags[INICIO]=false;
 				}
@@ -182,6 +205,8 @@ void Coordinator::render()
 			gTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
 			Textrender(inputText, renderText, textColor, tamaño);
 			gInputTextTexture.render( gRenderer, 0.1*gWindow.getWidth(), 0.6*gWindow.getHeight() );
+
+			texto_inicioins.render(gRenderer, 0.1*gWindow.getWidth(), 0.8*gWindow.getHeight() );
 
 			break;
 			}
@@ -227,16 +252,41 @@ void Coordinator::render()
 				}
 				if(tiempo_fase.getSecs() > (30 + fase*10))
 				{
+					if(fase + 1 > 6) 
+					{
+						estado = WIN;
+						flags[WIN] = true;
+					}
+					else
+					{
+
 						estado = INTRO_FASE;
 						flags[INTRO_FASE] = true;
+					}
 				}
 				break;	
 			}
 
 		case PAUSE:
 			{
-				cout<<"pause"<<endl;
+				game.RenderTotal();
+
+				texto_pause.render(gRenderer, 0.1*gWindow.getWidth(), 0.4*gWindow.getHeight());
+				texto_pauseins.render(gRenderer, 0.1*gWindow.getWidth(), 0.6*gWindow.getHeight());
 				break;
+			}
+
+		case WIN:
+			{
+				if(flags[WIN])
+				{
+					flags[WIN]=false;
+					fase=0;
+				}
+
+				game.RenderTotal();
+
+				texto_win.render(gRenderer, 5, 0.4*gWindow.getHeight());
 			}
 		case GAMEOVER:
 			{
@@ -249,7 +299,7 @@ void Coordinator::render()
 
 				game.RenderTotal();
 				//texto_gameover.render(gRenderer, 0.3*gWindow.getWidth(), 0.4*gWindow.getHeight());
-				texto_gameover2.render(gRenderer, 5, 0.4*gWindow.getHeight());
+				texto_gameover2.render(gRenderer, (gWindow.getWidth() - texto_gameover2.getDim().x) / 2, 0.4*gWindow.getHeight());
 				
 
 				break;
