@@ -16,7 +16,7 @@ ObjetoMovil::ObjetoMovil(int t, bool selec):GameObject(t, selec)
 
 	//Velocidad máxima
 	max_vel = 2;
-	turn_rad = 20;
+	turn_rad = 10;
 
 	//Nave parada
 	vel.x = 0;
@@ -75,16 +75,14 @@ void ObjetoMovil::render(Camera cam)
 
 bool ObjetoMovil::move()
 {
-	if(following)
-	{
-		//Dirección
-	//	cout<<"entro"<<endl;
-		dir.x = dest.x - cen.x;
-		dir.y = dest.y - cen.y;
-		angle = (180 * atan2(dir.y, dir.x) / M_PI);
-	//	cout<<dest.x<<" "<<dest.y<<endl;
-	}
+	//Dirección
+	dir.x = dest.x - cen.x;
+	dir.y = dest.y - cen.y;
 
+	angle = (180 * atan2(dir.y, dir.x) / M_PI);
+	
+
+	//Movimiento rectilíneo
 	if ((abs(cen.x - dest.x) > max_vel) || (abs(cen.y - dest.y) > max_vel)) {
 
 		//Ajuste de velocidades
@@ -96,47 +94,158 @@ bool ObjetoMovil::move()
 	}
 	else
 	{
-
-		//following=false;
 		vel.x = 0;
 		vel.y = 0;
 	}
-	return 0;
+
+	return false();
 }
 
 bool ObjetoMovil::turn(int x, int y)
 {
 	
-	int turn_error = 3;
+/*	int turn_error = 1;
 
-	float a_n = max_vel * max_vel / turn_rad;
-	
+	float a_n = (max_vel * max_vel) / turn_rad;
+	float compl;
+
 	Vector2 aux(x - cen.x, y - cen.y);
+	float angle_dest = aux.argumento();
 
-	if (abs(angle - aux.argumento()) < turn_error)
+	(angle <= 180) ? compl = angle + 180 : compl = angle - 180;
+	
+//	if(angle > )
+
+	if (angle <= 180)
+	{
+		compl = angle + 180;
+		if ((angle_dest < angle) ||(angle_dest > compl))
+		{
+			//turn left
+			accel.x = - dir.y * a_n;
+			accel.y = dir.x * a_n;
+		}
+		else
+		{
+			//turn right
+			accel.x = dir.y * a_n;
+			accel.y = -dir.x * a_n;
+		}
+	}
+	else
+	{
+		compl = angle - 180;
+		if ((angle_dest > angle) || (angle_dest < compl))
+		{
+			//turn right
+			accel.x = dir.y * a_n;
+			accel.y = -dir.x * a_n;
+		}
+		else
+		{
+			//turn left
+			accel.x = -dir.y * a_n;
+			accel.y = dir.x * a_n;
+		}
+	}*/
+
+	/*
+	if (abs(angle - aux.argumento()) < turn_error) //Ok
 		return true;
 	else
 	{
-		if (angle - aux.argumento() >= turn_error) //Izquierda
+		if ((angle - aux.argumento()) >= turn_error) //Izquierda
 		{
-			accel.x = -dir.x * a_n;
-			accel.y = dir.y * a_n;
+			accel.x = -dir.y * a_n;
+			accel.y = dir.x * a_n;
 		}
-		if (angle - aux.argumento() <= turn_error) //derecha
+		if ((angle - aux.argumento()) <= turn_error) //derecha
 		{
-			accel.x = dir.x * a_n;
-			accel.y = -dir.y * a_n;
+			accel.x = dir.y * a_n;
+			accel.y = -dir.x * a_n;
 		}
-
+		
+		if ((vel.x == 0) && (vel.y == 0))
+		{
+			vel.x = max_vel * dir.x;
+			vel.y = max_vel * dir.y;
+		}
+		*/
 		//Mover
-		vel.x += accel.x;
+	/*	vel.x += accel.x;
 		vel.y += accel.y;
 
-		pos.x += vel.x;
-		pos.y += vel.y;
+		dir = vel.norm();
+		angle = dir.argumento();
+
+		SetPos(pos.x += vel.x, pos.y += vel.y);
 		
-		return false;
+		return false;*/
+
+	//METODO CHERIPERI
+
+	bool flag;
+
+	if(angle>360) angle-=360;
+	if(angle<0) angle +=360;
+
+	double vel_ang = max_vel / turn_rad;
+	Vector2 posrel;
+	Vector2 cen_cir;
+	posrel = dest - cen;
+	float ang_rel=posrel.argumento();
+	//eleccion de centro
+
+	if ((abs(cen.x - dest.x) > max_vel) || (abs(cen.y - dest.y) > max_vel)) 
+	{
+
+		flag=false;
+	//cout<<posrel.x<<","<<posrel.y<<endl;
+	//cout<<ang_rel<<"   "<<angle<<endl;
+
+
+
+	if(ang_rel>(angle-2) && ang_rel<(angle+2))
+	{
+			//cout<<"dentro"<<endl;
+			move();
 	}
+		
+	else
+	{
+	if((int)ang_rel%360<180 && (int)ang_rel%360>0)
+	{
+
+		cen_cir.x = turn_rad * cos(((90-angle)*M_PI/180)) + cen.x;
+		cen_cir.y = cen.y - turn_rad * sin(((90-angle)*M_PI/180));
+		angle -= vel_ang*180/M_PI;
+	}
+	else
+	{
+		angle += vel_ang*180/M_PI;
+		
+	}
+
+
+
+	//movimiento circul
+
+	//Ajuste de velocidades
+		vel.x = max_vel * cos(M_PI * angle / 180);
+		vel.y = max_vel * sin(M_PI * angle / 180);
+		
+		//Movimiento
+		SetCen(cen.x + vel.x, cen.y + vel.y);
+	}
+	}
+	else
+	{
+		vel.x=0;
+		vel.y=0;
+		flag=true;
+	}
+
+	return flag;
 }
 
 void ObjetoMovil::stop()
@@ -161,16 +270,10 @@ bool ObjetoMovil::moveTo(int x, int y)
 	return false;
 }
 
-void ObjetoMovil::follow(Vector2 &destino)
-{
-	dest=destino;
-//	cout<<dest.x<<" "<<dest.y<<endl;
-	following=true;
-}
+
 
 Vector2& ObjetoMovil::getDest()
 {
-//	cout<<"    "<<endl;
 	following=true;
 	return dest;
 
@@ -202,4 +305,29 @@ void ObjetoMovil::SetDir(float x, float y)
 {
 	dir.x = x;
 	dir.y = y;
+}
+
+void ObjetoMovil::setDest(float x, float y)
+{
+	//Destino
+	dest.x = x;
+	dest.y = y;
+
+	/*//Dirección
+	dir.x = dest.x - cen.x;
+	dir.y = dest.y - cen.y;
+
+	//Angulo
+	angle = (180 * atan2(dir.y, dir.x) / M_PI);*/
+}
+
+bool ObjetoMovil::onPoint(Vector2 p)
+{
+	if (cen.distancia(p) < max_vel) return true;
+	else return false;
+}
+
+bool ObjetoMovil::onDest()
+{
+	return onPoint(dest);
 }
