@@ -97,7 +97,7 @@ Vector2 GameObject::GetCen()
 	return cen;
 }
 
-Vector2& GameObject::getCen()
+Vector2 & GameObject::getCen()
 {
 	return cen;
 }
