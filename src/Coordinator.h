@@ -10,7 +10,7 @@ public:
 
 	void initGame();
 	void mainEvent();
-	void event(SDL_Event *e);
+	bool event(SDL_Event *e);
 	void actViewports();
 	void render();
 
@@ -18,7 +18,7 @@ protected:
 	Game game;
 
 	//estados
-	enum Estado {INICIO, INTRO_FASE, JUEGO, PAUSE, GAMEOVER};
+	enum Estado {INICIO, INTRO_FASE, JUEGO, PAUSE, WIN, GAMEOVER};
 	Estado estado;
 
 	bool flags[GAMEOVER+1];
@@ -33,6 +33,6 @@ protected:
 	Timer tiempo_fase, tiempo_ataques;
 
 	//texto en el cambio de fase
-	Texture texto_cambio, texto_nfase;
+	Texture texto_cambio, texto_nfase, texto_gameover, texto_gameover2, texto_pause, texto_pauseins, texto_inicioins, texto_win;
 };
 

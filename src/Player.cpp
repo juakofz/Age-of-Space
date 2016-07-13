@@ -34,10 +34,15 @@ void Player::getRecursos(std::stringstream recursos[])
 	//cout<<recursos[0].str()<<'\n'<<recursos[1].str()<<'\n';
 }
 
-void Player::cambiarRecursos(int oro_cambio, int energia_cambio)
+bool Player::cambiarRecursos(int oro_cambio, int energia_cambio)
 {
-	oro+=oro_cambio;
-	energia+=energia_cambio;
-
-
+	if((((oro * energia) == 0) && ((oro_cambio < 0) || (energia_cambio < 0 ))) || (((oro + oro_cambio) < 0 ) || ((energia + energia_cambio) < 0))) return true;
+	//cout<<oro<<" mas "<<oro_cambio<<endl;
+	// cout<<oro + oro_cambio<<" en el if" <<endl;
+	if((oro + oro_cambio) < 0 );
+	((oro+oro_cambio)>=0)?(oro+=oro_cambio):0;
+	((energia+energia_cambio)>=0)?(energia+=energia_cambio):0;
+	//energia+=energia_cambio;
+	return false;
+	
 }
