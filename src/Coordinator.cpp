@@ -243,5 +243,4 @@ void Coordinator::render()
 				break;
 			}
 	}
-
 }

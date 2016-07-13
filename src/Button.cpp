@@ -34,8 +34,7 @@ bool Button::event( SDL_Event* e, SDL_Point xyrel )
 			
 			case SDL_BUTTON_RIGHT:
 			printf("pulsado boton derecho sobre el boton \n");
-			break;
-				
+			break;	
 		}
 	}
 }
@@ -69,5 +68,4 @@ bool Button::clickOn(SDL_Event* e, SDL_Point xyrel) //faltan un par de cambios
 void Button::setTexture(Texture *t)
 {
 	tex=t;
-
 }

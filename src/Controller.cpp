@@ -1,7 +1,6 @@
 #include "Controller.h"
 
 
-
 Controller::Controller()
 {
 	naves = 0;

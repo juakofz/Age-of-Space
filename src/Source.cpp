@@ -174,4 +174,5 @@ int main(int argc, char* args[])
 	//Free resources and close SDL
 	close();
 	return 0;
+>>>>>>> f6ff8b909254464fde3c1e14b0b8ff67ec55f48a
 }

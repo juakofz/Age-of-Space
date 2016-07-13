@@ -35,4 +35,3 @@ protected:
 	//texto en el cambio de fase
 	Texture texto_cambio, texto_nfase;
 };
-

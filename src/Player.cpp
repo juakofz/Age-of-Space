@@ -38,6 +38,4 @@ void Player::cambiarRecursos(int oro_cambio, int energia_cambio)
 {
 	oro+=oro_cambio;
 	energia+=energia_cambio;
-
-
 }
