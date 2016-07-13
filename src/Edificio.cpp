@@ -1,7 +1,6 @@
 #include "Edificio.h"
 
 
-
 Edificio::Edificio(void): GameObject(2, true)
 {
 	vida = 10;
@@ -47,7 +46,7 @@ int Edificio::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
 bool Edificio::golpeada()
 {
 	--vida;
-	//cout << vida << endl;
+	cout << vida << endl;
 
 	if(vida <= 0) return 1;
 	else return 0;

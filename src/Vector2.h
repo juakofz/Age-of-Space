@@ -22,6 +22,7 @@ public:
 	float modulo();
 	float argumento();
 	//void norm(int l);
-	Vector2 operator-(Vector2 v);
+	Vector2 operator - (Vector2 v);
+	float distancia(Vector2 dest);
+	Vector2 norm(float n = 1.0);
 };
-

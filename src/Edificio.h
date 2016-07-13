@@ -1,8 +1,7 @@
 #pragma once
 #include "gameobject.h"
 
-class Edificio :
-	public GameObject
+class Edificio:public GameObject
 {
 public:
 	Edificio(void);
