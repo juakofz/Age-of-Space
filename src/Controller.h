@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-#pragma once
-#include "ListaNaves.h"
-#include "ListaEdificios.h"
-
-class Controller
-{
-
-public:
-	Controller();
-	~Controller();
-
-	void setList(ListaNaves * l);
-	bool agressive(int ind);
-
-private:
-	ListaNaves * naves;
-	ListaEdificios * edificios;
-};
-=======
 #pragma once
 #include "ListaNaves.h"
 #include "ListaEdificios.h"
@@ -37,4 +17,3 @@ private:
 	ListaEdificios * edificios;
 };
 
->>>>>>> refs/heads/pr/18

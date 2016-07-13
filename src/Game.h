@@ -22,7 +22,7 @@
 #include "ObjetoMovil.h"
 #include "Interacciones.h"
 #include "Edificio.h"
-#include "Controller.h"
+
 
 enum ZONAS
 {
@@ -48,9 +48,6 @@ class Game
 
 	//Camara
 	Camera cam;
-
-	//Controlador
-	Controller control;
 
 	//elementos del juego
 	Edificio edificio;
@@ -119,7 +116,7 @@ public:
 	void eventCaract(SDL_Event* e); //eventos en el viewport del juego 
 
 	//barra
-	void initBarra(); //inicializa los elementos del juego
+	void initBarra(int fase); //inicializa los elementos del juego
 	void renderBarra(); //renderiza los elementos del juego
 	void eventBarra(SDL_Event* e); //eventos en el viewport del juego 
 	
@@ -133,6 +130,5 @@ public:
 	void setNombre(std::string nombre);
 
 	//Naves enemigas
-	static Uint32 LlamadaAtaqueEnemigo(Uint32 interval, void* param);
 	void ataqueEnemigo();
 };

@@ -102,7 +102,7 @@ int main(int argc, char* args[])
 					}
 
 
-					coordinador.event(&e);
+					if(coordinador.event(&e)) quit=true;
 
 					size=gWindow.handleEvent( e );
 					
@@ -173,6 +173,6 @@ int main(int argc, char* args[])
 
 	//Free resources and close SDL
 	close();
+	//system("PAUSE");
 	return 0;
->>>>>>> f6ff8b909254464fde3c1e14b0b8ff67ec55f48a
 }
