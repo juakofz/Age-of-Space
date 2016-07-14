@@ -12,8 +12,8 @@ Interacciones::~Interacciones(void)
 
 bool Interacciones::impacto(Ship nave, Proyectil disparo)
 {
-	if ((nave.GetCen() - disparo.GetCen()).modulo() < ((disparo.getSize() / 2 + nave.getSize() / 2 )))
-	{
+	if ((nave.GetCen() - disparo.GetCen()).modulo() < ((disparo.getSize() / 2 + nave.getSize() / 2 ) / 2))
+		{
 			return 1;
 	}
 	return 0;
@@ -33,7 +33,7 @@ int Interacciones::impactoListas(ListaNaves &n, ListaProyectiles &p)
 			{
 				n.eliminarNave(i);
 				p.eliminarProyectil(j);
-				cout << "impacto" << endl;
+				//cout << "impacto" << endl;
 
 				flag++;
 				break;				
@@ -50,7 +50,7 @@ bool Interacciones::impacto(Edificio &edif, ListaProyectiles &d)
 		if(impacto(edif, *d.lista[i]))
 		{
 			d.eliminarProyectil(i);
-			cout<<"impacto"<<endl;
+			//cout<<"impacto"<<endl;
 			if(edif.golpeada()) return 1;
 			else return 0;
 		}

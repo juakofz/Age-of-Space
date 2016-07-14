@@ -10,6 +10,7 @@ ListaProyectiles::~ListaProyectiles(void)
 {
 	for(int i = (lista.size() - 1); i >= 0; i--)
 	{
+		delete lista[i];
 		lista [i] = 0;
 	}
 }
