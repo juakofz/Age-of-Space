@@ -16,3 +16,4 @@ private:
 	ListaNaves * naves;
 	ListaEdificios * edificios;
 };
+
