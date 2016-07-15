@@ -37,23 +37,23 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 ##### P 0.3.3
 - Interaction between asteroid and menu
 
-#### P0.4
+#### P 0.4
 - Screen divided into viewports (again)
 - Viewport size linked to window size
 
-#### P0.5
+#### P 0.5
 - Added start screen
 - Improved object rendering
 
-#### P0.6
+#### P 0.6
 - Added text input
 - Players can input their name in the start screen
 
-#### P0.7
+#### P 0.7
 - Added resources and icons to top bar
 - Bug fixes
 
-#### P0.8
+#### P 0.8
 - Implemented relative mouse mode and in-game cursor
 - Resizeable window
 - Added mouse scrolling
@@ -63,14 +63,14 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Bug fixes
 - Translated readme file
 
-##### P0.8.1
+##### P 0.8.1
 - Fixed mouse class so it makes a bit more sense
 - Ships now can be selected and moved correctly
 - Added some bugs
 
 [Large gap due to work overload]
 
-#### P0.9
+#### P 0.9
 - A lot of code rewriting
 - Bug fixing
 - Ships now shoot and explode
@@ -78,17 +78,17 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Getting ready for realese
 - New exciting and elusive bugs
 
-#### P0.10
+#### P 0.10
 - Bug fixes 'n suf
 - Added a flippin awesome minimap
 
-#### P0.11
+#### P 0.11
 - Ships now actually move my themselves
 - Ennemy ships shoot each other, or at least they try
 - Added pause screen
 - UI changes
 - Deleted README file (woops!)
 
-#### P0.12
+#### P 0.12
 - Ships do slightly better at behaving like ships
 - Ennemy ships will attack main building
