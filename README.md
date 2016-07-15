@@ -78,8 +78,9 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Getting ready for realese
 - New exciting and elusive bugs
 
-### P0.10
+#### P0.10
 - Bug fixes 'n suf
+- Added a flippin awesome minimap
 
 #### P0.11
 - Ships now actually move my themselves
