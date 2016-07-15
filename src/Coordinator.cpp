@@ -163,7 +163,17 @@ bool Coordinator::event(SDL_Event *e)
 			}
 
 			break;
-		}		
+		}
+
+		case GAMEOVER:
+		{
+			if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RETURN)
+			{
+				flags[INICIO] = true;
+				estado = INICIO;
+			}
+			break;
+		}
 	}
 	return flag;
 }

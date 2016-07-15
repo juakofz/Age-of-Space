@@ -8,8 +8,9 @@
 class Barra: public ZonaPantalla
 {
 	// name;
-	Texture nombrejugador, opciones, recursos, energianum, oronum, fasenum;
-
+	Texture nombrejugador, opciones, recursos, energianum, oronum, fasenum, vida;
+	SDL_Color color;
+			
 
 public:
 
@@ -30,7 +31,9 @@ public:
 	void SetFase(int fase);
 	void renderFase();
 
-	//void renderOpciones();
+	//vida del edificio
+	void setVida(int vid);
+	void renderVida();
 
 	int event(SDL_Event* e, SDL_Point xyrel);
 };

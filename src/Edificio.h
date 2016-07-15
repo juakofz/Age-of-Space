@@ -12,6 +12,7 @@ public:
 	bool golpeada();
 
 	void setVida(int v);
+	int getVida() {return vida;}
 
 private:
 	int vida;

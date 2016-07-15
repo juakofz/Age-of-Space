@@ -12,7 +12,7 @@ Interacciones::~Interacciones(void)
 
 bool Interacciones::impacto(Ship nave, Proyectil disparo)
 {
-	if ((nave.GetCen() - disparo.GetCen()).modulo() < ((disparo.getSize() / 2 + nave.getSize() / 2 )))
+	if ((nave.GetCen() - disparo.GetCen()).modulo()/2.5 < ((disparo.getSize() + nave.getSize())))
 	{
 			return 1;
 	}
@@ -43,24 +43,22 @@ int Interacciones::impactoListas(ListaNaves &n, ListaProyectiles &p)
 	return flag;
 }
 
-bool Interacciones::impacto(Edificio &edif, ListaProyectiles &d)
+int Interacciones::impacto(Edificio &edif, ListaProyectiles &d)
 {
 	for(int i = 0; i<d.lista.size(); i++)
 	{
 		if(impacto(edif, *d.lista[i]))
 		{
 			d.eliminarProyectil(i);
-			//cout<<"impacto"<<endl;
-			if(edif.golpeada()) return 1;
-			else return 0;
+			edif.golpeada();
 		}
 	}
-	return false;
+	return edif.getVida();
 }
 
 bool Interacciones::impacto(Edificio edif, Proyectil disparo)
 {
-	if ((edif.GetCen() - disparo.GetCen()).modulo() < ((disparo.getSize() / 2 + edif.getSize() / 2 ) / 2))
+	if ((edif.GetCen() - disparo.GetCen()).modulo()/2.5 < ((disparo.getSize() + edif.getSize())))
 	{
 			return 1;
 	}

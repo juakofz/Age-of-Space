@@ -406,14 +406,18 @@ int Game::eventjuego(SDL_Event* e)
 	}
 
 	//Impactos con edificios
+	static int vida_edif = edificio.getVida();
 	edificio.event(e, mouse.getMrect(), mouse.getMpos());
-	if(Interacciones::impacto(edificio, proyectiles))
+	if(!Interacciones::impacto(edificio, proyectiles) || edificio.getVida()<=0)
 	{
 		return 2;
 	}
 
-	else return 0;
-	
+	else
+	{
+			if(vida_edif != edificio.getVida()) act_vida = 1;
+			return 0;
+	}
 	
 		
 }
@@ -495,6 +499,7 @@ void Game::initBarra(int fase)
 	barra.setRecursos(recursos);
 
 	barra.SetFase(fase);
+	barra.setVida(10);
 }
 
 void Game::renderBarra()
@@ -508,6 +513,11 @@ void Game::renderBarra()
 		barra.setRecursos(recursos);
 	//	cout<<"actualizar"<<endl;
 		act_barra=false;
+	}
+	if(act_vida)
+	{
+		barra.setVida(edificio.getVida());
+		act_vida = false;
 	}
 }
 

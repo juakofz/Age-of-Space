@@ -64,7 +64,7 @@ class Game
 	Menu menu;
 	Barra barra;
 
-	bool act_barra;
+	bool act_barra, act_vida;
 
 	Player jugador;
 	Caracteristicas caract;

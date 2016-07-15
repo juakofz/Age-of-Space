@@ -4,6 +4,9 @@
 
 Barra::Barra(void)
 {
+	color.r = 255;
+	color.g = 255;
+	color.b = 0;
 }
 
 
@@ -19,6 +22,7 @@ void Barra::render()
 	renderName();
 	renderRecursos();
 	renderFase();
+	renderVida();
 	//renderOpciones();
 }
 
@@ -30,7 +34,7 @@ void Barra::renderName()
 
 void Barra::SetName(std::string nombre)
 {
-	SDL_Color color={0,0,255};
+	//SDL_Color color={0,0,255};
 	nombrejugador.loadText(nombre, 28, color);
 }
 
@@ -39,11 +43,11 @@ void Barra::renderFase()
 	Vector2 tamaño = fasenum.getDim();
 	
 		fasenum.render(gRenderer, &fasenum.getDim(), gWindow.getWidth()*0.8, 15);
-	}
+}
 
 void Barra::SetFase(int fase)
 {
-	SDL_Color color = { 0,0,255 };
+	//SDL_Color color = { 0,0,255 };
 
 	//fasenum.loadText(fase.str(), 10, color);
 	std:stringstream fas;
@@ -70,10 +74,10 @@ void Barra::renderRecursos()
 	tamañoiconos.y=30;
 
 	energia.render(gRenderer, &tamañoiconos, 120, 20);
-	energianum.render(gRenderer, &tamañotexto, 150, 20);
+	energianum.render(gRenderer, &energianum.getDim(), 150, 20);
 
 	oro.render(gRenderer, &tamañoiconos, 10, 20);
-	oronum.render(gRenderer, &tamañotexto, 50, 20);
+	oronum.render(gRenderer, &oronum.getDim(), 50, 20);
 
 }
 
@@ -81,12 +85,27 @@ void Barra::setRecursos(std::stringstream recursos[])
 {
 	SDL_Color color={255,255,0};
 
-	oronum.loadText(recursos[0].str(), 28, color,2);
-	energianum.loadText(recursos[1].str().c_str(), 28, color, 2);
+	oronum.loadText(recursos[0].str(), 40, color, 2);
+	energianum.loadText(recursos[1].str().c_str(), 40, color, 2);
 }
 
 int Barra::event(SDL_Event* e, SDL_Point xyrel)
 {
 	return 1;
 
+}
+
+void Barra::setVida(int vid)
+{
+	std:stringstream v;
+	v.str(" ");
+	v << vid;
+	vida.loadText(v.str(), 40, color, 2);
+}
+
+void Barra::renderVida()
+{
+	Vector2 tamaño = vida.getDim();
+	
+	vida.render(gRenderer, &vida.getDim(), gWindow.getWidth()*0.9, 15);
 }

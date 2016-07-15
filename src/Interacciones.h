@@ -13,7 +13,7 @@ public:
 	~Interacciones(void);
 	static bool impacto(Ship nave, Proyectil disparo);
 	static int impactoListas(ListaNaves &n, ListaProyectiles &p);
-	static bool impacto(Edificio &edif, ListaProyectiles &disparo);
+	static int impacto(Edificio &edif, ListaProyectiles &disparo);
 	static bool impacto(Edificio edif, Proyectil disparo);
 
 };
