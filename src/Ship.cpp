@@ -127,8 +127,8 @@ bool Ship::disparada(Proyectil p)
 Vector2 Ship::getPointyEnd()
 {
 	Vector2 aux;
-	aux.x= cen.x + (tex->getDim().x / 2) * cos(angle*M_PI/180);
-	aux.y= cen.y - (tex->getDim().y / 2) * sin(angle*M_PI/180);
+	aux.x = cen.x + (tex->getDim().x / 2) * cos(angle*M_PI/180);
+	aux.y = cen.y + (tex->getDim().y / 2) * sin(angle*M_PI/180);
 	return aux;
 }
 
@@ -142,9 +142,14 @@ bool Ship::inRange(Vector2 p)
 	return(cen.distancia(p) <= range);
 }
 
-bool Ship::inRange(Ship * s)
+bool Ship::inRange(GameObject * s)
 {
 	return inRange(s->GetCen());
+}
+
+bool Ship::inRange()
+{
+	return inRange(target);
 }
 
 
@@ -158,20 +163,22 @@ bool Ship::inSight(Vector2 p)
 	return(cen.distancia(p) <= sight);
 }
 
-bool Ship::inSight(Ship * s)
+bool Ship::inSight(GameObject * s)
 {
 	return inSight(s->GetCen());
+}
+
+bool Ship::inSight()
+{
+	return inSight(target);
 }
 
 
 bool Ship::attack()
 {
-	//cout<<"pium?"<<endl;
-	//cout<<t_shoot.getSecs()<<1.0F/firerate<<endl;
 	if (t_shoot.isStarted() && (t_shoot.getSecs() > (1.0F / firerate)))
 	{
 		t_shoot.restart();
-		//cout<<"piem!!!"<<endl;
 		return true; //pium
 	}
 	if (!t_shoot.isStarted())
@@ -217,11 +224,10 @@ void Ship::turn(Vector2 t)
 	ObjetoMovil::turn(t.x, t.y);
 }
 
-void Ship::setTarget(Ship * t)
+void Ship::setTarget(GameObject * t)
 {
 	target = t;
 	dest = target->GetCen();
-	
 }
 
 void Ship::updateTarget()
@@ -235,7 +241,7 @@ bool Ship::checkTarget()
 	return target;
 }
 
-Ship * Ship::getTarget()
+GameObject * Ship::getTarget()
 {
 	return target;
 }

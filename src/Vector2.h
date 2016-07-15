@@ -26,3 +26,4 @@ public:
 	float distancia(Vector2 dest);
 	Vector2 norm(float n = 1.0);
 };
+

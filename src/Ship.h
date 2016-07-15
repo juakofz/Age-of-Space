@@ -24,12 +24,14 @@ public:
 	//Range
 	float getRange();
 	bool inRange(Vector2 p);
-	bool inRange(Ship * s);
+	bool inRange(GameObject * s);
+	bool inRange();
 
 	//Sight
 	float getSight();
 	bool inSight(Vector2 p);
-	bool inSight(Ship *s);
+	bool inSight(GameObject *s);
+	bool inSight();
 
 	bool attack();
 	Vector2 shoot();
@@ -42,17 +44,17 @@ public:
 	bool turn();
 	void turn(Vector2 t);
 
-	void setTarget(Ship * t);
+	void setTarget(GameObject * t);
 	bool checkTarget();
 	void updateTarget();
-	Ship * getTarget();
+	GameObject * getTarget();
 	bool onTarget(Vector2 t, float err = 5.0);
 	bool onTarget(float err = 5.0);
 	float targetDist();
 
 private:
 
-	Ship * target;
+	GameObject * target;
 
 	int state;
 	float range;

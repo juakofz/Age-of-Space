@@ -10,9 +10,12 @@ public:
 	~Controller();
 
 	void setList(ListaNaves * l);
+	void setList(ListaEdificios * l);
+	void setList(Edificio * e);
 	bool agressive(int ind);
 
 private:
 	ListaNaves * naves;
 	ListaEdificios * edificios;
+	Edificio * edificio;
 };
