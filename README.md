@@ -70,7 +70,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 
 [Large gap due to work overload]
 
-#### P0.9.3
+#### P0.9
 - A lot of code rewriting
 - Bug fixing
 - Ships now shoot and explode
