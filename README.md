@@ -1,6 +1,6 @@
 # Age-of-Space
 
-Space RTS project as a way to get started in C++ and object-oriented programming
+Space RTS project as a way to get started in C++ and object-oriented programming. Development started as a student project at the tech university of Madrid.
 
 ## Version History
 
@@ -80,10 +80,10 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 
 #### P 0.10
 - Bug fixes 'n suf
-- Added a flippin awesome minimap
+- Added a flippin' awesome minimap
 
 #### P 0.11
-- Ships now actually move my themselves
+- Ships can now actually move by themselves
 - Ennemy ships shoot each other, or at least they try
 - Added pause screen
 - UI changes
@@ -92,3 +92,5 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 #### P 0.12
 - Ships do slightly better at behaving like ships
 - Ennemy ships will attack main building
+
+[Development halted before sumer 2016]
