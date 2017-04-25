@@ -131,6 +131,14 @@ int LWindow::getHeight()
 	return mHeight;
 }
 
+Vector2 LWindow::getSize()
+{
+	Vector2 aux;
+	aux.x = mWidth;
+	aux.y = mHeight;
+	return aux;
+}
+
 bool LWindow::hasMouseFocus()
 {
 	return mMouseFocus;

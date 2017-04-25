@@ -29,13 +29,14 @@ bool init();
 //Frees media and shuts down SDL
 void close();
 
-//cargan el texto del reclado y lo renderizan
+//cargan el texto del teclado y lo renderizan
 bool textinput(std::string *inputText, bool renderText, SDL_Event e);
 void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
 
 //texturas del texto
 Texture gPromptTextTexture;
 Texture gInputTextTexture;
+Texture gFPDTexture;
 
 //Globally used font
 TTF_Font *gFont = NULL;
