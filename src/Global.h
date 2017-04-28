@@ -40,7 +40,7 @@ extern Texture gPromptTextTexture;
 extern Texture gInputTextTexture;
 
 //Object codes
-extern enum Items;
+//extern enum Items;
 
 //Globally used font
 extern TTF_Font *gFont;
@@ -54,4 +54,4 @@ extern void close();
 //ventana del juego
 extern LWindow gWindow;
 
-extern struct characts;
+//extern struct characts;

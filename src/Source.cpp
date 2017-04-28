@@ -1,12 +1,14 @@
-//Librerías de SDL y c++
+//SDL libraries
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+//C++ libraries
 #include <stdio.h>
 #include <string>
 #include <sstream>
+#include <conio.h>
 
-//Librerias de clases
+//Classes
 #include "Texture.h"
 #include "Vector2.h"
 #include "Ship.h"
@@ -20,7 +22,7 @@
 #include "Timer.h"
 #include "Coordinator.h"
 
-//variables y funciones globales
+//Global variables and functions
 #include "Global.h"
 
 using namespace std;
@@ -30,84 +32,64 @@ int main(int argc, char* args[])
 	//Start up SDL and create window
 	if( !init() )
 	{
-		printf( "Failed to initialize!\n" );
+		cout << "Failed to initialize SDL! Press any key to exit";
+		_getch();
+		close();
+		return -1;
 	}
 	else
 	{
-		
-		//Load media
-		SDL_Color color = {0,255,0};
-
-		//Texto de inicio del juego
-		if( !gTextTexture.loadText("WELCOME TO AGE OF SPACE", 28, color) )
+		//Start screen
+		SDL_Color text_color = { 0,200,0 }; //Bright green
+		if( !gTextTexture.loadText("WELCOME TO AGE OF SPACE", 28, text_color) )
 		{
-			printf( "Failed to load media!\n" );
+			cout << "Failed to load media!\n" << endl;
 		}
 		else
 		{	
-			//SDL_GL_SetSwapInterval(0);
-			//Main loop flag
-			bool quit = false;
+			//Vsync: 0 =  disabled, 1 = Strict, -1 =  Adaptative
+			SDL_GL_SetSwapInterval(0);
+			
+			bool f_quit = false; //main loop flag
+			bool f_total = true; //start screen flag
+			bool f_size = false; //screen resize flag
+			
+			srand(SDL_GetTicks()); //Random seed
 
-			//flag de pantalla de inicio
-			bool total = true;
-
-			//Random seed
-			srand(SDL_GetTicks());
-
-			//FPS
+			//FPS variables
 			Timer fps_timer, cap_timer;
 			int countedFrames = 0;
 			fps_timer.start();
 
-			//Event handler
-			SDL_Event e;
+			SDL_Event e; //Event handler
 
-			//Nombre del jugador
+			//Player name
 			/*SDL_Color textColor = { 0, 0, 255};
 			int tamaño = 28;
 			std::string inputText = "Jugador";
 			gInputTextTexture.loadText(inputText.c_str(), tamaño, textColor);
 			*/
 
-			//flag de cambio de tamaño de pantalla
-			bool size=false;
-
-			//game master
-			//Game game;
-			Coordinator coordinador;
-
-			//inicializamos los elementos del juego
-			coordinador.initGame();
-
-
+			Coordinator main_coord; //Game state cordinator
+			main_coord.initGame();
 
 			//While application is running
-			while( !quit )
+			while(!f_quit)
 			{
+				
+				cap_timer.start(); //FPS cap
 
-				//Límite FPS
-				cap_timer.start();
-
-				//Non queue events
-				coordinador.mainEvent();
+				main_coord.mainEvent();//Non queue events
 
 				//Handle events on queue
-				while( SDL_PollEvent(&e) != 0 )
+				while(SDL_PollEvent(&e) != 0)
 				{
-					//User requests quit
-					if( e.type == SDL_QUIT )
-					{
-						quit = true;
-					}
+					if(e.type == SDL_QUIT) f_quit = true; //quit via window event
+					if(main_coord.event(&e)) f_quit = true; //quit via game event
 
-
-					if(coordinador.event(&e)) quit= true;
-
-					size=gWindow.handleEvent( e );
+					f_size = gWindow.handleEvent(e); //Resize event
 					
 				}
-				
 
 				//Only draw when not minimized
 				if( !gWindow.isMinimized() )
@@ -119,54 +101,42 @@ int main(int argc, char* args[])
 					//Tamaño de la ventana
 					Vector2 WindowQuad;
 
-
-
 					//Cálculo de fps
 					float avgFPS = countedFrames / (fps_timer.getTicks() / 1000.f);
-					if (avgFPS > 2000000)
-					{
-						avgFPS = 0;
-					}
+					if (avgFPS > 2000000) avgFPS = 0;
 					if (fps_timer.getTicks() > 2000)
 					{
 						countedFrames = 0;
 						fps_timer.start();
 					}
 
+					////FPS display
+					//SDL_Color fps_color = { 200,200,0 }; //Bright yellow
+					//gTextTexture.loadText("FPS", 20, fps_color);
+					//
 					
 					//std::cout<< "FPS: " << avgFPS << '\r';
-					
 
-					//si ha cambiado el tamaño de la ventana actualizamos los parámetros que dependen de ella.
-					if(size)
+					//Update window parameters if necessary
+					if(f_size)
 					{
-						
-					//	game.ActViewPorts();
-						coordinador.actViewports();
-
-						//ajustar el tamaño a la ventana.					
-						WindowQuad.x=gWindow.getWidth();
-						WindowQuad.y=gWindow.getHeight();
-	
-						size=false;
+						main_coord.actViewports();//update viewports
+						WindowQuad = gWindow.getSize(); //update screen sizes
+						f_size = false; //reset flag
 					}
 
-					coordinador.render();
+					main_coord.render(); //update game render
+					SDL_RenderPresent(gRenderer);
 
-					//actualizamos renderizado total
-					SDL_RenderPresent( gRenderer );
+					//FPS update
 					++countedFrames;
-
-					//If frame finished early
 					int frameTicks = cap_timer.getTicks();
-					if (frameTicks < SCREEN_TICKS_PER_FRAME)
+					if (frameTicks < SCREEN_TICKS_PER_FRAME) //If frame finished early (cap)
 					{
 						//Wait remaining time
 						SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 					}
-
-				}
-				
+				}			
 			}
 		}
 	}

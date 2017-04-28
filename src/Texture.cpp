@@ -32,7 +32,12 @@ bool Texture::load(std::string path, SDL_Renderer* renderer)
 	SDL_Surface* img = IMG_Load(path.c_str());
 	if (img == NULL)
 	{
-		printf("Error al cargar la imagen %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+		string p;
+		if (path == "") p = "NO_PATH";
+		else p = path;
+
+		cout << "Error while loading image file. File path: " << p << endl
+			 <<  "SDL_image error: " << IMG_GetError() << endl;
 	}
 	else
 	{
@@ -74,26 +79,38 @@ void Texture::free()
 	}
 }
 
-bool Texture::loadText(std::string textureText, int tamaño, SDL_Color textColor, int fuente)
+bool Texture::loadText(std::string textureText, int size, SDL_Color textColor, int font)
 {
 	//Loading success flag
 	bool success = true;
 
-	
 	//Open the font
-	if(fuente==1) gFont = TTF_OpenFont( "img/SPACEBAR.ttf", tamaño );
-	if(fuente==2) gFont = TTF_OpenFont( "img/fuente2.ttf", tamaño );	
+	switch (font) {
+	case 1:
+		gFont = TTF_OpenFont("img/SPACEBAR.ttf", size);
+		break;
+	case 2:
+		gFont = TTF_OpenFont("img/fuente2.ttf", size);
+		break;
+	default:
+		gFont = TTF_OpenFont("img/SPACEBAR.ttf", size);
+		break;
+	}
+
+	//Check font
 	if( gFont == NULL )
 	{
-		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		cout << "Failed to load font! SDL_ttf Error:" << endl
+ 			 << TTF_GetError() << endl;
+
 		success = false;
 	}
 	else
 	{
 		//Render text
-		if( !loadFromRenderedText( textureText.c_str(), textColor ) )
+		if(!loadFromRenderedText( textureText.c_str(), textColor ))
 		{
-			printf( "Failed to render text texture!\n" );
+			cout << "Failed to render text: " << textureText << endl;
 			success = false;
 		}
 	}

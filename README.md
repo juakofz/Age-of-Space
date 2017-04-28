@@ -94,3 +94,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Ennemy ships will attack main building
 
 [Development halted before sumer 2016]
+
+##### P 0.12.1
+- Variable names changed to fit new naming coventions
+- Added comments so I can understand what we did a year ago
