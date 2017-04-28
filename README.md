@@ -97,4 +97,5 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 
 ##### P 0.12.1
 - Variable names changed to fit new naming coventions
+- Added funcitonalities to Vector2 class. It was so bare-bones I find it surprising how we got so many things done
 - Added comments so I can understand what we did a year ago
