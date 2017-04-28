@@ -24,6 +24,7 @@ class LWindow
 		//Window dimensions
 		int getWidth();
 		int getHeight();
+		Vector2 getSize();
 
 		//Window focii
 		bool hasMouseFocus();

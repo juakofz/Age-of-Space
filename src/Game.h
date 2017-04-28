@@ -75,7 +75,7 @@ class Game
 
 	SDL_Point posicion;
 
-	characts* chooseElement(int type);
+	//characts* chooseElement(int type);
 
 	static int ataques;
 	static bool atacar;

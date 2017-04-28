@@ -39,11 +39,9 @@ Coordinator::~Coordinator(void)
 
 void Coordinator::initGame()
 {
-
 	game.cargarTexturas();
 	game.InitViewPorts();
 	game.initjuego();
-
 	game.initMenu();
 }
 
@@ -54,7 +52,7 @@ void Coordinator::mainEvent()
 
 bool Coordinator::event(SDL_Event *e)
 {
-	bool flag = false;
+	bool f_quit = false;
 	switch (estado)
 	{
 		case INICIO:
@@ -71,7 +69,7 @@ bool Coordinator::event(SDL_Event *e)
 
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_ESCAPE)
 		{
-		flag = true;
+		f_quit = true;
 		}
 
 		//función de entrada de texto y actualización del nombre
@@ -175,7 +173,7 @@ bool Coordinator::event(SDL_Event *e)
 			break;
 		}
 	}
-	return flag;
+	return f_quit;
 }
 
 void Coordinator::actViewports()
