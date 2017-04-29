@@ -2,7 +2,7 @@
 
 
 
-Proyectil::Proyectil(int p):ObjetoMovil(3, false)
+Proyectil::Proyectil(int p):MovingObject(3, false)
 {
 
 	//Vector2 por defecto 0,0;
@@ -42,7 +42,7 @@ bool Proyectil::move()
 	}
 	else
 	{
-		return 1;
+		return 1; //destinadion reached
 	}
 	return 0;
 }

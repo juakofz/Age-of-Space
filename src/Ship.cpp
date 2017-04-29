@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Ship::Ship():ObjetoMovil(1)
+Ship::Ship():MovingObject(1)
 {
 	//Vector2 por defecto 0,0;
 	//Dirección predeterminada
@@ -20,6 +20,12 @@ Ship::Ship():ObjetoMovil(1)
 	//Velocidad máxima
 	max_vel = 2;
 	turn_rad = 25;
+
+	//Aceleración máxima
+	max_acc = 0.5f;
+
+	//Fricción
+	friction = 0.8f;
 
 	//Nave parada
 	vel.x = 0;
@@ -46,7 +52,7 @@ Ship::Ship():ObjetoMovil(1)
 	tex = NULL;
 }
 
-Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p, bool sel):ObjetoMovil(player, sel)
+Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p, bool sel):MovingObject(player, sel)
 {
 	dir.x = 1;
 	dir.y = 0;
@@ -179,12 +185,12 @@ bool Ship::attack()
 	if (t_shoot.isStarted() && (t_shoot.getSecs() > (1.0F / firerate)))
 	{
 		t_shoot.restart();
-		return true; //pium
+		return true; //bang
 	}
 	if (!t_shoot.isStarted())
 	{
 		t_shoot.start();
-		return false; //no pium
+		return false; //no bang
 	}
 
 	return false;
@@ -215,14 +221,35 @@ Timer * Ship::getTimer()
 
 bool Ship::turn()
 {
-	if (target) return ( ObjetoMovil::turn(target->GetCen().x, target->GetCen().y));
-	else return (ObjetoMovil::turn(dest.x, dest.y));
+	if (target) return ( MovingObject::turn(target->GetCen().x, target->GetCen().y));
+	else return (MovingObject::turn(dest.x, dest.y));
 }
 
 void Ship::turn(Vector2 t)
 {
-	ObjetoMovil::turn(t.x, t.y);
+	MovingObject::turn(t.x, t.y);
 }
+
+bool Ship::move() //testing new movement system
+{
+	if (vel.length() < 0.5) //if the ship is stopped
+	{
+		Vector2 straight = Vector2::director(angle) * vel.length(); //point forward
+		pos = pos + vel; //update position
+		acc = vel.normalize(max_acc); //update acceleration vector (also pointing forward)
+		vel = vel * friction; //reduce by friction
+	}
+	else
+	{
+		pos = pos + vel; //update position
+		acc = (dest - pos).normalize(max_acc); //update acceleration vector
+		vel = vel + acc; //update velocity vector
+		vel = vel * friction; //reduce by friction factor
+		angle = vel.angle(); //update angle
+	}
+	return false;
+}
+
 
 void Ship::setTarget(GameObject * t)
 {
@@ -252,7 +279,7 @@ bool Ship::onTarget(Vector2 t, float err)
 	Vector2 aux = t- cen;
 	//cout<<(int)abs(dir.argumento() - aux.argumento())%360<<"   ";
 	//cout<<(((int)abs(dir.argumento() - aux.argumento())%360 <= err) ||((int)abs(dir.argumento() - aux.argumento())%360 >= 360-err))<<endl;
-	return (((int)abs(dir.argumento() - aux.argumento())%360 <= err) ||((int)abs(dir.argumento() - aux.argumento())%360 >= 360-err));
+	return (((int)abs(dir.angle() - aux.angle())%360 <= err) ||((int)abs(dir.angle() - aux.angle())%360 >= 360-err));
 }
 
 bool Ship::onTarget(float err)
@@ -262,7 +289,7 @@ bool Ship::onTarget(float err)
 	Vector2 aux = target->GetCen()- cen;
 	//cout<<(int)abs(dir.argumento() - aux.argumento())%360<<"   ";
 	//cout<<(((int)abs(dir.argumento() - aux.argumento())%360 <= err) ||((int)abs(dir.argumento() - aux.argumento())%360 >= 360-err))<<endl;
-	return (((int)abs(dir.argumento() - aux.argumento())%360 <= err) || ((int)abs(dir.argumento() - aux.argumento())%360 >= 360-err));
+	return (((int)abs(dir.angle() - aux.angle())%360 <= err) || ((int)abs(dir.angle() - aux.angle())%360 >= 360-err));
 }
 
 float Ship::targetDist()

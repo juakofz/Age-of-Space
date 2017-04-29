@@ -1,27 +1,27 @@
 #include "Global.h"
 
 //SDL_Window* gWindow = NULL;
-SDL_Renderer* gRenderer = NULL;
+SDL_Renderer* g_Renderer = NULL;
 
 //Scene textures
-Texture gSceneTexture;
+Texture g_SceneTexture;
 
 //tamaño de la pantalla
-const int SCREEN_WIDTH = 960;
-const int SCREEN_HEIGHT = 640;
+const int g_SCREEN_WIDTH = 960;
+const int g_SCREEN_HEIGHT = 640;
 
 //Límite FPS
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 //Object codes
-const enum Items {
-	AST = 0,
-	NAVE = 1,
-	EDIF = 2,
-	PROY = 3,
-	EXPL = 4
-};
+//const enum Items {
+//	AST = 0,
+//	NAVE = 1,
+//	EDIF = 2,
+//	PROY = 3,
+//	EXPL = 4
+//};
 
 //Starts up SDL and creates window
 bool init();
@@ -29,27 +29,22 @@ bool init();
 //Frees media and shuts down SDL
 void close();
 
-//cargan el texto del teclado y lo renderizan
+//Handle and render text imput
 bool textinput(std::string *inputText, bool renderText, SDL_Event e);
-void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
-
-//texturas del texto
-Texture gPromptTextTexture;
-Texture gInputTextTexture;
-Texture gFPDTexture;
+void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int size);
+//Text textures
+Texture g_PromptTextTexture;
+Texture g_InputTextTexture;
+Texture g_TextTexture;
 
 //Globally used font
-TTF_Font *gFont = NULL;
+TTF_Font *g_Font = NULL;
 
-//ventana
-LWindow gWindow;
-
-//textura texto
-Texture gTextTexture;
+//Main window
+Window g_Window;
 
 
-
-//inicializa
+//Init SDL
 bool init()
 {
 	//Initialization flag
@@ -63,8 +58,9 @@ bool init()
 	}
 	else
 	{
-		//Set texture filtering to linear
-		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
+		//Set texture filtering. 0 for none, 1 for linear, 2 for anisotropic
+		//Using 0 for pixelated effect
+		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "0" ) )
 		{
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
@@ -73,7 +69,7 @@ bool init()
 		//SDL_SetRelativeMouseMode(SDL_TRUE);
 
 		//Create window
-		if( !gWindow.init() )
+		if( !g_Window.init() )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
@@ -81,8 +77,8 @@ bool init()
 		else
 		{
 			//Create renderer for window
-			gRenderer = gWindow.createRenderer();
-			if( gRenderer == NULL )
+			g_Renderer = g_Window.createRenderer();
+			if( g_Renderer == NULL )
 			{
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
 				success = false;
@@ -90,7 +86,7 @@ bool init()
 			else
 			{
 				//Initialize renderer color
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor( g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
 				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
@@ -106,29 +102,26 @@ bool init()
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = false;
 				}
-
-				
 			}
 		}
 	}
-
 	return success;
 }
 
-//cierra el programa
+//Free resources and close SDL
 void close()
 {
 	//Free loaded images
-	gTextTexture.free();
+	g_TextTexture.free();
 
 	//Free global font
-	TTF_CloseFont( gFont );
-	gFont = NULL;
+	TTF_CloseFont( g_Font );
+	g_Font = NULL;
 
 	//Destroy window	
-	SDL_DestroyRenderer( gRenderer );
-	gWindow.free();
-	gRenderer = NULL;
+	SDL_DestroyRenderer( g_Renderer );
+	g_Window.free();
+	g_Renderer = NULL;
 
 	//Quit SDL subsystems
 	TTF_Quit();
@@ -136,13 +129,7 @@ void close()
 	SDL_Quit();
 }
 
-typedef struct characts
-{
-	Texture *tex;
-	string name;
-};
-
-//texto por teclado
+//Handle text imput
 bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 {
 	if( e.type == SDL_KEYDOWN )
@@ -163,7 +150,7 @@ bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 		}
 
 		//Handle paste
-		//esta comentado porq me da un error
+		//something here is wrong
 		/*else if( e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
 		{
 			inputText = SDL_GetClipboardText();
@@ -181,10 +168,9 @@ bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 			renderText = true;
 		}
 	}
-	//devuelve si hay que renderizar el texto
-	return renderText;
-	//cierra la comunicacion con el telclado
-	SDL_StopTextInput();
+
+	SDL_StopTextInput(); //stops keyboard imput
+	return renderText; //true if it is to be rendered
 }
 
 
@@ -197,13 +183,13 @@ void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int
 		if( inputText != "" )
 		{
 			//Render new text
-			gInputTextTexture.loadText( inputText.c_str(),tamaño, textColor );
+			g_InputTextTexture.loadText( inputText.c_str(),tamaño, textColor );
 		}
 		//Text is empty
 		else
 		{
 			//Render space texture
-			gInputTextTexture.loadText( " ", tamaño, textColor );
+			g_InputTextTexture.loadText( " ", tamaño, textColor );
 		}
 	}
 }

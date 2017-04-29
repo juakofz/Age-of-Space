@@ -7,25 +7,25 @@
 #include <SDL_ttf.h>
 
 #include "Texture.h"
-#include "LWindow.h"
+#include "Window.h"
 #include "Mouse.h"
 
 
 using namespace std;
 
 
-class LWindow;
+class Window;
 
 //Textura del texto
-extern Texture gTextTexture;
+extern Texture g_TextTexture;
 
 //renderizado general
-extern SDL_Renderer* gRenderer;
+extern SDL_Renderer* g_Renderer;
 
 //Tamaño de la pantalla
-extern Texture gSceneTexture;
-extern const int SCREEN_WIDTH;
-extern const int SCREEN_HEIGHT;
+extern Texture g_SceneTexture;
+extern const int g_SCREEN_WIDTH;
+extern const int g_SCREEN_HEIGHT;
 
 //Límite FPS
 extern const int SCREEN_FPS;
@@ -36,14 +36,14 @@ extern bool textinput(std::string *inputText, bool renderText, SDL_Event e);
 extern void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
 extern bool loadText();
 
-extern Texture gPromptTextTexture;
-extern Texture gInputTextTexture;
+extern Texture g_PromptTextTexture;
+extern Texture g_InputTextTexture;
 
 //Object codes
 //extern enum Items;
 
 //Globally used font
-extern TTF_Font *gFont;
+extern TTF_Font * g_Font;
 
 //Starts up SDL and creates window
 extern bool init();
@@ -52,6 +52,6 @@ extern bool init();
 extern void close();
 
 //ventana del juego
-extern LWindow gWindow;
+extern Window g_Window;
 
 //extern struct characts;

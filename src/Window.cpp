@@ -1,8 +1,8 @@
-#include "LWindow.h"
+#include "Window.h"
 #include <sstream>
 
 
-LWindow::LWindow()
+Window::Window()
 {
 	//Initialize non-existant window
 	mWindow = NULL;
@@ -14,27 +14,27 @@ LWindow::LWindow()
 	mHeight = 0;
 }
 
-bool LWindow::init()
+bool Window::init()
 {
 	//Create window
-	mWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+	mWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, g_SCREEN_WIDTH, g_SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 	if( mWindow != NULL )
 	{
 		mMouseFocus = true;
 		mKeyboardFocus = true;
-		mWidth = SCREEN_WIDTH;
-		mHeight = SCREEN_HEIGHT;
+		mWidth = g_SCREEN_WIDTH;
+		mHeight = g_SCREEN_HEIGHT;
 	}
 
 	return mWindow != NULL;
 }
 
-SDL_Renderer* LWindow::createRenderer()
+SDL_Renderer* Window::createRenderer()
 {
 	return SDL_CreateRenderer( mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 }
 
-bool LWindow::handleEvent( SDL_Event& e )
+bool Window::handleEvent( SDL_Event& e )
 {
 	bool size=false;
 	//Window event occured
@@ -49,12 +49,12 @@ bool LWindow::handleEvent( SDL_Event& e )
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
 			mWidth = e.window.data1;
 			mHeight = e.window.data2;
-			SDL_RenderPresent( gRenderer );
+			SDL_RenderPresent( g_Renderer );
 			break;
 
 			//Repaint on exposure
 			case SDL_WINDOWEVENT_EXPOSED:
-			SDL_RenderPresent( gRenderer );
+			SDL_RenderPresent( g_Renderer );
 			break;
 
 			//Mouse entered window
@@ -108,7 +108,7 @@ bool LWindow::handleEvent( SDL_Event& e )
 	return size;
 }
 
-void LWindow::free()
+void Window::free()
 {
 	if( mWindow != NULL )
 	{
@@ -121,17 +121,17 @@ void LWindow::free()
 	mHeight = 0;
 }
 
-int LWindow::getWidth()
+int Window::getWidth()
 {
 	return mWidth;
 }
 
-int LWindow::getHeight()
+int Window::getHeight()
 {
 	return mHeight;
 }
 
-Vector2 LWindow::getSize()
+Vector2 Window::getSize()
 {
 	Vector2 aux;
 	aux.x = mWidth;
@@ -139,17 +139,17 @@ Vector2 LWindow::getSize()
 	return aux;
 }
 
-bool LWindow::hasMouseFocus()
+bool Window::hasMouseFocus()
 {
 	return mMouseFocus;
 }
 
-bool LWindow::hasKeyboardFocus()
+bool Window::hasKeyboardFocus()
 {
 	return mKeyboardFocus;
 }
 
-bool LWindow::isMinimized()
+bool Window::isMinimized()
 {
 	return mMinimized;
 }

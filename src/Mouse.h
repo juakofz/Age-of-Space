@@ -25,7 +25,7 @@ public:
 	void scroll(Camera &cam, Map map);
 
 	//Mouse render
-	void render(SDL_Renderer *renderer = gRenderer);
+	void render(SDL_Renderer *renderer = g_Renderer);
 
 	//Get relative selection
 	SDL_Rect getSel();

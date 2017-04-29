@@ -3,11 +3,11 @@
 #include <SDL_image.h>
 #include "Global.h"
 
-class LWindow
+class Window
 {
 	public:
 		//Intializes internals
-		LWindow();
+		Window();
 
 		//Creates window
 		bool init();

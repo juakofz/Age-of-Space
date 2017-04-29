@@ -1,3 +1,5 @@
+//not in use
+
 #pragma once
 #include "ListaNaves.h"
 #include "ListaEdificios.h"

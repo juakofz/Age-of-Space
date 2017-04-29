@@ -12,7 +12,7 @@ Interacciones::~Interacciones(void)
 
 bool Interacciones::impacto(Ship nave, Proyectil disparo)
 {
-	if ((nave.GetCen() - disparo.GetCen()).modulo()/2.5 < ((disparo.getSize() + nave.getSize())))
+	if ((nave.GetCen() - disparo.GetCen()).length()/2.5 < ((disparo.getSize() + nave.getSize())))
 	{
 			return 1;
 	}
@@ -58,7 +58,7 @@ int Interacciones::impacto(Edificio &edif, ListaProyectiles &d)
 
 bool Interacciones::impacto(Edificio edif, Proyectil disparo)
 {
-	if ((edif.GetCen() - disparo.GetCen()).modulo()/2.5 < ((disparo.getSize() + edif.getSize())))
+	if ((edif.GetCen() - disparo.GetCen()).length()/2.5 < ((disparo.getSize() + edif.getSize())))
 	{
 			return 1;
 	}

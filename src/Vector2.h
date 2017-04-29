@@ -6,11 +6,8 @@ class Vector2
 {
 public:
 
-	//Constructor
 	Vector2(float px = 0, float py = 0);
 	Vector2(SDL_Point p);
-
-	//Destructor
 	~Vector2();
 
 	//Coordenadas
@@ -26,16 +23,17 @@ public:
 	Vector2 operator += (Vector2 v);
 	Vector2 operator -= (Vector2 v);
 	Vector2 operator = (SDL_Point p);
-
 	Vector2 operator * (float k);
 
-	float distancia(Vector2 dest);
-	Vector2 norm(float n = 1.0);
-	Vector2 normal(bool right = true);
-	float modulo();
-	float argumento();
+	float length();
+	float angle(); //degrees
+	float radians();
+	float distance(Vector2 dest);
 
-	static Vector2 direccion(float a);
-//	static float check_angle(float a);
+	Vector2 normalize(float n = 1.0);
+	Vector2 normal(bool right = true);
+
+	static Vector2 toVector(float a);
+
 };
 

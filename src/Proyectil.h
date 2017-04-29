@@ -1,10 +1,10 @@
 #pragma once
 
-#include "objetomovil.h"
+#include "MovingObject.h"
 
 
 class Proyectil :
-	public ObjetoMovil
+	public MovingObject
 {
 public:
 	Proyectil(int p = 1);

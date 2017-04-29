@@ -1,5 +1,6 @@
-#include "Controller.h"
+//not in use
 
+#include "Controller.h"
 
 
 Controller::Controller()
@@ -40,7 +41,8 @@ bool Controller::agressive(int ind)
 
 	//std::cout<<unit->getState()<<endl;
 
-	//State machine: 0 = standby, 1 = moving, 2 = attacking 
+	 self->move();
+	/*//State machine: 0 = standby, 1 = moving, 2 = attacking 
 	switch (self->getState())
 	{
 
@@ -167,15 +169,15 @@ bool Controller::agressive(int ind)
 				self->stop();
 				return false;
 			}
-	/*	}
-		else
-		{
-			unit->turn();
-		}*/
+		}
+		//else
+		//{
+		//	unit->turn();
+		//}
 	}
 
 	default:
 		break;
-	}
+	}*/
 	return s_flag;
 }

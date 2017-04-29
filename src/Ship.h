@@ -2,13 +2,13 @@
 
 #include "Texture.h"
 #include "Camera.h"
-#include "ObjetoMovil.h"
+#include "MovingObject.h"
 #include "Proyectil.h"
 #include "Timer.h"
 
 class Texture;
 
-class Ship:public ObjetoMovil
+class Ship:public MovingObject
 {
 public:
 	
@@ -43,6 +43,7 @@ public:
 
 	bool turn();
 	void turn(Vector2 t);
+	bool move();
 
 	void setTarget(GameObject * t);
 	bool checkTarget();

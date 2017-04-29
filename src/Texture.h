@@ -7,9 +7,9 @@
 //#include "Global.h"
 
 
-extern const int SCREEN_WIDTH;
-extern const int SCREEN_HEIGHT;
-extern SDL_Renderer* gRenderer;
+extern const int g_SCREEN_WIDTH;
+extern const int g_SCREEN_HEIGHT;
+extern SDL_Renderer* g_Renderer;
 
 
 class Texture
@@ -22,7 +22,7 @@ public:
 	~Texture();
 
 	//Cargar
-	bool load(std::string path, SDL_Renderer* renderer = gRenderer);
+	bool load(std::string path, SDL_Renderer* renderer = g_Renderer);
 	bool loadText(std::string textureText, int tamaño, SDL_Color color, int fuente=1 );
 
 	//Liberar

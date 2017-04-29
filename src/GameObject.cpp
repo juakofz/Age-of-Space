@@ -56,7 +56,7 @@ void GameObject::render(Camera cam)
 		center.y = cen.y - cam.getPos().y;
 
 	
-		tex->render(gRenderer, &center, width, height, NULL, angle + 90);
+		tex->render(g_Renderer, &center, width, height, NULL, angle + 90);
 
 		if(seleccionable)
 		{
@@ -67,7 +67,7 @@ void GameObject::render(Camera cam)
 
 			if (sel)
 			{
-				marker->render(gRenderer, &center, selection.w, selection.h, NULL, sel_angle);
+				marker->render(g_Renderer, &center, selection.w, selection.h, NULL, sel_angle);
 				if (sel_angle > 360) sel_angle = 0;
 				else sel_angle++;
 			}

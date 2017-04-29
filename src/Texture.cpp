@@ -87,18 +87,18 @@ bool Texture::loadText(std::string textureText, int size, SDL_Color textColor, i
 	//Open the font
 	switch (font) {
 	case 1:
-		gFont = TTF_OpenFont("img/SPACEBAR.ttf", size);
+		g_Font = TTF_OpenFont("img/SPACEBAR.ttf", size);
 		break;
 	case 2:
-		gFont = TTF_OpenFont("img/fuente2.ttf", size);
+		g_Font = TTF_OpenFont("img/fuente2.ttf", size);
 		break;
 	default:
-		gFont = TTF_OpenFont("img/SPACEBAR.ttf", size);
+		g_Font = TTF_OpenFont("img/SPACEBAR.ttf", size);
 		break;
 	}
 
 	//Check font
-	if( gFont == NULL )
+	if( g_Font == NULL )
 	{
 		cout << "Failed to load font! SDL_ttf Error:" << endl
  			 << TTF_GetError() << endl;
@@ -145,7 +145,7 @@ bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor
 	free();
 
 	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
+	SDL_Surface* textSurface = TTF_RenderText_Solid( g_Font, textureText.c_str(), textColor );
 	if( textSurface == NULL )
 	{
 		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -153,7 +153,7 @@ bool Texture::loadFromRenderedText( std::string textureText, SDL_Color textColor
 	else
 	{
 		//Create texture from surface pixels
-        texture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+        texture = SDL_CreateTextureFromSurface( g_Renderer, textSurface );
 		if( texture == NULL )
 		{
 			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );

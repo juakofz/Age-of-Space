@@ -1,7 +1,7 @@
 #include "Vector2.h"
 #include <math.h>
 
-//Constructor
+
 Vector2::Vector2(float px, float py)
 {
 	x = px;
@@ -14,26 +14,63 @@ Vector2::Vector2(SDL_Point p)
 	y = static_cast<float>(p.y);
 }
 
-//Destructor
 Vector2::~Vector2()
 {
 }
 
+
 SDL_Point Vector2::convert_int()
 {
 	SDL_Point ret;
-	ret.x = x;
-	ret.y = y;
-
+	ret.x = static_cast<int>(x);
+	ret.y = static_cast<int>(y);
 	return ret;
 }
 
-float Vector2::modulo()
+Vector2 Vector2::operator + (Vector2 v)
+{
+	return Vector2(x + v.x, y + v.y);
+}
+Vector2 Vector2::operator - (Vector2 v)
+{
+	return Vector2(x - v.x, y - v.y);
+}
+Vector2 Vector2::operator = (Vector2 v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
+Vector2 Vector2::operator += (Vector2 v)
+{
+	x += v.x;
+	y += v.y;
+	return *this;
+}
+Vector2 Vector2::operator -= (Vector2 v)
+{
+	x -= v.x;
+	y -= v.y;
+	return *this;
+}
+Vector2 Vector2::operator = (SDL_Point p)
+{
+	x = static_cast<float>(p.x);
+	y = static_cast<float>(p.y);
+	return(Vector2(x, y));
+}
+Vector2 Vector2::operator * (float k)
+{
+	return Vector2(k*x, k*y);
+}
+
+
+float Vector2::length()
 {
 	return sqrt(x * x + y * y);
 }
 
-float Vector2::argumento()
+float Vector2::angle()
 {
 	float aux;
 	aux = 180 * atan2(y, x) / M_PI;
@@ -42,75 +79,36 @@ float Vector2::argumento()
 	//return (180 * atan2(y, x) / M_PI);
 }
 
-Vector2 Vector2::operator + (Vector2 v)
-{
-	return Vector2(x + v.x, y + v.y);
+float Vector2::radians()
+{	
+	return atan2(y, x);
 }
 
-Vector2 Vector2::operator - (Vector2 v)
+float Vector2::distance(Vector2 dest)
 {
-	return Vector2(x - v.x, y - v.y);
-}
-
-Vector2 Vector2::operator = (Vector2 v)
-{
-	x = v.x;
-	y = v.y;
-	return *this;
-}
-
-Vector2 Vector2::operator += (Vector2 v)
-{
-	x += v.x;
-	y += v.y;
-	return *this;
-}
-
-Vector2 Vector2::operator -= (Vector2 v)
-{
-	x -= v.x;
-	y -= v.y;
-	return *this;
-}
-
-Vector2 Vector2::operator = (SDL_Point p)
-{
-	x = static_cast<float>(p.x);
-	y = static_cast<float>(p.y);
-	return(Vector2(x, y));
-}
-
-Vector2 Vector2::operator * (float k)
-{
-	return Vector2(k*x, k*y);
-}
-
-float Vector2::distancia(Vector2 dest)
-{
-	//Vector2 aux = *this - dest;
 	Vector2 aux = dest - *this;
-	return aux.modulo();
+	return aux.length();
 }
 
-Vector2 Vector2::norm(float n)
+Vector2 Vector2::normalize(float n)
 {
 	Vector2 aux;
-	aux.x = n * x / modulo();
-	aux.y = n * y / modulo();
+	aux.x = n * x / length();
+	aux.y = n * y / length();
 	return aux;
 }
 
 Vector2 Vector2::normal(bool right)
 {
-	float arg = argumento();
+	float arg = angle();
 	if (right) arg += 90;
 	else arg -= 90;
-	Vector2 aux = direccion(arg);
-	aux = aux * modulo();
+	Vector2 aux = toVector(arg);
+	aux = aux * length();
 	return aux;
 }
 
-Vector2 Vector2::direccion(float a)
+Vector2 Vector2::toVector(float a)
 {
 	Vector2 aux;
 	aux.x = cos(a);

@@ -19,7 +19,7 @@
 #include "Proyectil.h"
 #include "ZonaPantalla.h"
 #include "Menu.h"
-#include "ObjetoMovil.h"
+#include "MovingObject.h"
 #include "Interacciones.h"
 #include "Edificio.h"
 #include "Controller.h"

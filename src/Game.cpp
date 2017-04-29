@@ -298,10 +298,9 @@ void Game::renderJuego()
 	control.setList(&naves);
 	//control.setList(&edificios);
 	control.setList(&edificio);
-
 	for (int i = (naves.getSize() - 1); i >= 0; i--)
 	{
-		if (control.agressive(i))
+		/*if (control.agressive(i))
 		{
 			//cout<<"prueba3"<<endl;
 			Vector2 sh = naves.shoot(i);
@@ -323,7 +322,11 @@ void Game::renderJuego()
 			p->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
 			p->moveTo(sh.x, sh.y);
 			proyectiles.agregar(p);
-		}
+		}*/
+	}
+
+	for (int i = (naves.getSize() - 1); i >= 0; i--)
+	{
 	}
 
 	//viewport de juego

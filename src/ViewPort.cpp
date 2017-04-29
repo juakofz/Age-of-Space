@@ -24,10 +24,10 @@ void ViewPort::SetParam(int w, int h, int x, int y)
 
 void ViewPort::ActParam()
 {
-	param.x = gWindow.getWidth() * origen.x;
-	param.y = gWindow.getHeight() * origen.y;
-	tamañofin.x = param.w = gWindow.getWidth() * tamaño.x;
-	tamañofin.y = param.h = gWindow.getHeight() * tamaño.y;
+	param.x = g_Window.getWidth() * origen.x;
+	param.y = g_Window.getHeight() * origen.y;
+	tamañofin.x = param.w = g_Window.getWidth() * tamaño.x;
+	tamañofin.y = param.h = g_Window.getHeight() * tamaño.y;
 
 }
 
@@ -46,10 +46,10 @@ void ViewPort::SetRel(float x, float y, float w, float h)
 void ViewPort::render()
 {
 	//renderizamos en el viewport seleccionado
-	SDL_RenderSetViewport( gRenderer, &param );	
+	SDL_RenderSetViewport( g_Renderer, &param );	
 
 	//Render texture to screen
-	tex.render(gRenderer, &tamañofin);
+	tex.render(g_Renderer, &tamañofin);
 }
 
 SDL_Rect ViewPort::GetParam()
@@ -79,12 +79,12 @@ void ViewPort::Init(int x, int y, int w, int h, std::string path)
 	param.y = y;
 	param.h = h;
 	param.w = w;
-	tex.load(path, gRenderer);
+	tex.load(path, g_Renderer);
 }
 
 void ViewPort::Set()
 {
-	SDL_RenderSetViewport( gRenderer, &param );	
+	SDL_RenderSetViewport( g_Renderer, &param );	
 }
 
 
