@@ -15,51 +15,50 @@ Game::~Game(void)
 
 int Game::event(SDL_Event* e)
 {
-	int flag=false;
-	//Reading absolute mouse state
+	int f_quit = false; //quit event flag
+
 	int mx, my;
-	SDL_GetMouseState(&mx, &my);
+	SDL_GetMouseState(&mx, &my); //get absolute mouse position
 	
-	//Top bar
-	if (my <= barra.getHeight())
+	//Top bar area
+	if (my <= top_bar.down())
 	{
-		barra.Set();
-		
-		//Absolute
-		mouse.setPos(mx, my);
+		//cout << "bar  " << "\r";
 
-		//Relative to viewport
-		mouse.setR_pos(mx, my);
-
-		mouse.update(e, false);
+		top_bar.Set(); //Render pointer
+		mouse.setPos(mx, my);//Absolute
+		mouse.setR_pos(mx, my);//Relative to viewport
+		mouse.update(e, TOP_BAR, false);
 	}
 
-	//Game viewport (juego)
-	if(my > barra.getHeight() && my < menu.getY())
+	//Game area
+	if (my > top_bar.down() && my < map_area.up())
 	{
-		juego.Set();
-		//Game selection events
-		flag = eventjuego(e);
+		//cout << "game " << "\r";
+
+		game_area.Set(); //Render pointer
+		
+		//f_quit = gameEvents(e); //Game selection events
 
 		//Lock mouse while selecting
 		if (mouse.isActive())
 		{
 			//Upper limit
-			if (my <= barra.getHeight())
+			if (my <= top_bar.down())
 			{
 				//Absolute
-				mouse.setPos(mx, barra.getHeight());
+				mouse.setPos(mx, top_bar.down());
 				//Relative
 				mouse.setR_pos(mx, 0);
 			}
 
 			//Lower limit
-			else if (my >= juego.getHeight() + menu.getHeight())
+			else if (my >= game_area.down())
 			{
 				//Absolute
-				mouse.setPos(mx, barra.getHeight() + juego.getHeight());
+				mouse.setPos(mx, top_bar.getHeight() + game_area.getHeight());
 				//Relative
-				mouse.setR_pos(mx, juego.getHeight());
+				mouse.setR_pos(mx, game_area.getHeight());
 			}
 
 			else
@@ -67,7 +66,7 @@ int Game::event(SDL_Event* e)
 				//Absolute
 				mouse.setPos(mx, my);
 				//Relative
-				mouse.setR_pos(mx, juego.relatxy(mx, my).y);
+				mouse.setR_pos(mx, game_area.relatxy(mx, my).y);
 			}
 
 		}
@@ -77,41 +76,60 @@ int Game::event(SDL_Event* e)
 			//Absolute
 			mouse.setPos(mx, my);
 			//Relative
-			mouse.setR_pos(mx, juego.relatxy(mx, my).y);
+			mouse.setR_pos(mx, game_area.relatxy(mx, my).y);
 		}
 
 		//Map
 		mouse.setMpos(cam.getPos().x + mouse.getR_pos().x, cam.getPos().y + mouse.getR_pos().y);
 
 		//Update mouse
-		mouse.update(e);
+		mouse.update(e, GAME, true);
 	}
 
-
-	if (my >= juego.getHeight())
+	//Lower part of the screen
+	if (my >= game_area.getHeight())
 	{
-		//Menu area
-		if (mx < menu.getWidth())
+		//Orders area
+		if (mx <= orders_area.right())
 		{
-			menu.Set();
-			eventMenu(e);
+			//cout << "order" << "\r";
+
+			orders_area.Set();
 			//Absolute
 			mouse.setPos(mx, my);
 			//Relative
-			mouse.setR_pos(menu.relatxy(mx, my).x, menu.relatxy(mx, my).y);
-			mouse.update(e, false);
+			mouse.setR_pos(orders_area.relatxy(mx, my).x, orders_area.relatxy(mx, my).y);
+			mouse.update(e, ORDERS, false);
 		}
-		else
+
+		//Info area
+		if (mx >= info_area.left() && mx < info_area.right())
 		{
-			minimapa.Set();
+			//cout << "info " << "\r";
+
+			info_area.Set();
+			//Absolute
+			mouse.setPos(mx, my);
+			//Relative
+			mouse.setR_pos(info_area.relatxy(mx, my).x, info_area.relatxy(mx, my).y);
+			mouse.update(e, INFO, false);
+		}
+		
+		//Map area
+		if (mx >= map_area.left())
+		{
+			//cout << "map  " << "\r";
+
+			map_area.Set();
 			eventMinimapa(e);
 			//Absolute
 			mouse.setPos(mx, my);
 			//Relative
-			mouse.setR_pos(minimapa.relatxy(mx, my).x, minimapa.relatxy(mx, my).y);
+			mouse.setR_pos(map_area.relatxy(mx, my).x, map_area.relatxy(mx, my).y);
+			mouse.update(e, MAP, false);
 		}
 	}
-	return flag;
+	return f_quit;
 }
 
 void Game::cargarTexturas()
@@ -122,8 +140,8 @@ void Game::cargarTexturas()
 	tex[3].load("img/markerW.png");
 	tex[4].load("img/markerW.png");
 	tex[5].load("img/Cursor1.png");
-	tex[6].load("img/Background.png");
-	tex[7].load("img/grid3.png");
+	tex[6].load("img/new_background.png");
+	tex[7].load("img/grid.png");
 	tex[8].load("img/Nave.png");
 	tex[9].load("img/disparo.png");
 	tex[10].load("img/disparo.png");
@@ -135,6 +153,7 @@ void Game::cargarTexturas()
 	tex[8].setColor(210, 50, 50); //Nave roja
 	tex[9].setColor(0, 255, 0); //Disparo verde
 	tex[10].setColor(210, 50, 50); //disparo rojo
+	tex[7].setAlpha(40);
 
 	texOpciones[0].load("img/edificio.png");
 	texOpciones[1].load("img/markerW.png");
@@ -145,64 +164,45 @@ void Game::cargarTexturas()
 
 void Game::InitViewPorts()
 {
-	zonas[MENU]=&menu;
-	zonas[BARRA]=&barra;
-	zonas[TOTAL]=&total;
-	zonas[JUEGO]=&juego;
-	zonas[MINIMAPA]=&minimapa;
+	//Screen areas directions
+	areas[TOP_BAR] = &top_bar;
+	areas[GAME] = &game_area;
+	areas[ORDERS] = &orders_area;
+	areas[INFO] = &info_area;
+	areas[MAP] = &map_area;
+	areas[WINDOW] = &window_area;
 
-	//juego
-	zonas[JUEGO]->initViewport(0,SCREEN_HEIGHT/10,SCREEN_WIDTH,SCREEN_HEIGHT*0.65, "");
-	zonas[JUEGO]->SetRel(0,0.1,1,0.65);
-
-	//menus
-	zonas[MENU]->initViewport(0,3*SCREEN_HEIGHT/4,3*SCREEN_WIDTH/4,SCREEN_HEIGHT/4, "img/menu.png");
-	zonas[MENU]->SetRel(0,0.75,0.75,0.25);
-
-
-	//barra
-	zonas[BARRA]->initViewport(0,0,SCREEN_WIDTH, SCREEN_HEIGHT/10, "img/barra.png");
-	zonas[BARRA]->SetRel(0,0,1,0.1);
-	
-	//pantalla inicial
-	zonas[TOTAL]->initViewport(0,0,SCREEN_WIDTH, SCREEN_HEIGHT, "img/space2.png");
-	zonas[TOTAL]->SetRel(0,0,1,1);
-
-	//minimapa
-	zonas[MINIMAPA]->initViewport(3*SCREEN_WIDTH/4,3*SCREEN_HEIGHT/4,SCREEN_WIDTH/4, SCREEN_HEIGHT/4, "img/space2.png");
-	zonas[MINIMAPA]->SetRel(0.75,0.75,0.25,0.25);
+	//Init areas
+	areas[TOP_BAR]->initViewPort(0.0f, 0.0f, 1.0f, 0.1f, "img/barra.png"); //Top bar
+	areas[GAME]->initViewPort(0.0f, 0.1f, 1.0f, 0.75f); //Game area
+	areas[ORDERS]->initViewPort(0.0f, 0.75f, 0.25f, 1.0f, "img/space2.png"); //Orders area
+	areas[INFO]->initViewPort(0.25f, 0.75f, 0.75f, 1.0f, "img/space2.png"); //Info area
+	areas[MAP]->initViewPort(0.75f, 0.75f, 1.0f, 1.0f, "img/space2.png"); //Map area
+	areas[WINDOW]->initViewPort(0.0f, 0.0f, 1.0f, 1.0f);
 
 	//Actualizar tamaño de cámara
-	cam.update(juego.getViewport());
+	cam.update(game_area.getViewport());
 }
 
-void Game::ActViewPorts()
+void Game::UpdateViewPorts()
 {
-	//Actualizar viewports
-	for(int i=0;i<NUM_VIEWPORTS;i++) zonas[i]->ActParam();
-
-	//Actualizar tamaño de cámara
-	cam.update(juego.getViewport());
+	for (int i = 0; i < AREA_NUMBER; i++) areas[i]->update(); //Update viewports
+	cam.update(game_area.getViewport()); //Update camera frame size
 }
 
 void Game::RenderViewPorts()
 {
-	//viewports
-	zonas[BARRA]->render();		
-	renderBarra();
-	zonas[MENU]->render();
-	zonas[JUEGO]->render();
-	zonas[MINIMAPA]->render();
+	for (int i = 0; i < AREA_NUMBER; i++) areas[i]->render(); //general render
+	//specific render operations
 	renderJuego();
 	renderMinimapa();
-	total.Set();
+	window_area.Set();
 	mouse.render();
-
 }
 
 void Game::RenderTotal()
 {
-	zonas[TOTAL]->render();
+	areas[WINDOW]->render();
 	//mouse.render(gRenderer);
 }
 
@@ -212,51 +212,48 @@ void Game::initjuego()
 	mouse.setCursor(tex + 5);
 
 	//Disparos
-	Explosion::setTexture(tex + 10);
-	GameObject::setTextures(tex + 9);
+	//Explosion::setTexture(tex + 10);
+	//GameObject::setTextures(tex + 9);
 
 	//Mapa
-	map.setSize(3000, 3000);
-	map.setBg(tex + 6);
-	map.setGrid(tex + 7);
+	map.setSize(2000, 2000);
+	map.setBg(&tex[6]);
+	map.setGrid(&tex[7]);
 
 	//Camara
 	cam.setCen(map.getSize().x / 2, map.getSize().y / 2);
 
-	//inicializacion asteroide
-	ast.SetTex(tex+1);
-	ast.setMarker(&(tex[4]));
+	////inicializacion asteroide
+	//ast.SetTex(tex+1);
+	//ast.setMarker(&(tex[4]));
+	//ast.SetCen(1500,1500);	
+	//ast.setSize(500);
 
-	ast.SetCen(1500,1500);	
-	ast.setSize(500);
+	//edificio.SetTex(tex+2);
+	//edificio.setMarker(tex+4);
+	//edificio.SetCen(1500, 1500);
+	//edificio.setSize(100);
+	
+	////inicializacion naves
+	//for(int i=0;i<20;i++)
+	//{
+	//	Ship* aux = new Ship;
+	//	aux->setPlayer(1);
+	//	aux->SetTex(tex);
+	//	aux->setSize(60);
+	//	aux->setMarker(&(tex[3]));
+	//	aux->SetCen(150*i, 1500);
+	//	aux->stop();
 
-	edificio.SetTex(tex+2);
-	edificio.setMarker(tex+4);
-	edificio.SetCen(1500, 1500);
-	edificio.setSize(100);
-
-
-	//inicializacion nave
-
-	for(int i=0;i<20;i++)
-	{
-		Ship* aux = new Ship;
-		aux->setPlayer(1);
-		aux->SetTex(tex);
-		aux->setSize(60);
-		aux->setMarker(&(tex[3]));
-		aux->SetCen(150*i, 1500);
-		aux->stop();
-
-		naves.agregar(aux);
-	}
+	//	naves.agregar(aux);
+	//}
 
 	initBarra(1);
 }
 
 void Game::reinitjuego()
 {
-	ataques = 1;
+	/*ataques = 1;
 
 	ast.SetCen(1500,1500);	
 	edificio.SetCen(1500, 1500);
@@ -280,149 +277,147 @@ void Game::reinitjuego()
 	}
 
 	initBarra(1);
-
+	*/
 }
 
 void Game::nuevafase(int i)
 {
-	jugador.cambiarRecursos(0, 50);
+	player1.cambiarRecursos(0, 50);
 	ataques=i;
 	initBarra(i);
-	naves.eliminarJugador(2);
+	//naves.eliminarJugador(2);
 
 }
 void Game::renderJuego()
 {
 
 	//Controller
-	control.setList(&naves);
+	//control.setList(&naves);
 	//control.setList(&edificios);
-	control.setList(&edificio);
-	for (int i = (naves.getSize() - 1); i >= 0; i--)
-	{
-		/*if (control.agressive(i))
-		{
-			//cout<<"prueba3"<<endl;
-			Vector2 sh = naves.shoot(i);
-			Proyectil * p = new Proyectil(naves.getPlayer(i));
-			switch(p->getPlayer())
-			{
-				case 1: //jugador
-					p->SetTex(tex + 9);
-					break;
+	//control.setList(&edificio);
 
-				case 2: //maquina
-					p->SetTex(tex + 10);
-					break;
+	//for (int i = (naves.getSize() - 1); i >= 0; i--)
+	//{
+	//	if (control.agressive(i))
+	//	{
+	//		//cout<<"prueba3"<<endl;
+	//		Vector2 sh = naves.shoot(i);
+	//		Proyectil * p = new Proyectil(naves.getPlayer(i));
+	//		switch(p->getPlayer())
+	//		{
+	//			case 1: //jugador
+	//				p->SetTex(tex + 9);
+	//				break;
 
-				default:
-					break;
-			}
-			p->setSize(25);
-			p->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
-			p->moveTo(sh.x, sh.y);
-			proyectiles.agregar(p);
-		}*/
-	}
+	//			case 2: //maquina
+	//				p->SetTex(tex + 10);
+	//				break;
 
-	for (int i = (naves.getSize() - 1); i >= 0; i--)
-	{
-	}
+	//			default:
+	//				break;
+	//		}
+	//		p->setSize(25);
+	//		p->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
+	//		p->moveTo(sh.x, sh.y);
+	//		proyectiles.agregar(p);
+	//	}
+	//}
+
+
 
 	//viewport de juego
-	juego.Set();
+	game_area.Set();
 	
 	//Mapa
 	map.renderBg(cam);
 	map.renderGrid(cam);
 
-	if (cam.isVisible(ast.GetCen(), 20))
-		{
-			ast.render(cam);
-		}
-	asteroides.render(cam);
-	edificio.render(cam);
-	naves.render(cam);
-	objetos_prueba.render(cam);
-	proyectiles.render(cam);
+	//if (cam.isVisible(ast.GetCen(), 20))
+	//	{
+	//		ast.render(cam);
+	//	}
+	//asteroides.render(cam);
+	//edificio.render(cam);
+	//naves.render(cam);
+	//objetos_prueba.render(cam);
+	//proyectiles.render(cam);
 
-	if(edificio.getSel()) 
-	{
-			renderMenu();
-			//int type=ast.getType();
-	}
-	
-	//if(asteroides.getSel()) renderMenu();
-	juego.Set();
+	//if(edificio.getSel()) 
+	//{
+	//		renderMenu();
+	//		//int type=ast.getType();
+	//}
+	//
+	////if(asteroides.getSel()) renderMenu();
+	game_area.Set();
 }
 
 void Game::setNombre(std::string nombre)
 {
-	//nombrejugador=nombre;
-	jugador.setName(nombre);
-	barra.SetName(jugador.getName());
+	player1.setName(nombre);
+	top_bar.SetName(player1.getName());
 }
 
-int Game::eventjuego(SDL_Event* e)
+int Game::gameEvents(SDL_Event* e)
 {
-	//eventos de los elementos del juego
-	ast.event(e, mouse.getMrect(), mouse.getMpos());
-	asteroides.event(e, mouse.getMrect(), mouse.getMpos());
+	////eventos de los elementos del juego
+	//ast.event(e, mouse.getMrect(), mouse.getMpos());
+	//asteroides.event(e, mouse.getMrect(), mouse.getMpos());
+	//
+
+	//switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
+	//{
+	//	case 1:
+	//	{
+	//		int i=0, j=0;
+	//		do{
+	//			
+	//			if(naves.getSel(i))
+	//			{
+
+	//				Proyectil* aux = new Proyectil(naves.getPlayer(i));
+
+	//				aux->SetTex(tex + 9);
+	//				aux->setSize(25);
+	//				//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
+
+	//				aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
+	//				aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
+
+	//				proyectiles.agregar(aux);
+	//				j++;
+	//			}
+	//			i++;
+	//		}while(naves.getSels()>j);
+	//	}
+	//}
+
+
+	//proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
+
+	////Impactos con naves
+	//int oro = Interacciones::impactoListas(naves, proyectiles);
+	//if(oro)
+	//{
+	//		jugador.cambiarRecursos(oro, 0);
+	//		act_barra = true;
+	//}
+
+	////Impactos con edificios
+	//static int vida_edif = edificio.getVida();
+	//edificio.event(e, mouse.getMrect(), mouse.getMpos());
+	//if(!Interacciones::impacto(edificio, proyectiles) || edificio.getVida()<=0)
+	//{
+	//	return 2;
+	//}
+
+	//else
+	//{
+	//		if(vida_edif != edificio.getVida()) act_vida = 1;
+	//		return 0;
+	//}
+	return 0;
 	
-
-	switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
-	{
-		case 1:
-		{
-			int i=0, j=0;
-			do{
-				
-				if(naves.getSel(i))
-				{
-
-					Proyectil* aux = new Proyectil(naves.getPlayer(i));
-
-					aux->SetTex(tex + 9);
-					aux->setSize(25);
-					//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
-
-					aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
-					aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
-
-					proyectiles.agregar(aux);
-					j++;
-				}
-				i++;
-			}while(naves.getSels()>j);
-		}
-	}
-
-
-	proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
-
-	//Impactos con naves
-	int oro = Interacciones::impactoListas(naves, proyectiles);
-	if(oro)
-	{
-			jugador.cambiarRecursos(oro, 0);
-			act_barra = true;
-	}
-
-	//Impactos con edificios
-	static int vida_edif = edificio.getVida();
-	edificio.event(e, mouse.getMrect(), mouse.getMpos());
-	if(!Interacciones::impacto(edificio, proyectiles) || edificio.getVida()<=0)
-	{
-		return 2;
-	}
-
-	else
-	{
-			if(vida_edif != edificio.getVida()) act_vida = 1;
-			return 0;
-	}
-	
-		
 }
 
 void Game::main_event()
@@ -432,77 +427,56 @@ void Game::main_event()
 
 void Game::initMenu()
 {
-	menu.setBotones(texOpciones);
-	menu.setBotonQuad(40, 40);
+	//menu.setBotones(texOpciones);
+	//menu.setBotonQuad(40, 40);
 }
 
 void Game::renderMenu()
 {
 	//Abrimos el menu
-	zonas[MENU]->Open();
+	areas[ORDERS]->Open();
 
 }
 
 void Game::eventMenu(SDL_Event* e)
 {
-	//eventos del menu
-	switch (menu.event(e, menu.relatxy()))
-	{
-		case 2:
-			{
-				static int i=0;
+	////eventos del menu
+	//switch (menu.event(e, menu.relatxy()))
+	//{
+	//	case 2:
+	//		{
+	//			static int i=0;
 
-				if(jugador.cambiarRecursos(-5, -1)) break;
-				Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), 1, true);				
-				act_barra=true;
-				naves.agregar(aux);
+	//			if(jugador.cambiarRecursos(-5, -1)) break;
+	//			Ship* aux = new Ship(tex, 60, tex+3, Vector2(1500 + 15*i++, 1500), 1, true);				
+	//			act_barra=true;
+	//			naves.agregar(aux);
 
-				break;			
-			}
+	//			break;			
+	//		}
 
-		case 3:
-			do{
-				naves.eliminarNave(naves.getSel()-1);
-			} while(naves.getSel());
-			break;
-		
-		case 4:
-			//cout<<"cerrar"<<endl;
-			break;
-	}
-}
-
-void Game::initCaract()
-{
-	caract.setDim(Vector2(30,10), Vector2(40,40));
-}
-
-void Game::renderCaract()
-{
-	//viewport de menu
-	menu.Set();
-
-	//renderizamos el menu
-	caract.render();
-}
-
-void Game::eventCaract(SDL_Event* e)
-{
-	//eventos del menu
-	caract.event(e, menu.relatxy());
-	//printf("dentro del menu");
+	//	case 3:
+	//		do{
+	//			naves.eliminarNave(naves.getSel()-1);
+	//		} while(naves.getSel());
+	//		break;
+	//	
+	//	case 4:
+	//		//cout<<"cerrar"<<endl;
+	//		break;
+	//}
 }
 
 void Game::initBarra(int fase)
 {
-	barra.SetName(jugador.getName());
+	top_bar.SetName(player1.getName());
 
 	std::stringstream recursos[2];
-	jugador.getRecursos(recursos);
-	barra.setRecursos(recursos);
+	player1.getRecursos(recursos);
+	top_bar.setRecursos(recursos);
 
-	barra.SetFase(fase);
-	barra.setVida(10);
+	top_bar.SetFase(fase);
+	top_bar.setVida(10);
 }
 
 void Game::renderBarra()
@@ -512,27 +486,25 @@ void Game::renderBarra()
 	if(act_barra)
 	{
 		std::stringstream recursos[2];
-		jugador.getRecursos(recursos);
-		barra.setRecursos(recursos);
+		player1.getRecursos(recursos);
+		top_bar.setRecursos(recursos);
 	//	cout<<"actualizar"<<endl;
 		act_barra=false;
 	}
-	if(act_vida)
-	{
-		barra.setVida(edificio.getVida());
-		act_vida = false;
-	}
+	//if(act_vida)
+	//{
+	//	top_bar.setVida(edificio.getVida());
+	//	act_vida = false;
+	//}
 }
 
 void Game::eventBarra(SDL_Event* e)
 {
 	//eventos de la barra
-	barra.event(e, barra.relatxy());
+	top_bar.event(e, top_bar.relatxy());
 
 }
 
-
-//Minimapa guapo guapo
 void Game::initMinimapa()
 {
 	//Lista de cositas?
@@ -540,39 +512,39 @@ void Game::initMinimapa()
 
 void Game::renderMinimapa()
 {
-	minimapa.render();
+	map_area.render();
 	int margen = 10;
-	int h = minimapa.getHeight();
-	int w = minimapa.getWidth();
+	int h = map_area.getHeight();
+	int w = map_area.getWidth();
 
 	//Map border
 	SDL_Rect mapRect = {margen, margen, w - 2 * margen, h - 2 * margen };
-	SDL_SetRenderDrawColor(gRenderer, 0, 128, 255, 255);
-	SDL_RenderDrawRect(gRenderer, &mapRect);
+	SDL_SetRenderDrawColor(g_Renderer, 0, 128, 255, 255);
+	SDL_RenderDrawRect(g_Renderer, &mapRect);
 
-	if (naves.getSize()) {
-		for (int i = (naves.getSize() - 1); i >= 0; i--)
-		{
-			Vector2 p = naves.getCen(i);
-			Vector2 rp;
-			rp.x = (p.x / map.getSize().x) * (w - 2 * margen) + margen;
-			rp.y = (p.y / map.getSize().y) * (h - 2 * margen) + margen;
+	//if (naves.getSize()) {
+	//	for (int i = (naves.getSize() - 1); i >= 0; i--)
+	//	{
+	//		Vector2 p = naves.getCen(i);
+	//		Vector2 rp;
+	//		rp.x = (p.x / map.getSize().x) * (w - 2 * margen) + margen;
+	//		rp.y = (p.y / map.getSize().y) * (h - 2 * margen) + margen;
 
-			SDL_Rect fillRect = {rp.x, rp.y, 2, 2};
-			switch (naves.getPlayer(i))
-			{
-			case 1:
-				SDL_SetRenderDrawColor(gRenderer, 0, 255, 255, 0);
-				break;
-			case 2:
-				SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, 0);
-				break;
-			default:
-				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
-			}
-			SDL_RenderFillRect(gRenderer, &fillRect);
-		}
-	}
+	//		SDL_Rect fillRect = {rp.x, rp.y, 2, 2};
+	//		switch (naves.getPlayer(i))
+	//		{
+	//		case 1:
+	//			SDL_SetRenderDrawColor(g_Renderer, 0, 255, 255, 0);
+	//			break;
+	//		case 2:
+	//			SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 0);
+	//			break;
+	//		default:
+	//			SDL_SetRenderDrawColor(g_Renderer, 0, 0, 0, 0);
+	//		}
+	//		SDL_RenderFillRect(g_Renderer, &fillRect);
+	//	}
+	//}
 
 	//Camera rect
 	Vector2 c, rc, s, rs;
@@ -587,8 +559,8 @@ void Game::renderMinimapa()
 	rs.y = (s.y / map.getSize().y) * (h - 2 * margen);
 
 	SDL_Rect camRect = {rc.x, rc.y, rs.x, rs.y};
-	SDL_SetRenderDrawColor( gRenderer, 255, 255, 255, 150);        
-	SDL_RenderDrawRect( gRenderer, &camRect );
+	SDL_SetRenderDrawColor( g_Renderer, 255, 255, 255, 150);        
+	SDL_RenderDrawRect( g_Renderer, &camRect );
 
 	//Renderizar minicositas
 
@@ -599,14 +571,14 @@ void Game::eventMinimapa(SDL_Event* e)
 	int margen = 10;
 
 	//Dentro en x
-	if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= minimapa.getWidth() + margen))
+	if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= map_area.getWidth() + margen))
 	{
 		//Dentro en y
-		if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= minimapa.getHeight() + margen))
+		if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= map_area.getHeight() + margen))
 		{
 			SDL_Point p;
-			p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (minimapa.getWidth() - 2 * margen);
-			p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (minimapa.getHeight() - 2 * margen);
+			p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (map_area.getWidth() - 2 * margen);
+			p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (map_area.getHeight() - 2 * margen);
 			
 			//Movimiento de cámara
 			if (e->button.button == SDL_BUTTON_LEFT)
@@ -617,7 +589,7 @@ void Game::eventMinimapa(SDL_Event* e)
 			//Movimiento de naves
 			if (e->button.button == SDL_BUTTON_RIGHT)
 			{
-				naves.event(e, mouse.getMrect(), p);
+				//naves.event(e, mouse.getMrect(), p);
 			}
 		}
 	}
@@ -625,19 +597,19 @@ void Game::eventMinimapa(SDL_Event* e)
 
 void Game::ataqueEnemigo()
 {
-	Vector2 centro;
-	
-	centro.x=  map.getSize().x / 2;
-	centro.y = map.getSize().y / 2;
-	int radio = ( ((centro.x<centro.y)?centro.x:centro.y) - 100 * ataques );
-	float angulo = (2 * M_PI )/( ataques * 4);
+	//Vector2 centro;
+	//
+	//centro.x=  map.getSize().x / 2;
+	//centro.y = map.getSize().y / 2;
+	//int radio = ( ((centro.x<centro.y)?centro.x:centro.y) - 100 * ataques );
+	//float angulo = (2 * M_PI )/( ataques * 4);
 
 
-	for(int j = 0; j < ataques*4; j++)
-	{
-		Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(centro.x + radio * cos(angulo * j ), centro.y - radio * sin(angulo * j)), 2, false);
-		naves.agregar(aux);
-	}
-	
-	ataques++;
+	//for(int j = 0; j < ataques*4; j++)
+	//{
+	//	Ship* aux = new Ship(tex+8, 60, tex+3, Vector2(centro.x + radio * cos(angulo * j ), centro.y - radio * sin(angulo * j)), 2, false);
+	//	naves.agregar(aux);
+	//}
+	//
+	//ataques++;
 }

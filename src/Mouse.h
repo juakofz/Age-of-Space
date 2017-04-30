@@ -19,7 +19,7 @@ public:
 	void setCursor(Texture * c);
 	
 	//Event management
-	void update(SDL_Event *e, bool sel = true);
+	void update(SDL_Event *e, int area, bool sel);
 	
 	//Camera movement (map scrolling)
 	void scroll(Camera &cam, Map map);
@@ -58,23 +58,23 @@ private:
 		//Selection rect
 		SDL_Rect rect;
 
-	//Relative to viewpory
+	//Relative to viewport
 		//Mouse position
-		SDL_Point r_pos;
+		SDL_Point m_viewport_pos;
 		//Press position
-		SDL_Point r_press;	
+		SDL_Point m_viewport_press;	
 		//Selection rect
-		SDL_Rect r_rect;
+		SDL_Rect m_viewport_rect;
 
 	//Relative to map
 		//Mouse position
-		SDL_Point m_pos;
+		SDL_Point m_map_pos;
 		//Press position
-		SDL_Point m_press;
+		SDL_Point m_map_press;
 		//Selection rect
-		SDL_Rect m_rect;
+		SDL_Rect m__map_rect;
 
-	//Selection marker
-	bool active;
+	bool f_active; //selection flag
+	int m_area;
 };
 

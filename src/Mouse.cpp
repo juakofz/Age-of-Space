@@ -16,95 +16,94 @@ void Mouse::setCursor(Texture * c)
 	cursor = c;
 }
 
-void Mouse::update(SDL_Event *e, bool sel)
+void Mouse::update(SDL_Event *e, int area,  bool sel)
 {
+	if (sel && (e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP))
+	{
+		//Check if left button is being pressed
+		if (e->button.state == SDL_PRESSED) f_active = true;
+		else f_active = false;
+	}
+	
 	//Click event
 	if (e->type == SDL_MOUSEBUTTONDOWN)
 	{
 		//Update relative click position to current position
-		r_press.x = r_pos.x;
-		r_press.y = r_pos.y;
+		m_viewport_press.x = m_viewport_pos.x;
+		m_viewport_press.y = m_viewport_pos.y;
 
 		//Update absolute click position
 		press.x = pos.x;
 		press.y = pos.y;
 
 		//Update map click position
-		m_press.x = m_pos.x;
-		m_press.y = m_pos.y;
+		m_map_press.x = m_map_pos.x;
+		m_map_press.y = m_map_pos.y;
 	}
 
 	//Selection rect
 	if (sel && e->button.button == SDL_BUTTON_LEFT)
 	{
-		//Selection flag
-		active = true;
 
 		//Reclangle correction
 		//X axis
-		if (r_press.x > r_pos.x)
+		if (m_viewport_press.x > m_viewport_pos.x)
 		{
 			//Relative
-			r_rect.x = r_pos.x;
-			r_rect.w = r_press.x - r_pos.x;
+			m_viewport_rect.x = m_viewport_pos.x;
+			m_viewport_rect.w = m_viewport_press.x - m_viewport_pos.x;
 
 			//Absolute
 			rect.x = pos.x;
 			rect.w = press.x - pos.x;
 
 			//Map
-			m_rect.x = m_pos.x;
-			m_rect.w = m_press.x - m_pos.x;
+			m__map_rect.x = m_map_pos.x;
+			m__map_rect.w = m_map_press.x - m_map_pos.x;
 		}
 		else
 		{
 			//Relative
-			r_rect.x = r_press.x;
-			r_rect.w = r_pos.x - r_press.x;
+			m_viewport_rect.x = m_viewport_press.x;
+			m_viewport_rect.w = m_viewport_pos.x - m_viewport_press.x;
 
 			//Absolute
 			rect.x = press.x;
 			rect.w = pos.x - press.x;
 
 			//Relative
-			m_rect.x = m_press.x;
-			m_rect.w = m_pos.x - m_press.x;
+			m__map_rect.x = m_map_press.x;
+			m__map_rect.w = m_map_pos.x - m_map_press.x;
 		}
 		//Y axis
-		if (r_press.y > r_pos.y)
+		if (m_viewport_press.y > m_viewport_pos.y)
 		{
 			//Relative
-			r_rect.y = r_pos.y;
-			r_rect.h = r_press.y - r_pos.y;
+			m_viewport_rect.y = m_viewport_pos.y;
+			m_viewport_rect.h = m_viewport_press.y - m_viewport_pos.y;
 
 			//Absolute
 			rect.y = pos.y;
 			rect.h = press.y - pos.y;
 
 			//Relative
-			m_rect.y = m_pos.y;
-			m_rect.h = m_press.y - m_pos.y;
+			m__map_rect.y = m_map_pos.y;
+			m__map_rect.h = m_map_press.y - m_map_pos.y;
 		}
 		else
 		{
 			//Relative
-			r_rect.y = r_press.y;
-			r_rect.h = r_pos.y - r_press.y;
+			m_viewport_rect.y = m_viewport_press.y;
+			m_viewport_rect.h = m_viewport_pos.y - m_viewport_press.y;
 
 			//Absolute
 			rect.y = press.y;
 			rect.h = pos.y - press.y;
 
 			//Relative
-			m_rect.y = m_press.y;
-			m_rect.h = m_pos.y - m_press.y;
+			m__map_rect.y = m_map_press.y;
+			m__map_rect.h = m_map_pos.y - m_map_press.y;
 		}
-	}
-
-	//Mouse release
-	if (e->type == SDL_MOUSEBUTTONUP)
-	{
-		active = false;
 	}
 }
 
@@ -113,10 +112,10 @@ void Mouse::update(SDL_Event *e, bool sel)
 void Mouse::scroll(Camera &cam, Map map)
 {
 	//Scroll blocking while selecting
-	if (active) return;
+	if (f_active) return;
 
 	//Scroll parameters
-	int margin = 10;
+	int margin = 15;
 	float speed = 5;
 
 	//Lineal scrolling
@@ -131,7 +130,7 @@ void Mouse::scroll(Camera &cam, Map map)
 	}
 
 	//Right
-	if (pos.x > gWindow.getWidth() - margin)
+	if (pos.x > g_Window.getWidth() - margin)
 	{
 		//Limit
 		if(cam.getCen().x + speed >= map.getSize().x)
@@ -152,7 +151,7 @@ void Mouse::scroll(Camera &cam, Map map)
 				cam.move(0, -speed);
 		}
 		//Down
-		if (pos.y > gWindow.getHeight() - margin)
+		if (pos.y > g_Window.getHeight() - margin)
 		{
 			//Limit
 			if (cam.getCen().y + speed >= map.getSize().y)
@@ -171,7 +170,7 @@ void Mouse::render(SDL_Renderer *renderer)
 	cursor->render(renderer, pos.x, pos.y);
 
 	//Selection rect
-	if (active) {
+	if (f_active) {
 		SDL_SetRenderDrawColor(renderer, 0x0, 0xFF, 0xFF, 0xFF);
 		SDL_RenderDrawRect(renderer, &rect);
 	}
@@ -180,7 +179,7 @@ void Mouse::render(SDL_Renderer *renderer)
 //Return relative selection rect
 SDL_Rect Mouse::getSel()
 {
-	return r_rect;
+	return m_viewport_rect;
 }
 
 
@@ -200,39 +199,39 @@ SDL_Point Mouse::getPos()
 //Set relative position
 void Mouse::setR_pos(int px, int py)
 {
-	r_pos.x = px;
-	r_pos.y = py;
+	m_viewport_pos.x = px;
+	m_viewport_pos.y = py;
 }
 
 
 //Get relative position
 SDL_Point Mouse::getR_pos()
 {
-	return r_pos;
+	return m_viewport_pos;
 }
 
 //Is mouse selecting
 bool Mouse::isActive()
 {
-	return active;
+	return f_active;
 }
 
 
 //Set relative position
 void Mouse::setMpos(int px, int py)
 {
-	m_pos.x = px;
-	m_pos.y = py;
+	m_map_pos.x = px;
+	m_map_pos.y = py;
 }
 
 //Get map position
 SDL_Point Mouse::getMpos()
 {
-	return m_pos;
+	return m_map_pos;
 }
 
 //Return map selection rect
 SDL_Rect Mouse::getMrect()
 {
-	return m_rect;
+	return m__map_rect;
 }

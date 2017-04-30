@@ -14,15 +14,6 @@ const int g_SCREEN_HEIGHT = 640;
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
-//Object codes
-//const enum Items {
-//	AST = 0,
-//	NAVE = 1,
-//	EDIF = 2,
-//	PROY = 3,
-//	EXPL = 4
-//};
-
 //Starts up SDL and creates window
 bool init();
 
@@ -65,7 +56,7 @@ bool init()
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		//Set mouse mode to relative
+		//Set mouse mode to relative. Hides system cursor and restricts it's movement to the current window
 		//SDL_SetRelativeMouseMode(SDL_TRUE);
 
 		//Create window
@@ -174,7 +165,6 @@ bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 }
 
 
-//renderiza el texto
 void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño)
 {
 	if( renderText )
@@ -185,7 +175,6 @@ void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int
 			//Render new text
 			g_InputTextTexture.loadText( inputText.c_str(),tamaño, textColor );
 		}
-		//Text is empty
 		else
 		{
 			//Render space texture

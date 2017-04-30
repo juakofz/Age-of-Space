@@ -7,19 +7,19 @@
 
 class ViewPort
 {
-	//datos del viewport
-	SDL_Rect param;
-	Texture tex;
+private:
 
-	//proporciones y tamaño final
+	SDL_Rect m_param; //Viewport data
+	Texture m_tex; //Background texture
+
+	//proporciones y tamaño final -- ??
 	Vector2 origen, tamaño, tamañofin;
 
 public:
-	//constructor
-	ViewPort(void);
 
-	//destructor
-	~ViewPort(void);
+	ViewPort();
+	ViewPort(SDL_Rect rect);
+	~ViewPort();
 
 	//inicializar
 	void Init(int x, int y, int w, int h,std::string path);
@@ -27,7 +27,7 @@ public:
 	//parametros
 	void ActParam();
 	void SetParam( int w, int h, int x=NULL, int y=NULL);
-	SDL_Rect GetParam();
+	SDL_Rect getParam();
 
 	//relacion de tamaño respecto a la pantalla
 	void SetRel(float x, float y, float w, float h);

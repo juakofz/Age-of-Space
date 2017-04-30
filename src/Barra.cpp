@@ -29,7 +29,7 @@ void Barra::render()
 void Barra::renderName()
 {
 	Vector2 tamaño;
-	nombrejugador.render(gRenderer, &nombrejugador.getDim(), (gWindow.getWidth() - nombrejugador.getDim().x) / 2, 15);
+	nombrejugador.render(g_Renderer, &nombrejugador.getDim(), (g_Window.getWidth() - nombrejugador.getDim().x) / 2, 15);
 }
 
 void Barra::SetName(std::string nombre)
@@ -42,7 +42,7 @@ void Barra::renderFase()
 {
 	Vector2 tamaño = fasenum.getDim();
 	
-		fasenum.render(gRenderer, &fasenum.getDim(), gWindow.getWidth()*0.8, 15);
+		fasenum.render(g_Renderer, &fasenum.getDim(), g_Window.getWidth()*0.8, 15);
 }
 
 void Barra::SetFase(int fase)
@@ -64,8 +64,8 @@ void Barra::renderRecursos()
 	//iconos del oro y la energia
 	Texture energia, oro;
 	Texture energiaVal, oroVal;
-	energia.load("img/energy3.png", gRenderer);
-	oro.load("img/gold.png", gRenderer);
+	energia.load("img/energy3.png", g_Renderer);
+	oro.load("img/gold.png", g_Renderer);
 
 	//tamaño de los iconos
 	Vector2 tamañoiconos;
@@ -73,11 +73,11 @@ void Barra::renderRecursos()
 	tamañoiconos.x=30;
 	tamañoiconos.y=30;
 
-	energia.render(gRenderer, &tamañoiconos, 120, 20);
-	energianum.render(gRenderer, &energianum.getDim(), 150, 20);
+	energia.render(g_Renderer, &tamañoiconos, 120, 20);
+	energianum.render(g_Renderer, &energianum.getDim(), 150, 20);
 
-	oro.render(gRenderer, &tamañoiconos, 10, 20);
-	oronum.render(gRenderer, &oronum.getDim(), 50, 20);
+	oro.render(g_Renderer, &tamañoiconos, 10, 20);
+	oronum.render(g_Renderer, &oronum.getDim(), 50, 20);
 
 }
 
@@ -107,5 +107,5 @@ void Barra::renderVida()
 {
 	Vector2 tamaño = vida.getDim();
 	
-	vida.render(gRenderer, &vida.getDim(), gWindow.getWidth()*0.9, 15);
+	vida.render(g_Renderer, &vida.getDim(), g_Window.getWidth()*0.9, 15);
 }

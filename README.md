@@ -99,3 +99,10 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Variable names changed to fit new naming coventions
 - Added funcitonalities to Vector2 class. It was so bare-bones I find it surprising how we got so many things done
 - Added comments so I can understand what we did a year ago
+
+#### P 0.13
+- Disabled game phases, enemys, attacks, lists of entities... and many others for dev
+- Fixed some of the bugs with mouse selection rectangle. There is still work to be done
+- Improved and tweaked many little things
+- Disabled rendering filter for textures so they would look pixelated instead of blurry
+

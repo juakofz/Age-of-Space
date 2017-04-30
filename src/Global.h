@@ -1,4 +1,3 @@
-//funciones y variables globales
 #pragma once
 #include <SDL.h>
 #include <stdio.h>
@@ -39,9 +38,6 @@ extern bool loadText();
 extern Texture g_PromptTextTexture;
 extern Texture g_InputTextTexture;
 
-//Object codes
-//extern enum Items;
-
 //Globally used font
 extern TTF_Font * g_Font;
 
@@ -54,4 +50,14 @@ extern void close();
 //ventana del juego
 extern Window g_Window;
 
-//extern struct characts;
+//Areas
+enum AREAS
+{
+	TOP_BAR = 0,
+	GAME = 1,
+	ORDERS = 2,
+	INFO = 3,
+	MAP = 4,
+	WINDOW = 5,
+	AREA_NUMBER = 6
+};

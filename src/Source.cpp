@@ -17,6 +17,7 @@
 #include "Texture.h"
 #include "Vector2.h"
 #include "Window.h"
+#include "Game.h"
 
 //#include "Ship.h"
 //#include "Asteroid.h"
@@ -26,7 +27,6 @@
 //#include "Game.h"
 //#include "Mouse.h"
 //#include "Coordinator.h"
-
 
 
 using namespace std;
@@ -68,6 +68,13 @@ int main(int argc, char* args[])
 
 		//Coordinator main_coord; //Game state cordinator
 		//main_coord.initGame();
+		
+		Game game;
+		game.cargarTexturas();
+		game.cargarTexturas();
+		game.InitViewPorts();
+		game.initjuego();
+		game.initMenu();
 
 		//While application is running
 		while(!f_quit)
@@ -76,26 +83,23 @@ int main(int argc, char* args[])
 			cap_timer.start(); //FPS cap
 
 			//main_coord.mainEvent();//Non queue events
+			game.main_event();
 
 			//Handle events on queue
 			while(SDL_PollEvent(&e) != 0)
 			{
 				if(e.type == SDL_QUIT) f_quit = true; //quit via window event
 				//if(main_coord.event(&e)) f_quit = true; //quit via game event
-
+				game.event(&e);
 				f_size = g_Window.handleEvent(e); //Resize event
-					
 			}
 
 			//Only draw when not minimized
 			if( !g_Window.isMinimized() )
 			{
 				//Clear screen
-				SDL_SetRenderDrawColor( g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor( g_Renderer, 0xFF, 0x00, 0x00, 0xFF );
 				SDL_RenderClear( g_Renderer );
-
-				//Tamaño de la ventana
-				//Vector2 WindowQuad;
 
 				//Cálculo de fps
 				float avgFPS = countedFrames / (fps_timer.getTicks() / 1000.f);
@@ -111,17 +115,18 @@ int main(int argc, char* args[])
 				//gTextTexture.loadText("FPS", 20, fps_color);
 				//
 					
-				std::cout<< "FPS: " << avgFPS << '\r'; //FPS console display
+				//std::cout << "FPS: " << avgFPS << '\r'; //FPS console display
 
 				//Update window parameters if necessary
 				if(f_size)
 				{
 					//main_coord.actViewports();//update viewports
+					game.UpdateViewPorts();
 					//WindowQuad = gWindow.getSize(); //update screen sizes
 					f_size = false; //reset flag
 				}
 
-				
+				game.RenderViewPorts();
 				SDL_RenderPresent(g_Renderer); //update game render
 
 				//FPS update

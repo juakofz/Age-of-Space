@@ -59,7 +59,7 @@ void Map::renderBg(Camera cam)
 	center.y = cam.getSize().y / 2;
 
 	//render(SDL_Renderer* renderer, SDL_Point* center, int w, int h, SDL_Rect* clip, double angle, SDL_RendererFlip flip)
-	background->render(gRenderer, &center, cam.getSize().x, cam.getSize().y, &clip);
+	background->render(g_Renderer, &center, cam.getSize().x, cam.getSize().y, &clip);
 }
 
 void Map::renderGrid(Camera cam)
@@ -83,7 +83,7 @@ void Map::renderGrid(Camera cam)
 				SDL_Point center;
 				center.x = i - cam.getPos().x;
 				center.y = j - cam.getPos().y;
-				grid->render(gRenderer, &center, grid->getDim().x, grid->getDim().y);
+				grid->render(g_Renderer, &center, grid->getDim().x, grid->getDim().y);
 			}
 		}
 	}

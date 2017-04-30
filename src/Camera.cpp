@@ -2,7 +2,8 @@
 
 Camera::Camera()
 {
-	cen.x = cen.y = frame.w = frame.h = frame.x = frame.y = 0;
+	cen.x = cen.y = 0.0f;
+	frame.w = frame.h = frame.x = frame.y = 0;
 	zoom = 1;
 }
 
@@ -14,8 +15,8 @@ Camera::~Camera()
 //Actualizar
 void Camera::update(ViewPort v)
 {
-	frame.w = v.GetParam().w;
-	frame.h = v.GetParam().h;
+	frame.w = v.getParam().w;
+	frame.h = v.getParam().h;
 
 	setCen(cen.x, cen.y);
 	//cout << "Update" << endl;
@@ -50,12 +51,9 @@ bool Camera::isVisible(Vector2 pos, int margin)
 }
 
 //Posición
-Vector2 Camera::getPos()
+SDL_Point Camera::getPos()
 {
-	Vector2 temp;
-	temp.x = frame.x;
-	temp.y = frame.y;
-
+	SDL_Point temp{ frame.x, frame.y };
 	return temp;
 }
 

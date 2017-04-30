@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 #include "Texture.h"
-#include "ZonaPantalla.h"
+#include "ScreenArea.h"
 
 //esta clase todavia esta en pañales, no hay que hacerle mucho caso
 
-class Barra: public ZonaPantalla
+class Barra: public ScreenArea
 {
 	// name;
 	Texture nombrejugador, opciones, recursos, energianum, oronum, fasenum, vida;

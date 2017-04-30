@@ -21,7 +21,7 @@ public:
 	bool isVisible(Vector2 pos, int margin = 0);
 
 	//Posición
-	Vector2 getPos();
+	SDL_Point getPos();
 	void setPos(float x, float y);
 
 	//Centro
