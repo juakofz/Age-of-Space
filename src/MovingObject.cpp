@@ -1,15 +1,14 @@
 #include "MovingObject.h"
 
 
-MovingObject::MovingObject(int t, bool selec):GameObject(t, selec)
+MovingObject::MovingObject(int type, int player):GameObject(type, player)
 {
-	
-	//Vector2 por defecto 0,0;
-	//Dirección predeterminada
+	//No rotation
 	dir.x = 1;
 	dir.y = 0;
-	angle = 0;
-	//Destino nulo
+	m_angle = 0;
+	
+	//No destination
 	dest.x = cen.x;
 	dest.y = cen.y;
 	following = 0;
@@ -22,10 +21,10 @@ MovingObject::MovingObject(int t, bool selec):GameObject(t, selec)
 	vel.x = 0;
 	vel.y = 0;
 
-	sel = false;
-	sel_angle = 0;
+	f_sel = false;
+	m_sel_angle = 0;
 
-	tex = NULL;
+	m_tex = NULL;
 }
 
 
@@ -39,9 +38,9 @@ int MovingObject::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 	//Selección múltiple
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
-		if (((cen.x > m_sel.x - tex->getDim().x/2) && (cen.x < (m_sel.x + m_sel.w + tex->getDim().x / 2))))
+		if (((cen.x > m_sel.x - m_tex->getDim().x/2) && (cen.x < (m_sel.x + m_sel.w + m_tex->getDim().x / 2))))
 		{
-			if (((cen.y > m_sel.y - tex->getDim().y / 2) && (cen.y < (m_sel.y + m_sel.h + tex->getDim().y / 2))))
+			if (((cen.y > m_sel.y - m_tex->getDim().y / 2) && (cen.y < (m_sel.y + m_sel.h + m_tex->getDim().y / 2))))
 			{
 				select();
 			}
@@ -52,7 +51,7 @@ int MovingObject::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 
 
 	//Botón derecho (movimiento)
-	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
+	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (f_sel))
 	{
 		//SDL_GetMouseState(&mx, &my);
 		dest.x = m.x;
@@ -62,7 +61,7 @@ int MovingObject::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		dir.x = dest.x - cen.x;
 		dir.y = dest.y - cen.y;
 
-		angle = (180 * atan2(dir.y, dir.x) / M_PI);
+		m_angle = (180 * atan2(dir.y, dir.x) / M_PI);
 	}
 	return 0;
 
@@ -79,18 +78,18 @@ bool MovingObject::move()
 	dir.x = dest.x - cen.x;
 	dir.y = dest.y - cen.y;
 
-	angle = (180 * atan2(dir.y, dir.x) / M_PI);
+	m_angle = (180 * atan2(dir.y, dir.x) / M_PI);
 	
 
 	//Movimiento rectilíneo
 	if ((abs(cen.x - dest.x) > max_vel) || (abs(cen.y - dest.y) > max_vel)) {
 
 		//Ajuste de velocidades
-		vel.x = max_vel * cos(M_PI * angle / 180);
-		vel.y = max_vel * sin(M_PI * angle / 180);
+		vel.x = max_vel * cos(M_PI * m_angle / 180);
+		vel.y = max_vel * sin(M_PI * m_angle / 180);
 		
 		//Movimiento
-		SetCen(cen.x + vel.x, cen.y + vel.y);
+		setCen(cen.x + vel.x, cen.y + vel.y);
 	}
 	else
 	{
@@ -185,8 +184,8 @@ bool MovingObject::turn(int x, int y)
 
 	bool flag;
 
-	if(angle>360) angle-=360;
-	if(angle<0) angle +=360;
+	if(m_angle>360) m_angle-=360;
+	if(m_angle<0) m_angle +=360;
 
 	double vel_ang = max_vel / turn_rad;
 	Vector2 posrel;
@@ -204,7 +203,7 @@ bool MovingObject::turn(int x, int y)
 
 
 
-	if(ang_rel>(angle-2) && ang_rel<(angle+2))
+	if(ang_rel>(m_angle-2) && ang_rel<(m_angle+2))
 	{
 			//cout<<"dentro"<<endl;
 			move();
@@ -215,13 +214,13 @@ bool MovingObject::turn(int x, int y)
 	if((int)ang_rel%360<180 && (int)ang_rel%360>0)
 	{
 
-		cen_cir.x = turn_rad * cos(((90-angle)*M_PI/180)) + cen.x;
-		cen_cir.y = cen.y - turn_rad * sin(((90-angle)*M_PI/180));
-		angle -= vel_ang*180/M_PI;
+		cen_cir.x = turn_rad * cos(((90- m_angle)*M_PI/180)) + cen.x;
+		cen_cir.y = cen.y - turn_rad * sin(((90- m_angle)*M_PI/180));
+		m_angle -= vel_ang*180/M_PI;
 	}
 	else
 	{
-		angle += vel_ang*180/M_PI;
+		m_angle += vel_ang*180/M_PI;
 		
 	}
 
@@ -230,11 +229,11 @@ bool MovingObject::turn(int x, int y)
 	//movimiento circul
 
 	//Ajuste de velocidades
-		vel.x = max_vel * cos(M_PI * angle / 180);
-		vel.y = max_vel * sin(M_PI * angle / 180);
+		vel.x = max_vel * cos(M_PI * m_angle / 180);
+		vel.y = max_vel * sin(M_PI * m_angle / 180);
 		
 		//Movimiento
-		SetCen(cen.x + vel.x, cen.y + vel.y);
+		setCen(cen.x + vel.x, cen.y + vel.y);
 	}
 	}
 	else
@@ -265,7 +264,7 @@ bool MovingObject::moveTo(int x, int y)
 	dir.x = dest.x - cen.x;
 	dir.y = dest.y - cen.y;
 
-	angle = (180 * atan2(dir.y, dir.x) / M_PI);
+	m_angle = (180 * atan2(dir.y, dir.x) / M_PI);
 	return false;
 }
 
@@ -322,7 +321,7 @@ void MovingObject::setDest(float x, float y)
 
 bool MovingObject::onPoint(Vector2 p)
 {
-	if (cen.distancia(p) < max_vel) return true;
+	if (cen.distance(p) < max_vel) return true;
 	else return false;
 }
 

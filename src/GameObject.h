@@ -8,46 +8,43 @@ class GameObject
 {
 public:
 
-	//constructor y destructor
-	GameObject(int t);
-	GameObject(int t, bool selec = true);
+	GameObject(int type, int player);
+	GameObject(int type); //For unselectable objects
 	virtual ~GameObject(void);
 
-	//Manejo de eventos
 	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel) = 0;
 
-	//Selección
+	//Selection
 	void select();
 	void deselect();
 	bool getSel();
 	bool clickOn(SDL_Point pos);
 
-	//Renderizado
+	//Render
 	virtual void render(Camera cam);
 	void setMarker(Texture *m);
 
-	//Posición
-	Vector2 GetPos();
-	virtual void SetPos(float x, float y);
+	//Position
+	Vector2 getPos();
+	virtual void setPos(float x, float y);
 
-	//Centro
-	Vector2 GetCen();
-	Vector2& getCen(); 
-	void giveCen(Vector2 &dest);
-	void getCen(float &x, float &y);
-	virtual void SetCen(float x, float y);
+	//Center
+	Vector2 getCen();
+	virtual void setCen(float x, float y);
+	//void giveCen(Vector2 &dest);
 
-	void SetTex(Texture *t);
+	bool isInside(float x, float y);
 
-	//Tamaño
-	void setSize(int s);
+	//Size
+	void scaleTo(int s);
 	int getSize();
 	Vector2 getDim();
 
 
 	int getType();
 
-	//Texturas
+	//Textures
+	void setTex(Texture *t);
 	static void setTextures(Texture *tdisp);
 
 	//Player
@@ -56,29 +53,22 @@ public:
 
 protected:
 
-	const int type;
+	const int m_type;
 
-	Texture *marker, *tex, *map_tex;
-	static Texture *tdisparo;
-	//posicion y centro
-	Vector2 pos;
+	Texture *m_marker, *m_tex;
+
+	Vector2 m_pos;
+	int m_width;
+	int m_height;
+	int m_size;
 	Vector2 cen;
 
-	int size;
-	int width;
-	int height;
-	float angle;
+	float m_angle;
+	bool f_sel = false;
+	float m_sel_angle = 0;
 
-	//flag de seleccion
-	bool sel;
-
-	int sel_angle;
-
-	//Player
-	int player;
-
-private:
-	bool seleccionable;
+	int m_player; //Owner
+	bool m_selectable;
 
 };
 

@@ -105,4 +105,5 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Fixed some of the bugs with mouse selection rectangle. There is still work to be done
 - Improved and tweaked many little things
 - Disabled rendering filter for textures so they would look pixelated instead of blurry
+- Started re-implementing GameObjects and MovingObjects
 

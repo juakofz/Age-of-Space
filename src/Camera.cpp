@@ -41,10 +41,9 @@ void Camera::changeZoom(float z)
 //Margen de renderizado
 bool Camera::isVisible(Vector2 pos, int margin)
 {
-	margin = -margin;
-	if ((pos.x - margin >= frame.x) && (pos.x + margin <= frame.x + frame.w))
+	if ((pos.x + margin >= frame.x) && (pos.x - margin <= frame.x + frame.w))
 	{
-		if ((pos.y - margin >= frame.y) && (pos.y + margin <= frame.y + frame.h))
+		if ((pos.y + margin >= frame.y) && (pos.y - margin <= frame.y + frame.h))
 			return true;
 	}
 	return false;

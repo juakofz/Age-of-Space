@@ -1,188 +1,153 @@
 #include "GameObject.h"
 
-Texture * GameObject::tdisparo = 0;
-
-GameObject::GameObject(int t):type(t)
+GameObject::GameObject(int type, int player):m_type(type)
 {
-	sel = false;
-	sel_angle = 0;
-	player = 0;
-
+	m_selectable = true;
+	m_player = player;
 }
 
-GameObject::GameObject(int t, bool selec):type(t)
+GameObject::GameObject(int type):m_type(type)
 {
-	seleccionable = selec;
-	if(seleccionable) player = 1;
-	sel = false;
-	sel_angle = 0;
+	m_selectable = false;
+	m_player = 0;
 }
 
 GameObject::~GameObject(void)
 {
-	sel = false;
-	sel_angle = 0;
-}
-
-
-int GameObject::event(SDL_Event* e,SDL_Rect selection, SDL_Point xyrel)
-{
-	return 0;
+	f_sel = false;
+	m_sel_angle = 0;
 }
 
 void GameObject::select()
 {
-	if(seleccionable)
+	if(m_selectable)
 	{
-		sel = true;
-		sel_angle = 0;
+		f_sel = true;
+		m_sel_angle = 0;
 	}
-
 }
 
 void GameObject::deselect()
 {
-	if(seleccionable) sel = false;
+	if(m_selectable) f_sel = false;
 }
 
-//Renderizado
 void GameObject::render(Camera cam)
 {
-
-	if (cam.isVisible(GetCen(), 20))
+	//If inside camera frame
+	if (cam.isVisible(getCen(), m_size/2))
 	{
 		SDL_Point center;
 		center.x = cen.x - cam.getPos().x;
 		center.y = cen.y - cam.getPos().y;
+		m_tex->render(g_Renderer, &center, m_width, m_height, NULL, m_angle); //Render object texture
 
-	
-		tex->render(g_Renderer, &center, width, height, NULL, angle + 90);
-
-		if(seleccionable)
+		//Selection marker
+		if(m_selectable && f_sel)
 		{
-			SDL_Rect selection;
-			selection.x = pos.x - size*0.1;
-			selection.y = pos.y - size*0.1;
-			selection.w = selection.h = size * 1.2;
-
-			if (sel)
-			{
-				marker->render(g_Renderer, &center, selection.w, selection.h, NULL, sel_angle);
-				if (sel_angle > 360) sel_angle = 0;
-				else sel_angle++;
-			}
+			m_marker->render(g_Renderer, &center, m_size * 1.2f, m_size * 1.2f, NULL, m_sel_angle);
+			//Marker rotation
+			if (m_sel_angle > 360) m_sel_angle = 0;
+			else m_sel_angle++;
 		}
 	}
 }
 
-
-//Posición
-Vector2 GameObject::GetPos()
+Vector2 GameObject::getPos()
 {
-	return pos;
+	return m_pos;
 }
 
-void GameObject::SetPos(float x, float y)
+void GameObject::setPos(float x, float y)
 {
-	pos.x = x;
-	pos.y = y;
-	cen.x = pos.x + tex->getDim().x / 2;
-	cen.y = pos.y + tex->getDim().y / 2;
+	m_pos.x = x;
+	m_pos.y = y;
+	cen.x = m_pos.x + m_tex->getDim().x / 2;
+	cen.y = m_pos.y + m_tex->getDim().y / 2;
 }
 
-
-//Centro
-Vector2 GameObject::GetCen()
+Vector2 GameObject::getCen()
 {
 	return cen;
 }
 
-Vector2 & GameObject::getCen()
-{
-	return cen;
-}
-
-/*void GameObject::getCen(float &x, float &y)
-{
-	&x=&cen.x;
-	&y=&cen.y;
-}*/
-
-//Cambia el centro y la posición
-void GameObject::SetCen(float x, float y)
+void GameObject::setCen(float x, float y)
 {
 	cen.x = x;
 	cen.y = y;
-	pos.x = cen.x - tex->getDim().x / 2;
-	pos.y = cen.y - tex->getDim().y / 2;
+	m_pos.x = cen.x - m_tex->getDim().x / 2;
+	m_pos.y = cen.y - m_tex->getDim().y / 2;
 }
 
-void GameObject::giveCen(Vector2 &dest)
-{
-	dest = cen;
-}
+//void GameObject::giveCen(Vector2 &dest)
+//{
+//	dest = cen;
+//}
 
-//Asignación de textura
-void GameObject::SetTex(Texture *t)
+void GameObject::setTex(Texture *t)
 {
-	tex = t;
+	m_tex = t;
+	m_width = t->getDim().x;
+	m_height = t->getDim().y;
+	m_size = t->getDiag();
 }
 
 void GameObject::setMarker(Texture *t)
 {
-	marker = t;
-
+	m_marker = t;
 }
 
 bool GameObject::getSel()
 {
-	return sel;
+	return f_sel;
+}
+
+bool GameObject::isInside(float x, float y)
+{
+	if (x >= m_pos.x && x <= m_pos.x + m_width) //x axis
+	{
+		if (y >= m_pos.y && y <= m_pos.y + m_height) //y axis
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool GameObject::clickOn(SDL_Point mxy)
 {
-	if ((((mxy.x >= pos.x) && (mxy.x <= (pos.x + tex->getDim().x))) && ((mxy.y >= pos.y) && (mxy.y <= (pos.y + tex->getDim().y)))))  return true;
-		
-	else return false;
+	return isInside(mxy.x, mxy.y);
 }
 
-//Tamaño
-void GameObject::setSize(int s)
+void GameObject::scaleTo(int s)
 {
-	size = s;
-	float scale = s / tex->getDiag();
-	width = tex->getDim().x * scale;
-	height = tex->getDim().y * scale;
-}	
+	m_size = s;
+	float scale = s / m_tex->getDiag();
+	m_width = m_tex->getDim().x * scale;
+	m_height = m_tex->getDim().y * scale;
+}
 
 int GameObject::getSize()
 {
-	return size;
+	return m_size;
 }
 
 Vector2 GameObject::getDim()
 {
-	return tex->getDim();
+	return m_tex->getDim();
 }
 
 int GameObject::getType()
 {
-	return type;
+	return m_type;
 }
 
-
-void GameObject::setTextures(Texture *tdisp)
-{
-	tdisparo = tdisp;
-}
-
-//Player
 void GameObject::setPlayer(int p)
 {
-	player = p;
+	m_player = p;
 }
 
 int GameObject::getPlayer()
 {
-	return player;
+	return m_player;
 }

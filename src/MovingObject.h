@@ -1,5 +1,5 @@
 #pragma once
-#include "gameobject.h"
+#include "GameObject.h"
 #include "timer.h"
 
 class MovingObject :
@@ -7,8 +7,7 @@ class MovingObject :
 {
 public:
 
-
-	MovingObject(int t, bool selec = true);
+	MovingObject(int type, int player);
 	~MovingObject(void);
 
 	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
@@ -36,7 +35,6 @@ public:
 	bool onDest();
 
 protected:
-
 
 	//Movement
 	Vector2 vel;

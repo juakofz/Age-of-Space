@@ -42,27 +42,27 @@ bool init()
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 )
+	if( SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
 	{
-		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		success = false;
 	}
 	else
 	{
 		//Set texture filtering. 0 for none, 1 for linear, 2 for anisotropic
 		//Using 0 for pixelated effect
-		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "0" ) )
+		if(!SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "0"))
 		{
-			printf( "Warning: Linear texture filtering not enabled!" );
+			printf("Warning: Linear texture filtering not enabled!");
 		}
 
 		//Set mouse mode to relative. Hides system cursor and restricts it's movement to the current window
-		//SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 
 		//Create window
-		if( !g_Window.init() )
+		if(!g_Window.init())
 		{
-			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
 			success = false;
 		}
 		else
@@ -71,26 +71,26 @@ bool init()
 			g_Renderer = g_Window.createRenderer();
 			if( g_Renderer == NULL )
 			{
-				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 				success = false;
 			}
 			else
 			{
 				//Initialize renderer color
-				SDL_SetRenderDrawColor( g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
-				if( !( IMG_Init( imgFlags ) & imgFlags ) )
+				if(!( IMG_Init( imgFlags ) & imgFlags ))
 				{
-					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 					success = false;
 				}
 
 				 //Initialize SDL_ttf
-				if( TTF_Init() == -1 )
+				if(TTF_Init() == -1)
 				{
-					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 					success = false;
 				}
 			}
@@ -106,11 +106,11 @@ void close()
 	g_TextTexture.free();
 
 	//Free global font
-	TTF_CloseFont( g_Font );
+	TTF_CloseFont(g_Font);
 	g_Font = NULL;
 
 	//Destroy window	
-	SDL_DestroyRenderer( g_Renderer );
+	SDL_DestroyRenderer(g_Renderer);
 	g_Window.free();
 	g_Renderer = NULL;
 
@@ -123,21 +123,21 @@ void close()
 //Handle text imput
 bool textinput(std::string *inputText, bool renderText, SDL_Event e)
 {
-	if( e.type == SDL_KEYDOWN )
+	if(e.type == SDL_KEYDOWN)
 	{
 		//permite introducir texto
 		SDL_StartTextInput();
 		//Handle backspace
-		if( e.key.keysym.sym == SDLK_BACKSPACE && inputText->length() > 0 )
+		if(e.key.keysym.sym == SDLK_BACKSPACE && inputText->length() > 0)
 		{
 			//lop off character
 			inputText->pop_back();
 			renderText = true;
 		}
 		//Handle copy
-		else if( e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL )
+		else if(e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
 		{
-			SDL_SetClipboardText( inputText->c_str() );
+			SDL_SetClipboardText(inputText->c_str());
 		}
 
 		//Handle paste
