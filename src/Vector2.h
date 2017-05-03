@@ -19,11 +19,13 @@ public:
 	//Operators
 	Vector2 operator - (Vector2 v);
 	Vector2 operator + (Vector2 v);
+	Vector2 operator * (float k);
 	Vector2 operator = (Vector2 v);
 	Vector2 operator += (Vector2 v);
 	Vector2 operator -= (Vector2 v);
+	Vector2 operator *= (float k);
 	Vector2 operator = (SDL_Point p);
-	Vector2 operator * (float k);
+	
 
 	float length();
 	float angle(); //degrees

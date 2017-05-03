@@ -10,7 +10,7 @@ public:
 
 	GameObject(int type, int player);
 	GameObject(int type); //For unselectable objects
-	virtual ~GameObject(void);
+	virtual ~GameObject();
 
 	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel) = 0;
 

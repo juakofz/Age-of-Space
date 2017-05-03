@@ -53,6 +53,12 @@ Vector2 Vector2::operator -= (Vector2 v)
 	y -= v.y;
 	return *this;
 }
+Vector2 Vector2::operator *= (float k)
+{
+	x *= k;
+	y *= k;
+	return *this;
+}
 Vector2 Vector2::operator = (SDL_Point p)
 {
 	x = static_cast<float>(p.x);

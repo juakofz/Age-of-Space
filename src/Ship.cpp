@@ -1,31 +1,14 @@
 #include "Ship.h"
 #include <cmath>
 #include <iostream>
-#include "Interacciones.h"
 
 using namespace std;
 
-Ship::Ship():MovingObject(1)
+Ship::Ship():MovingObject(1, 1) // <- change this
 {
-	//Vector2 por defecto 0,0;
-	//Dirección predeterminada
-	dir.x = 1;
-	dir.y = 0;
-	angle = 0;
-
-	//Destino nulo
-	dest.x = 0;
-	dest.y = 0;
-
-	//Velocidad máxima
-	max_vel = 2;
 	turn_rad = 25;
-
-	//Aceleración máxima
-	max_acc = 0.5f;
-
-	//Fricción
-	friction = 0.8f;
+	m_max_accel = 0.5f;	
+	m_friction = 0.8f;
 
 	//Nave parada
 	vel.x = 0;

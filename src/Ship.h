@@ -3,7 +3,6 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "MovingObject.h"
-#include "Proyectil.h"
 #include "Timer.h"
 
 class Texture;
@@ -13,7 +12,7 @@ class Ship:public MovingObject
 public:
 	
 	Ship();
-	Ship(Texture *texture, int siz, Texture *marktex, Vector2 cen, int p = 0, bool sel = false);
+	Ship(Texture *texture, int siz, Texture *marktex, Vector2 cen, int player = 0);
 	~Ship();
 
 	//Manejo de eventos

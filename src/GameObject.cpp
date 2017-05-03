@@ -12,10 +12,8 @@ GameObject::GameObject(int type):m_type(type)
 	m_player = 0;
 }
 
-GameObject::~GameObject(void)
+GameObject::~GameObject()
 {
-	f_sel = false;
-	m_sel_angle = 0;
 }
 
 void GameObject::select()

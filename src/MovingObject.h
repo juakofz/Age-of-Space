@@ -14,40 +14,33 @@ public:
 	void render(Camera cam);
 
 	//Movimiento
-	virtual bool move();
-	virtual bool turn(int x, int y);
+	virtual bool move() = 0;
 	void stop();
-	bool moveTo(int x, int y);
-
-	Vector2& getDest();
+	void moveStraight(int x, int y);
 
 	//Velocidad
 	Vector2 GetVel();
 	void SetVel(float x, float y);
-	void SetMaxVel(float v);
 
-	//Dirección
+	//Direction
 	Vector2 GetDir();
 	void SetDir(float x, float y);
 
+	//Destination
 	void setDest(float x, float y);
+	Vector2 getDest();
 	bool onPoint(Vector2 p);
 	bool onDest();
 
 protected:
 
 	//Movement
-	Vector2 vel;
-	Vector2 acc;
-	float friction; //0 to 1;
-	float max_vel;
-	float max_acc;
-	Vector2 dir;
-	Vector2 dest;
-	float turn_rad;
-
-	//Seguimiento
-	float* dest_movil_x, *dest_movil_y;
-	bool following;
+	Vector2 m_vel;
+	Vector2 m_accel;
+	float m_friction; //0 to 1;
+	float m_max_accel;
+	Vector2 m_dir;
+	Vector2 m_dest;
+	bool f_following;
 };
 
