@@ -2,6 +2,15 @@
 
 Space RTS project as a way to get started in C++ and object-oriented programming. Development started as a student project at the tech university of Madrid.
 
+## Current tasks
+- [x] Add task list to readme
+- [x] Remove last added features
+- [x] Remove every game objec
+- [ ] Redo ships
+- [ ] Redo movement system
+- [ ] Redo projectiles
+- [ ] Implement lists and interactions
+
 ## Version History
 
 #### P 0.1:
