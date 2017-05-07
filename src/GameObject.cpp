@@ -36,8 +36,8 @@ void GameObject::render(Camera cam)
 	if (cam.isVisible(getCen(), m_size/2))
 	{
 		SDL_Point center;
-		center.x = cen.x - cam.getPos().x;
-		center.y = cen.y - cam.getPos().y;
+		center.x = m_cen.x - cam.getPos().x;
+		center.y = m_cen.y - cam.getPos().y;
 		m_tex->render(g_Renderer, &center, m_width, m_height, NULL, m_angle); //Render object texture
 
 		//Selection marker
@@ -60,21 +60,29 @@ void GameObject::setPos(float x, float y)
 {
 	m_pos.x = x;
 	m_pos.y = y;
-	cen.x = m_pos.x + m_tex->getDim().x / 2;
-	cen.y = m_pos.y + m_tex->getDim().y / 2;
+	m_cen.x = m_pos.x + m_tex->getDim().x / 2;
+	m_cen.y = m_pos.y + m_tex->getDim().y / 2;
+}
+
+void GameObject::setPos(Vector2 p)
+{
+	m_pos.x = p.x;
+	m_pos.y = p.y;
+	m_cen.x = m_pos.x + m_tex->getDim().x / 2;
+	m_cen.y = m_pos.y + m_tex->getDim().y / 2;
 }
 
 Vector2 GameObject::getCen()
 {
-	return cen;
+	return m_cen;
 }
 
 void GameObject::setCen(float x, float y)
 {
-	cen.x = x;
-	cen.y = y;
-	m_pos.x = cen.x - m_tex->getDim().x / 2;
-	m_pos.y = cen.y - m_tex->getDim().y / 2;
+	m_cen.x = x;
+	m_cen.y = y;
+	m_pos.x = m_cen.x - m_tex->getDim().x / 2;
+	m_pos.y = m_cen.y - m_tex->getDim().y / 2;
 }
 
 //void GameObject::giveCen(Vector2 &dest)
@@ -100,21 +108,29 @@ bool GameObject::getSel()
 	return f_sel;
 }
 
-bool GameObject::isInside(float x, float y)
+bool GameObject::isInside(SDL_Rect rect)
 {
-	if (x >= m_pos.x && x <= m_pos.x + m_width) //x axis
+	if (((m_cen.x > rect.x - m_tex->getDim().x / 2) && (m_cen.x < (rect.x + rect.w + m_tex->getDim().x / 2))))
 	{
-		if (y >= m_pos.y && y <= m_pos.y + m_height) //y axis
+		if (((m_cen.y > rect.y - m_tex->getDim().y / 2) && (m_cen.y < (rect.y + rect.h + m_tex->getDim().y / 2))))
+		{
+			return true;
+		}
+		else return false;
+	}
+	return false;
+}
+
+bool GameObject::clickOn(SDL_Point mouse)
+{
+	if (mouse.x >= m_pos.x && mouse.x <= m_pos.x + m_width) //x axis
+	{
+		if (mouse.y >= m_pos.y && mouse.y <= m_pos.y + m_height) //y axis
 		{
 			return true;
 		}
 	}
 	return false;
-}
-
-bool GameObject::clickOn(SDL_Point mxy)
-{
-	return isInside(mxy.x, mxy.y);
 }
 
 void GameObject::scaleTo(int s)

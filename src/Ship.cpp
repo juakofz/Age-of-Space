@@ -6,73 +6,66 @@ using namespace std;
 
 Ship::Ship():MovingObject(1, 1) // <- change this
 {
-	turn_rad = 25;
-	m_max_accel = 0.5f;	
-	m_friction = 0.8f;
+	setup();
 
-	//Nave parada
-	vel.x = 0;
-	vel.y = 0;
-	state = 0;
+	f_sel = false;
+	m_sel_angle = 0;
 
-	//Alcance
-	range = 150;
-	sight = 250;
 
-	firerate = 3;
 
-	sel = false;
-	sel_angle = 0;
-
-	//Color del marcador
-	marker_color.r = 0xFF;
-	marker_color.g = 0x00;
-	marker_color.b = 0x00;
-	marker_color.a = 0x00;
-
-	order.start();
-	target = 0;
-	tex = NULL;
+	t_order.start();
+	m_target = 0;
 }
 
-Ship::Ship(Texture *texture,int siz, Texture *marktex, Vector2 cen2, int p, bool sel):MovingObject(player, sel)
+Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int player):MovingObject(1, player)
 {
-	dir.x = 1;
-	dir.y = 0;
-	angle = 0;
+	setup();
 
-	//Destino nulo
-	dest.x = cen.x;
-	dest.y = cen.y;
+	m_dir.x = 1;
+	m_dir.y = 0;
+	m_angle = 0;
 
-	//Velocidad máxima
-	max_vel = 2;
-	turn_rad = 20;
+	//No destination
+	m_dest.x = m_cen.x;
+	m_dest.y = m_cen.y;
 
-	//Nave parada
-	vel.x = 0;
-	vel.y = 0;
-	state = 0;
+	//Stopped
+	m_vel.x = 0;
+	m_vel.y = 0;
+	m_state = 0;
 
-	//Alcance
-	range = 150;
-	sight = 250;
+	f_sel = false;
+	m_sel_angle = 0;
 
-	firerate = 3;
-
-	sel = false;
-	sel_angle = 0;
-
-	SetTex(texture);
-	setSize(siz);
+	setTex(texture);
+	scaleTo(size);
 	setMarker(marktex);
-	SetCen(cen2.x, cen2.y);
-	player = p;
+	setCen(cen2.x, cen2.y);
+	m_player = player;
 
-	order.start();
+	t_order.start();
 
-	target = 0;
+	m_target = 0;
 	stop();
+}
+
+void Ship::setup()
+{
+	//Movement
+	m_max_accel = 0.4f;
+	m_friction = 0.8f;
+	m_state = 0;
+
+	//Weapons
+	m_range = 150;
+	m_sight = 250;
+	m_firerate = 3;
+
+	//Selection marker color
+	m_marker_color.r = 0xFF;
+	m_marker_color.g = 0x00;
+	m_marker_color.b = 0x00;
+	m_marker_color.a = 0x00;
 }
 
 Ship::~Ship()
@@ -83,22 +76,15 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 {
 	int accion = 0;
 
-	//Selección múltiple
+	//Box selection
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
-		if (((cen.x > m_sel.x - tex->getDim().x/2) && (cen.x < (m_sel.x + m_sel.w + tex->getDim().x / 2))))
-		{
-			if (((cen.y > m_sel.y - tex->getDim().y / 2) && (cen.y < (m_sel.y + m_sel.h + tex->getDim().y / 2))))
-			{
-				select();
-			}
-			else deselect();
-		}
+		if (isInside(m_sel)) select();
 		else deselect();
 	}
 
-	//Botón derecho
-	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (sel))
+	//Right click
+	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (f_sel))
 	{
 		setDest(m.x, m.y);
 		setState(1);
@@ -107,128 +93,111 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 	return accion;
 }
 
-bool Ship::disparada(Proyectil p)
-{
-	return Interacciones::impacto(*this, p);
-
-}
-
 Vector2 Ship::getPointyEnd()
 {
 	Vector2 aux;
-	aux.x = cen.x + (tex->getDim().x / 2) * cos(angle*M_PI/180);
-	aux.y = cen.y + (tex->getDim().y / 2) * sin(angle*M_PI/180);
+	aux.x = m_cen.x + (m_tex->getDim().x / 2) * cos(m_angle*M_PI/180);
+	aux.y = m_cen.y + (m_tex->getDim().y / 2) * sin(m_angle*M_PI/180);
 	return aux;
 }
 
 float Ship::getRange()
 {
-	return range;
+	return m_range;
 }
 
 bool Ship::inRange(Vector2 p)
 {
-	return(cen.distancia(p) <= range);
+	return(m_cen.distance(p) <= m_range);
 }
 
 bool Ship::inRange(GameObject * s)
 {
-	return inRange(s->GetCen());
+	return inRange(s->getCen());
 }
 
 bool Ship::inRange()
 {
-	return inRange(target);
+	return inRange(m_target);
 }
 
 
 float Ship::getSight()
 {
-	return sight;
+	return m_sight;
 }
 
 bool Ship::inSight(Vector2 p)
 {
-	return(cen.distancia(p) <= sight);
+	return(m_cen.distance(p) <= m_sight);
 }
 
 bool Ship::inSight(GameObject * s)
 {
-	return inSight(s->GetCen());
+	return inSight(s->getCen());
 }
 
 bool Ship::inSight()
 {
-	return inSight(target);
+	return inSight(m_target);
 }
 
 
 bool Ship::attack()
 {
-	if (t_shoot.isStarted() && (t_shoot.getSecs() > (1.0F / firerate)))
+	//Fire rate cap timer
+	if (t_shoot.isStarted() && (t_shoot.getSecs() > (1.0F / m_firerate)))
 	{
 		t_shoot.restart();
-		return true; //bang
+		return true; //do the shootings
 	}
 	if (!t_shoot.isStarted())
 	{
 		t_shoot.start();
-		return false; //no bang
+		return false; //no shootings
 	}
-
 	return false;
 }
 
 Vector2 Ship::shoot()
 {
 	Vector2 aux;
-	aux.x = cen.x + dir.x * range;
-	aux.y = cen.y + dir.y * range;
+	aux.x = m_cen.x + m_dir.x * m_range;
+	aux.y = m_cen.y + m_dir.y * m_range;
 	return aux;
 }
 
 int Ship::getState()
 {
-	return state;
+	return m_state;
 }
 
 void Ship::setState(int s)
 {
-	state = s;
+	m_state = s;
 }
 
 Timer * Ship::getTimer()
 {
-	return &order;
+	return & t_order;
 }
 
-bool Ship::turn()
+bool Ship::move() // -- testing new movement system --
 {
-	if (target) return ( MovingObject::turn(target->GetCen().x, target->GetCen().y));
-	else return (MovingObject::turn(dest.x, dest.y));
-}
-
-void Ship::turn(Vector2 t)
-{
-	MovingObject::turn(t.x, t.y);
-}
-
-bool Ship::move() //testing new movement system
-{
-	if (vel.length() < 0.5) //if the ship is stopped
+	if (m_vel.length() < 0.8f) //if the ship is stopped
 	{
-		Vector2 straight = Vector2::director(angle) * vel.length(); //point forward
-		pos = pos + vel; //update position
-		acc = vel.normalize(max_acc); //update acceleration vector (also pointing forward)
-		vel = vel * friction; //reduce by friction
+		m_accel = Vector2::toVector(m_angle).normalize(m_max_accel); //Accelerate forward
+		m_vel = Vector2::toVector(m_angle).normalize(m_vel.length()) + m_accel; //Update velocity
+		m_vel = m_vel * m_friction; //reduce by friction factor
+		setPos(m_pos + m_vel); //Update position
 	}
 	else
 	{
-		pos = pos + vel; //update position
-		acc = (dest - pos).normalize(max_acc); //update acceleration vector
-		vel = vel + acc; //update velocity vector
-		vel = vel * friction; //reduce by friction factor
-		angle = vel.angle(); //update angle
+		m_accel = (m_dest - m_pos).normalize(m_max_accel); //update acceleration vector
+		m_vel = m_vel + m_accel; //update velocity vector
+		m_vel = m_vel * m_friction; //reduce by friction factor
+		setPos(m_pos + m_vel); //update position
+		m_angle = m_vel.angle(); //update angle
 	}
 	return false;
 }
@@ -236,47 +205,43 @@ bool Ship::move() //testing new movement system
 
 void Ship::setTarget(GameObject * t)
 {
-	target = t;
-	dest = target->GetCen();
+	m_target = t;
+	m_dest = m_target->getCen();
 }
 
 void Ship::updateTarget()
 {
-	if (!target) return;
-	else dest = target->GetCen();
+	if (!m_target) return;
+	else m_dest = m_target->getCen();
 }
 
 bool Ship::checkTarget()
 {
-	return target;
+	return m_target;
 }
 
 GameObject * Ship::getTarget()
 {
-	return target;
+	return m_target;
 }
 
 bool Ship::onTarget(Vector2 t, float err)
 {
-	//Vector2 aux = cen - t;
-	Vector2 aux = t- cen;
-	//cout<<(int)abs(dir.argumento() - aux.argumento())%360<<"   ";
-	//cout<<(((int)abs(dir.argumento() - aux.argumento())%360 <= err) ||((int)abs(dir.argumento() - aux.argumento())%360 >= 360-err))<<endl;
-	return (((int)abs(dir.angle() - aux.angle())%360 <= err) ||((int)abs(dir.angle() - aux.angle())%360 >= 360-err));
+	Vector2 aux = t - m_cen;
+	return (((int)abs(m_dir.angle() - aux.angle())%360 <= err) ||
+			((int)abs(m_dir.angle() - aux.angle())%360 >= 360 - err));
 }
 
 bool Ship::onTarget(float err)
 {
-	if (!target) return false; //No target
-	//Vector2 aux = cen - target->GetCen();
-	Vector2 aux = target->GetCen()- cen;
-	//cout<<(int)abs(dir.argumento() - aux.argumento())%360<<"   ";
-	//cout<<(((int)abs(dir.argumento() - aux.argumento())%360 <= err) ||((int)abs(dir.argumento() - aux.argumento())%360 >= 360-err))<<endl;
-	return (((int)abs(dir.angle() - aux.angle())%360 <= err) || ((int)abs(dir.angle() - aux.angle())%360 >= 360-err));
+	if (!m_target) return false; //No target
+	Vector2 aux = m_target->getCen() - m_cen;
+	return (((int)abs(m_dir.angle() - aux.angle())%360 <= err) ||
+		    ((int)abs(m_dir.angle() - aux.angle())%360 >= 360  -err));
 }
 
 float Ship::targetDist()
 {
-	if (!target) return cen.distancia(dest);
-	return cen.distancia(target->GetCen());
+	if (!m_target) return m_cen.distance(m_dest);
+	return m_cen.distance(m_target->getCen());
 }

@@ -16,6 +16,7 @@ Vector2::Vector2(SDL_Point p)
 
 Vector2::~Vector2()
 {
+
 }
 
 
@@ -65,11 +66,27 @@ Vector2 Vector2::operator = (SDL_Point p)
 	y = static_cast<float>(p.y);
 	return(Vector2(x, y));
 }
+
 Vector2 Vector2::operator * (float k)
 {
 	return Vector2(k*x, k*y);
 }
 
+float Vector2::projection(Vector2 v)
+{
+	float angle_aux = angle() - v.angle();
+	return length() * cos(angle_aux);
+}
+
+float Vector2::operator * (Vector2 v)
+{
+	return projection(v) * v.length();
+}
+
+Vector2 Vector2::crossProduct(Vector2 v)
+{
+	//tomorrow!
+}
 
 float Vector2::length()
 {
@@ -114,11 +131,12 @@ Vector2 Vector2::normal(bool right)
 	return aux;
 }
 
-Vector2 Vector2::toVector(float a)
+Vector2 Vector2::toVector(float angle, float scale)
 {
 	Vector2 aux;
-	aux.x = cos(a);
-	aux.y = sin(a);
+	aux.x = cos(angle);
+	aux.y = sin(angle);
+	aux.normalize(scale);
 	return aux;
 }
 

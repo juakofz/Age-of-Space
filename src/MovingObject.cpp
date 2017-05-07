@@ -9,13 +9,15 @@ MovingObject::MovingObject(int type, int player):GameObject(type, player)
 	m_angle = 0;
 	
 	//No destination
-	m_dest.x = cen.x;
-	m_dest.y = cen.y;
+	m_dest.x = m_cen.x;
+	m_dest.y = m_cen.y;
 	f_following = false;
 
 	//Stopped
 	m_vel.x = 0;
 	m_vel.y = 0;
+	m_accel.x = 0;
+	m_accel.y = 0;
 
 	f_sel = false;
 	m_sel_angle = 0;
@@ -32,9 +34,9 @@ int MovingObject::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 	//Selection (box)
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
-		if (((cen.x > m_sel.x - m_tex->getDim().x/2) && (cen.x < (m_sel.x + m_sel.w + m_tex->getDim().x / 2))))
+		if (((m_cen.x > m_sel.x - m_tex->getDim().x/2) && (m_cen.x < (m_sel.x + m_sel.w + m_tex->getDim().x / 2))))
 		{
-			if (((cen.y > m_sel.y - m_tex->getDim().y / 2) && (cen.y < (m_sel.y + m_sel.h + m_tex->getDim().y / 2))))
+			if (((m_cen.y > m_sel.y - m_tex->getDim().y / 2) && (m_cen.y < (m_sel.y + m_sel.h + m_tex->getDim().y / 2))))
 			{
 				select();
 			}
@@ -59,8 +61,8 @@ void MovingObject::render(Camera cam)
 
 void MovingObject::stop()
 {
-	m_dest.x = cen.x;
-	m_dest.y = cen.y;
+	m_dest.x = m_cen.x;
+	m_dest.y = m_cen.y;
 	m_vel.x = 0;
 	m_vel.y = 0;
 }
@@ -70,8 +72,8 @@ void MovingObject::moveStraight(int x, int y)
 
 	m_dest.x = x;
 	m_dest.y = y;
-	m_dir.x = m_dest.x - cen.x;
-	m_dir.y = m_dest.y - cen.y;
+	m_dir.x = m_dest.x - m_cen.x;
+	m_dir.y = m_dest.y - m_cen.y;
 	m_angle = (180 * atan2(m_dir.y, m_dir.x) / M_PI);
 
 	m_accel = m_dir.normalize(m_max_accel);
@@ -97,10 +99,6 @@ void MovingObject::SetVel(float x, float y)
 	m_vel.y = y;
 }
 
-void MovingObject::SetMaxVel(float v)
-{
-	max_vel = v;
-}
 //Dirección
 Vector2 MovingObject::GetDir()
 {
@@ -122,7 +120,7 @@ void MovingObject::setDest(float x, float y)
 
 bool MovingObject::onPoint(Vector2 p)
 {
-	if (cen.distance(p) < max_vel) return true;
+	if (m_cen.distance(p) < m_size) return true;
 	else return false;
 }
 

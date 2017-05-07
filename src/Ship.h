@@ -15,9 +15,8 @@ public:
 	Ship(Texture *texture, int siz, Texture *marktex, Vector2 cen, int player = 0);
 	~Ship();
 
-	//Manejo de eventos
+	//Event management
 	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
-	bool disparada(Proyectil p);
 	Vector2 getPointyEnd();
 
 	//Range
@@ -54,17 +53,19 @@ public:
 
 private:
 
-	GameObject * target;
+	void setup();
 
-	int state;
-	float range;
-	float sight;
-	float firerate; //Frec
-	Timer order;
+	GameObject * m_target;
+
+	int m_state;
+	float m_range;
+	float m_sight;
+	float m_firerate; //Frec
+	Timer t_order;
 	Timer t_shoot;
 
 	//Marker
-	SDL_Color marker_color;
-	float sel_radius;
-	Texture sel_circle;
+	SDL_Color m_marker_color;
+	float m_sel_radius;
+	Texture m_sel_circle;
 };

@@ -1,21 +1,22 @@
 #pragma once
 
 #include <SDL.h>
+
+#include "Global.h"
 #include "Window.h"
+#include "ScreenArea.h"
 #include "Barra.h"
 #include "Mouse.h"
 #include "Timer.h"
-//#include "Ship.h"
 #include "Player.h"
-#include "Global.h"
 #include "Map.h"
+#include "Ship.h"
 //#include "ListaAsteroides.h"
 //#include "ListaNaves.h"
 //#include "ListaProyectiles.h"
 //#include "ListaObjetos.h"
 //#include "ListaExplosiones.h"
 //#include "Proyectil.h"
-#include "ScreenArea.h"
 //#include "Menu.h"
 //#include "MovingObject.h"
 //#include "Interacciones.h"
@@ -106,4 +107,7 @@ public:
 
 	//Naves enemigas
 	void ataqueEnemigo();
+	
+	//Test objects; testing movement
+	Ship * test_ship;
 };

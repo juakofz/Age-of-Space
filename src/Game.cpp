@@ -38,7 +38,7 @@ int Game::event(SDL_Event* e)
 
 		game_area.Set(); //Render pointer
 		
-		//f_quit = gameEvents(e); //Game selection events
+		f_quit = gameEvents(e); //Game selection events
 
 		//Lock mouse while selecting
 		if (mouse.isActive())
@@ -193,7 +193,7 @@ void Game::UpdateViewPorts()
 void Game::RenderViewPorts()
 {
 	for (int i = 0; i < AREA_NUMBER; i++) areas[i]->render(); //general render
-	//specific render operations
+	//specific rendering
 	renderJuego();
 	renderMinimapa();
 	window_area.Set();
@@ -208,19 +208,19 @@ void Game::RenderTotal()
 
 void Game::initjuego()
 {
-	//Inicialización del cursor
-	mouse.setCursor(tex + 5);
+	//Cursor texture
+	mouse.setCursor(&tex[5]);
 
 	//Disparos
 	//Explosion::setTexture(tex + 10);
-	//GameObject::setTextures(tex + 9);
+	//GameObject::setTextures(&tex[9]);
 
-	//Mapa
+	//Map
 	map.setSize(2000, 2000);
 	map.setBg(&tex[6]);
 	map.setGrid(&tex[7]);
 
-	//Camara
+	//Camera
 	cam.setCen(map.getSize().x / 2, map.getSize().y / 2);
 
 	////inicializacion asteroide
@@ -247,6 +247,11 @@ void Game::initjuego()
 
 	//	naves.agregar(aux);
 	//}
+
+	//Test objects; testing movement
+	Vector2 aux{ map.getSize().x/2, map.getSize().y / 2 };
+	test_ship = new Ship(tex, 25, &tex[3], aux);
+	test_ship->setDest(1000, 1000);
 
 	initBarra(1);
 }
@@ -286,8 +291,8 @@ void Game::nuevafase(int i)
 	ataques=i;
 	initBarra(i);
 	//naves.eliminarJugador(2);
-
 }
+
 void Game::renderJuego()
 {
 
@@ -324,13 +329,16 @@ void Game::renderJuego()
 	//}
 
 
-
 	//viewport de juego
 	game_area.Set();
 	
 	//Mapa
 	map.renderBg(cam);
 	map.renderGrid(cam);
+
+	//Test objects
+	test_ship->move();
+	test_ship->render(cam);
 
 	//if (cam.isVisible(ast.GetCen(), 20))
 	//	{
@@ -360,6 +368,9 @@ void Game::setNombre(std::string nombre)
 
 int Game::gameEvents(SDL_Event* e)
 {
+	//Test objects events; testing movement
+	test_ship->event(e, mouse.getMrect(), mouse.getMpos());
+
 	////eventos de los elementos del juego
 	//ast.event(e, mouse.getMrect(), mouse.getMpos());
 	//asteroides.event(e, mouse.getMrect(), mouse.getMpos());

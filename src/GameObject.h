@@ -19,6 +19,7 @@ public:
 	void deselect();
 	bool getSel();
 	bool clickOn(SDL_Point pos);
+	bool isInside(SDL_Rect rect);
 
 	//Render
 	virtual void render(Camera cam);
@@ -27,13 +28,11 @@ public:
 	//Position
 	Vector2 getPos();
 	virtual void setPos(float x, float y);
+	virtual void setPos(Vector2 p);
 
 	//Center
 	Vector2 getCen();
 	virtual void setCen(float x, float y);
-	//void giveCen(Vector2 &dest);
-
-	bool isInside(float x, float y);
 
 	//Size
 	void scaleTo(int s);
@@ -61,7 +60,7 @@ protected:
 	int m_width;
 	int m_height;
 	int m_size;
-	Vector2 cen;
+	Vector2 m_cen;
 
 	float m_angle;
 	bool f_sel = false;
