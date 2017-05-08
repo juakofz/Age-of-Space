@@ -26,9 +26,12 @@ public:
 	Vector2 operator *= (float k);
 	Vector2 operator =  (SDL_Point p);
 
+	bool operator == (Vector2 v);
+	bool operator != (Vector2 v);
+
 	float projection(Vector2 v); //scalar projection
-	float   operator *  (Vector2 v); //scalar product
-	Vector2 crossProduct(Vector2 v);
+	float operator *  (Vector2 v); //scalar product
+	float crossProduct(Vector2 v);
 
 	float length();
 	float angle(); //degrees
@@ -37,6 +40,7 @@ public:
 
 	Vector2 normalize(float n = 1.0);
 	Vector2 normal(bool right = true);
+	Vector2 rotated(float angle);
 
 	static Vector2 toVector(float angle, float length = 1.0F);
 

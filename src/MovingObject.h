@@ -12,19 +12,24 @@ public:
 
 	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
 	void render(Camera cam);
+	virtual void renderDebug(Camera cam);
 
-	//Movimiento
+	//Movement
 	virtual bool move() = 0;
 	void stop();
 	void moveStraight(int x, int y);
 
-	//Velocidad
+	//Velocity
 	Vector2 GetVel();
 	void SetVel(float x, float y);
 
 	//Direction
-	Vector2 GetDir();
-	void SetDir(float x, float y);
+	Vector2 getDir();
+	void setDir(float x, float y);
+
+	//Angle
+	float getAngle();
+	void setAngle(float a);
 
 	//Destination
 	void setDest(float x, float y);

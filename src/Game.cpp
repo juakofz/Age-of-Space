@@ -338,6 +338,7 @@ void Game::renderJuego()
 
 	//Test objects
 	test_ship->move();
+	//test_ship->renderDebug(cam);
 	test_ship->render(cam);
 
 	//if (cam.isVisible(ast.GetCen(), 20))

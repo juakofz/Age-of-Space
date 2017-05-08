@@ -52,8 +52,8 @@ Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int playe
 void Ship::setup()
 {
 	//Movement
-	m_max_accel = 0.4f;
-	m_friction = 0.8f;
+	m_max_accel = 0.2f;
+	m_friction = 0.9f;
 	m_state = 0;
 
 	//Weapons
@@ -184,21 +184,36 @@ Timer * Ship::getTimer()
 
 bool Ship::move() // -- testing new movement system --
 {
-	if (m_vel.length() < 0.8f) //if the ship is stopped
+	if (onDest())
 	{
-		m_accel = Vector2::toVector(m_angle).normalize(m_max_accel); //Accelerate forward
-		m_vel = Vector2::toVector(m_angle).normalize(m_vel.length()) + m_accel; //Update velocity
-		m_vel = m_vel * m_friction; //reduce by friction factor
-		setPos(m_pos + m_vel); //Update position
+		stop(); //Stop when reaching destination
+		return true;
 	}
-	else
+
+	else if (m_accel.projection(m_dir) < 0) //if acceleration vector points backwards
 	{
-		m_accel = (m_dest - m_pos).normalize(m_max_accel); //update acceleration vector
-		m_vel = m_vel + m_accel; //update velocity vector
-		m_vel = m_vel * m_friction; //reduce by friction factor
-		setPos(m_pos + m_vel); //update position
-		m_angle = m_vel.angle(); //update angle
+		if (m_accel.crossProduct(m_dir) <= 0) //turn right
+		{
+			Vector2 normal = m_dir.normal(true);
+			m_accel = normal.normalize(m_accel.length());
+		}
+		else //turn left
+		{
+			Vector2 normal = m_dir.normal(false);
+			m_accel = normal.normalize(m_accel.length());
+		}
 	}
+
+	else if (m_dest != m_cen)
+	{
+		m_accel = (m_dest - m_cen).normalize(m_max_accel); //update acceleration vector
+	}
+
+	m_vel = m_vel + m_accel; //update velocity vector
+	m_vel = m_vel * m_friction; //reduce by friction factor
+	setCen(m_cen + m_vel); //update position
+	setAngle(m_vel.angle()); //update angle
+
 	return false;
 }
 

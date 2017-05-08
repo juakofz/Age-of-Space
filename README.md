@@ -6,7 +6,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - [x] Add task list to readme
 - [x] Remove last added features
 - [x] Remove every game objec
-- [ ] Redo ships
+- [x] Redo ships
 - [ ] Redo movement system
 - [ ] Redo explosions (implement particle system)
 - [ ] Redo projectiles
@@ -98,7 +98,7 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 
 #### P 0.11
 - Ships can now actually move by themselves
-- Ennemy ships shoot each other, or at least they try
+- Enemy ships shoot at each other, or at least they try
 - Added pause screen
 - UI changes
 - Deleted README file (woops!)
@@ -121,3 +121,9 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Disabled rendering filter for textures so they would look pixelated instead of blurry
 - Started re-implementing GameObjects and MovingObjects
 
+##### P 0.13.1
+- Re-implemented ship class
+- Implemented smooth movement and hard stop
+- Added optional vector rendering for debugging purposes (also it looks cool)
+- Added new bug where last box selection appears when right clicking
+- Added some fancy vector things for advanced math stuff

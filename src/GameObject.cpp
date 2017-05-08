@@ -85,6 +85,14 @@ void GameObject::setCen(float x, float y)
 	m_pos.y = m_cen.y - m_tex->getDim().y / 2;
 }
 
+void GameObject::setCen(Vector2 c)
+{
+	m_cen.x = c.x;
+	m_cen.y = c.y;
+	m_pos.x = m_cen.x - m_tex->getDim().x / 2;
+	m_pos.y = m_cen.y - m_tex->getDim().y / 2;
+}
+
 //void GameObject::giveCen(Vector2 &dest)
 //{
 //	dest = cen;

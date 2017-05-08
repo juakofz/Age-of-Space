@@ -33,6 +33,7 @@ public:
 	//Center
 	Vector2 getCen();
 	virtual void setCen(float x, float y);
+	virtual void setCen(Vector2 c);
 
 	//Size
 	void scaleTo(int s);

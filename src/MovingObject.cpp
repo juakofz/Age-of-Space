@@ -59,12 +59,48 @@ void MovingObject::render(Camera cam)
 	GameObject::render(cam);
 }
 
+void MovingObject::renderDebug(Camera cam)
+{
+	//If inside camera frame
+	if (cam.isVisible(getCen(), m_size / 2))
+	{
+		SDL_Point center;
+		center.x = m_cen.x - cam.getPos().x;
+		center.y = m_cen.y - cam.getPos().y;
+		
+		//Velocity (red)
+		SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
+		Vector2 vel_debug = m_vel.normalize(m_vel.length() * 50);
+		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+						center.x + vel_debug.x, center.y + vel_debug.y);
+
+		//Acceleration (blue)
+		SDL_SetRenderDrawColor(g_Renderer, 0, 0, 255, 150);
+		Vector2 accel_debug = m_accel.normalize(m_accel.length() * 100);
+		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+						center.x + accel_debug.x, center.y + accel_debug.y);
+
+		//Direction (green)
+		SDL_SetRenderDrawColor(g_Renderer, 0, 255, 0, 150);
+		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+						center.x + 20 * m_dir.x, center.y + 20 * m_dir.y);
+
+		//Direction normal (yellow)
+		SDL_SetRenderDrawColor(g_Renderer, 0, 255, 255, 150);
+		Vector2 normal = m_dir.normal();
+		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+			center.x + 20 * normal.x, center.y + 20 * normal.y);
+	}
+}
+
 void MovingObject::stop()
 {
 	m_dest.x = m_cen.x;
 	m_dest.y = m_cen.y;
 	m_vel.x = 0;
 	m_vel.y = 0;
+	m_accel.x = 0;
+	m_accel.y = 0;
 }
 
 void MovingObject::moveStraight(int x, int y)
@@ -99,16 +135,28 @@ void MovingObject::SetVel(float x, float y)
 	m_vel.y = y;
 }
 
-//Dirección
-Vector2 MovingObject::GetDir()
+Vector2 MovingObject::getDir()
 {
 	return m_dir;
 }
 
-void MovingObject::SetDir(float x, float y)
+void MovingObject::setDir(float x, float y)
 {
 	m_dir.x = x;
 	m_dir.y = y;
+	Vector2 aux(x, y);
+	m_angle = aux.angle();
+}
+
+float MovingObject::getAngle()
+{
+	return m_angle;
+}
+
+void MovingObject::setAngle(float a)
+{
+	m_angle = a;
+	m_dir = Vector2::toVector(a);
 }
 
 void MovingObject::setDest(float x, float y)
@@ -120,7 +168,7 @@ void MovingObject::setDest(float x, float y)
 
 bool MovingObject::onPoint(Vector2 p)
 {
-	if (m_cen.distance(p) < m_size) return true;
+	if (m_cen.distance(p) < m_size/5) return true;
 	else return false;
 }
 

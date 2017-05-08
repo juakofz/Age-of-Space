@@ -72,10 +72,21 @@ Vector2 Vector2::operator * (float k)
 	return Vector2(k*x, k*y);
 }
 
+bool Vector2::operator == (Vector2 v)
+{
+	if (x == v.y && y == v.y) return true;
+	else return false;
+}
+bool Vector2::operator != (Vector2 v)
+{
+	if (x != v.y || y != v.y) return true;
+	else return false;
+}
+
 float Vector2::projection(Vector2 v)
 {
 	float angle_aux = angle() - v.angle();
-	return length() * cos(angle_aux);
+	return length() * cos(angle_aux * M_PI / 180);
 }
 
 float Vector2::operator * (Vector2 v)
@@ -83,9 +94,10 @@ float Vector2::operator * (Vector2 v)
 	return projection(v) * v.length();
 }
 
-Vector2 Vector2::crossProduct(Vector2 v)
+float Vector2::crossProduct(Vector2 v)
 {
-	//tomorrow!
+	float k = x * v.y - y * v.x;
+	return k;
 }
 
 float Vector2::length()
@@ -131,16 +143,17 @@ Vector2 Vector2::normal(bool right)
 	return aux;
 }
 
-Vector2 Vector2::toVector(float angle, float scale)
+Vector2 Vector2::rotated(float angle)
 {
-	Vector2 aux;
-	aux.x = cos(angle);
-	aux.y = sin(angle);
-	aux.normalize(scale);
+	Vector2 aux = toVector(angle).normalize(length());
 	return aux;
 }
 
-//float Vector2::check_angle(float a)
-//{
-//
-//}
+Vector2 Vector2::toVector(float angle, float scale)
+{
+	Vector2 aux;
+	aux.x = cos(angle * M_PI / 180);
+	aux.y = sin(angle * M_PI / 180);
+	aux.normalize(scale);
+	return aux;
+}
