@@ -110,4 +110,6 @@ public:
 	
 	//Test objects; testing movement
 	Ship * test_ship;
+	Ship * test_ship2;
+	Ship * test_ship3;
 };

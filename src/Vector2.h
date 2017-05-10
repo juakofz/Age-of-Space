@@ -37,10 +37,14 @@ public:
 	float angle(); //degrees
 	float radians();
 	float distance(Vector2 dest);
+	float angle(Vector2 v);
 
 	Vector2 normalize(float n = 1.0);
 	Vector2 normal(bool right = true);
-	Vector2 rotated(float angle);
+	Vector2 rotatedTo(float angle);
+	Vector2 aligned(Vector2 v);
+	Vector2 rotateBy(float angle);
+	void makeZero();
 
 	static Vector2 toVector(float angle, float length = 1.0F);
 

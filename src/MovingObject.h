@@ -46,6 +46,6 @@ protected:
 	float m_max_accel;
 	Vector2 m_dir;
 	Vector2 m_dest;
-	bool f_following;
+	float m_steer_limit;
 };
 

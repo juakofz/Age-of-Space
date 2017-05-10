@@ -58,16 +58,15 @@ bool Texture::load(std::string path, SDL_Renderer* renderer)
 			diag = sqrt(dim.x * dim.x + dim.y * dim.y);
 		}
 
-		//Liberar imagen
+		//Free image
 		SDL_FreeSurface(img);
 	}
 
-	//Devolver éxito
+	//Return success
 	texture = newTexture;
 	return texture != NULL; //(¿?)
 }
 
-//Liberar (tec)
 void Texture::free()
 {
 	if (texture != NULL)
@@ -117,7 +116,6 @@ bool Texture::loadText(std::string textureText, int size, SDL_Color textColor, i
 
 	return success;
 }
-
 
 
 //Modulación de color (tec)

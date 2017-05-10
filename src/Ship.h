@@ -39,9 +39,9 @@ public:
 
 	Timer * getTimer();
 
-	bool turn();
-	void turn(Vector2 t);
+	//Movement
 	bool move();
+	bool f_follow_mouse; //For funsies
 
 	void setTarget(GameObject * t);
 	bool checkTarget();
@@ -58,11 +58,9 @@ private:
 	GameObject * m_target;
 
 	int m_state;
-	float m_range;
 	float m_sight;
-	float m_firerate; //Frec
+	float m_range;
 	Timer t_order;
-	Timer t_shoot;
 
 	//Marker
 	SDL_Color m_marker_color;

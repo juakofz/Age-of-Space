@@ -249,9 +249,17 @@ void Game::initjuego()
 	//}
 
 	//Test objects; testing movement
-	Vector2 aux{ map.getSize().x/2, map.getSize().y / 2 };
-	test_ship = new Ship(tex, 25, &tex[3], aux);
+	Vector2 aux{ 900.0f, 1000.0f};
+	test_ship = new Ship(tex, 20, &tex[3], aux);
 	test_ship->setDest(1000, 1000);
+
+	Vector2 aux2{ 1000.0f, 1000.0f };
+	test_ship2 = new Ship(tex, 20, &tex[3], aux2);
+	test_ship2->setDest(1000, 1000);
+
+	Vector2 aux3{ 1100.0f, 1000.0f };
+	test_ship3 = new Ship(tex, 20, &tex[3], aux3);
+	test_ship3->setDest(1000, 1000);
 
 	initBarra(1);
 }
@@ -338,8 +346,12 @@ void Game::renderJuego()
 
 	//Test objects
 	test_ship->move();
+	test_ship2->move();
+	test_ship3->move();
 	//test_ship->renderDebug(cam);
 	test_ship->render(cam);
+	test_ship2->render(cam);
+	test_ship3->render(cam);
 
 	//if (cam.isVisible(ast.GetCen(), 20))
 	//	{
@@ -371,7 +383,8 @@ int Game::gameEvents(SDL_Event* e)
 {
 	//Test objects events; testing movement
 	test_ship->event(e, mouse.getMrect(), mouse.getMpos());
-
+	test_ship2->event(e, mouse.getMrect(), mouse.getMpos());
+	test_ship3->event(e, mouse.getMrect(), mouse.getMpos());
 	////eventos de los elementos del juego
 	//ast.event(e, mouse.getMrect(), mouse.getMpos());
 	//asteroides.event(e, mouse.getMrect(), mouse.getMpos());

@@ -111,7 +111,6 @@ float Vector2::angle()
 	aux = 180 * atan2(y, x) / M_PI;
 	if (aux<0) return (aux + 360);
 	else return aux;
-	//return (180 * atan2(y, x) / M_PI);
 }
 
 float Vector2::radians()
@@ -125,8 +124,22 @@ float Vector2::distance(Vector2 dest)
 	return aux.length();
 }
 
+float Vector2::angle(Vector2 v)
+{
+	float dot = (*this * v);
+	float det = crossProduct(v);
+	float angle = atan2(det, dot) * 180 / M_PI;
+	return angle;
+}
+
 Vector2 Vector2::normalize(float n)
 {
+	if (length() < 0.0001f)
+	{
+		Vector2 zero(0, 0);
+		return zero;
+	}
+
 	Vector2 aux;
 	aux.x = n * x / length();
 	aux.y = n * y / length();
@@ -143,10 +156,33 @@ Vector2 Vector2::normal(bool right)
 	return aux;
 }
 
-Vector2 Vector2::rotated(float angle)
+Vector2 Vector2::rotatedTo(float angle)
 {
 	Vector2 aux = toVector(angle).normalize(length());
 	return aux;
+}
+
+Vector2 Vector2::aligned(Vector2 v)
+{
+	Vector2 aux = rotatedTo(v.angle());
+	return aux;
+}
+
+Vector2 Vector2::rotateBy(float angle)
+{
+	if (this->angle() + angle >= 360)
+		angle -= 360;
+	if (this->angle() + angle < 0)
+		angle += 360;
+	
+	Vector2 aux = toVector(this->angle() + angle).normalize(length());
+	return aux;
+}
+
+void Vector2::makeZero()
+{
+	x = 0.0f;
+	y = 0.0f;
 }
 
 Vector2 Vector2::toVector(float angle, float scale)

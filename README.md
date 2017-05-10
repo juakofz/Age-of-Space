@@ -3,12 +3,11 @@
 Space RTS project as a way to get started in C++ and object-oriented programming. Development started as a student project at the tech university of Madrid.
 
 ## Current tasks (rework)
-- [x] Add task list to readme
-- [x] Remove last added features
-- [x] Remove every game objec
-- [x] Redo ships
-- [ ] Redo movement system
+- [x] Redo movement system
+- [ ] Redo keyboard imput system
+- [ ] Make movement feel more organic. Maybe add some randomness?
 - [ ] Redo explosions (implement particle system)
+- [ ] Make ships shoot again -> implement weapon objects
 - [ ] Redo projectiles
 - [ ] Re-implement lists and basic interactions
 
@@ -127,3 +126,8 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - Added optional vector rendering for debugging purposes (also it looks cool)
 - Added new bug where last box selection appears when right clicking
 - Added some fancy vector things for advanced math stuff
+
+##### P 0.13.2
+- New movement system that looks pretttty niiice
+- Added more debug rendering
+- Red screen bug keeps getting worse

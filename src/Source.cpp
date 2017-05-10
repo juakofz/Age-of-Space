@@ -19,20 +19,33 @@
 #include "Window.h"
 #include "Game.h"
 
-//#include "Ship.h"
-//#include "Asteroid.h"
-//#include "Button.h"
-//#include "Menu.h"
-//#include "ViewPort.h"
-//#include "Game.h"
-//#include "Mouse.h"
-//#include "Coordinator.h"
+//Included files (.cpp and .h)
+/*
+Barra
+Camera
+Game
+GameObject
+Global
+Map
+Marker
+Mouse
+MovingObject
+Player
+ScreenArea
+Ship
+Texture
+Timer
+Vector2
+ViewPort
+Window
+*/
 
 
 using namespace std;
 
 int main(int argc, char* args[])
 {
+
 	//Start up SDL and create window
 	if( !init() )
 	{

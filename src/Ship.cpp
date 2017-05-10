@@ -11,8 +11,6 @@ Ship::Ship():MovingObject(1, 1) // <- change this
 	f_sel = false;
 	m_sel_angle = 0;
 
-
-
 	t_order.start();
 	m_target = 0;
 }
@@ -30,8 +28,8 @@ Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int playe
 	m_dest.y = m_cen.y;
 
 	//Stopped
-	m_vel.x = 0;
-	m_vel.y = 0;
+	m_vel.makeZero();
+	m_accel.makeZero();
 	m_state = 0;
 
 	f_sel = false;
@@ -54,18 +52,20 @@ void Ship::setup()
 	//Movement
 	m_max_accel = 0.2f;
 	m_friction = 0.9f;
+	m_steer_limit = 30;
 	m_state = 0;
 
 	//Weapons
 	m_range = 150;
 	m_sight = 250;
-	m_firerate = 3;
 
 	//Selection marker color
 	m_marker_color.r = 0xFF;
 	m_marker_color.g = 0x00;
 	m_marker_color.b = 0x00;
 	m_marker_color.a = 0x00;
+
+	f_follow_mouse = false; //for funsies
 }
 
 Ship::~Ship()
@@ -90,6 +90,12 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		setState(1);
 		accion = 1;
 	}
+
+	if (f_follow_mouse)
+	{
+		setDest(m.x, m.y);
+	}
+
 	return accion;
 }
 
@@ -145,17 +151,17 @@ bool Ship::inSight()
 
 bool Ship::attack()
 {
-	//Fire rate cap timer
-	if (t_shoot.isStarted() && (t_shoot.getSecs() > (1.0F / m_firerate)))
-	{
-		t_shoot.restart();
-		return true; //do the shootings
-	}
-	if (!t_shoot.isStarted())
-	{
-		t_shoot.start();
-		return false; //no shootings
-	}
+	////Fire rate cap timer
+	//if (t_shoot.isStarted() && (t_shoot.getSecs() > (1.0F / m_firerate)))
+	//{
+	//	t_shoot.restart();
+	//	return true; //do the shootings
+	//}
+	//if (!t_shoot.isStarted())
+	//{
+	//	t_shoot.start();
+	//	return false; //no shootings
+	//}
 	return false;
 }
 
@@ -184,29 +190,37 @@ Timer * Ship::getTimer()
 
 bool Ship::move() // -- testing new movement system --
 {
-	if (onDest())
+	float m_slow_accel = m_max_accel / 2.0f;
+
+	//If ship is ging really slow
+	if (m_vel.length() < 1.0f)
 	{
-		stop(); //Stop when reaching destination
-		return true;
+		m_accel = m_accel.aligned(m_dir);
 	}
 
-	else if (m_accel.projection(m_dir) < 0) //if acceleration vector points backwards
+	//If ship has a valid destination, go towards it
+	if (m_dest != m_cen)
+		m_accel = (m_dest - m_cen).normalize(m_max_accel); //update acceleration vector
+	else
+		m_accel.makeZero(); //If no valid destination, stop accelerating
+		
+	////If near destination, slow down
+	//if (abs(m_cen.distance(m_dest)) < 2 * m_size)
+	//	m_accel = m_accel.normalize(m_slow_accel);
+	//else
+	//	m_accel = m_accel.normalize(m_max_accel);
+
+	//Steering limit
+	if (abs(m_dir.angle(m_accel)) > m_steer_limit)
 	{
-		if (m_accel.crossProduct(m_dir) <= 0) //turn right
+		if (m_dir.angle(m_accel) <= 0) //turn right
 		{
-			Vector2 normal = m_dir.normal(true);
-			m_accel = normal.normalize(m_accel.length());
+			m_accel = m_accel.rotatedTo(m_dir.angle() - m_steer_limit);
 		}
 		else //turn left
 		{
-			Vector2 normal = m_dir.normal(false);
-			m_accel = normal.normalize(m_accel.length());
+			m_accel = m_accel.rotatedTo(m_dir.angle() + m_steer_limit);
 		}
-	}
-
-	else if (m_dest != m_cen)
-	{
-		m_accel = (m_dest - m_cen).normalize(m_max_accel); //update acceleration vector
 	}
 
 	m_vel = m_vel + m_accel; //update velocity vector

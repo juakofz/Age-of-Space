@@ -11,7 +11,6 @@ MovingObject::MovingObject(int type, int player):GameObject(type, player)
 	//No destination
 	m_dest.x = m_cen.x;
 	m_dest.y = m_cen.y;
-	f_following = false;
 
 	//Stopped
 	m_vel.x = 0;
@@ -67,29 +66,41 @@ void MovingObject::renderDebug(Camera cam)
 		SDL_Point center;
 		center.x = m_cen.x - cam.getPos().x;
 		center.y = m_cen.y - cam.getPos().y;
+
+		SDL_Point dest;
+		dest.x = m_dest.x - cam.getPos().x;
+		dest.y = m_dest.y - cam.getPos().y;
 		
-		//Velocity (red)
+		//Velocity (red line)
 		SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
 		Vector2 vel_debug = m_vel.normalize(m_vel.length() * 50);
 		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
 						center.x + vel_debug.x, center.y + vel_debug.y);
 
-		//Acceleration (blue)
+		//Acceleration (blue line)
 		SDL_SetRenderDrawColor(g_Renderer, 0, 0, 255, 150);
 		Vector2 accel_debug = m_accel.normalize(m_accel.length() * 100);
 		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
 						center.x + accel_debug.x, center.y + accel_debug.y);
 
-		//Direction (green)
+		//Direction (green line)
 		SDL_SetRenderDrawColor(g_Renderer, 0, 255, 0, 150);
 		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
 						center.x + 20 * m_dir.x, center.y + 20 * m_dir.y);
 
-		//Direction normal (yellow)
+		//Direction normal (cyan line)
 		SDL_SetRenderDrawColor(g_Renderer, 0, 255, 255, 150);
 		Vector2 normal = m_dir.normal();
 		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
 			center.x + 20 * normal.x, center.y + 20 * normal.y);
+
+		//Destination (red cross)
+		SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
+		int cross_size = 4;
+		SDL_RenderDrawLine(g_Renderer, dest.x - cross_size, dest.y - cross_size,
+			dest.x + cross_size, dest.y + cross_size);
+		SDL_RenderDrawLine(g_Renderer, dest.x + cross_size, dest.y - cross_size,
+			dest.x - cross_size, dest.y + cross_size);
 	}
 }
 
