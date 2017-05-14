@@ -10,7 +10,7 @@ public:
 	Camera();
 	~Camera();
 
-	//Actualizar
+	void scroll();
 	void update(ViewPort v);
 
 	//Movimiento y zoom
@@ -34,7 +34,8 @@ public:
 
 private:
 		
-	SDL_Rect frame;
-	Vector2 cen;
-	float zoom;
+	SDL_Rect m_frame;
+	Vector2 m_cen;
+	float m_zoom;
+	bool f_up, f_down, f_left, f_right;
 };

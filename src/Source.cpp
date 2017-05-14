@@ -30,6 +30,7 @@ Map
 Marker
 Mouse
 MovingObject
+ObjectManager
 Player
 ScreenArea
 Ship
@@ -92,20 +93,27 @@ int main(int argc, char* args[])
 		//While application is running
 		while(!f_quit)
 		{
-				
 			cap_timer.start(); //FPS cap
 
-			//main_coord.mainEvent();//Non queue events
-			game.main_event();
+			game.mainEvent(); //Non queue events
 
-			//Handle events on queue
+			//Handle queue events
 			while(SDL_PollEvent(&e) != 0)
 			{
 				if(e.type == SDL_QUIT) f_quit = true; //quit via window event
-				//if(main_coord.event(&e)) f_quit = true; //quit via game event
-				game.event(&e);
+				if (game.event(&e)) f_quit = true; //quit via game event
+
 				f_size = g_Window.handleEvent(e); //Resize event
+
+				g_keyboardState = SDL_GetKeyboardState(NULL); //Uptade keyboard state
+
+				if (g_keyboardState != NULL) //Quit when pressing esc
+				{
+					if (g_keyboardState[SDL_SCANCODE_UP]) f_quit = true;
+				}
 			}
+
+
 
 			//Only draw when not minimized
 			if( !g_Window.isMinimized() )

@@ -1,14 +1,18 @@
 #include "Global.h"
 
-//SDL_Window* gWindow = NULL;
-SDL_Renderer* g_Renderer = NULL;
+
+SDL_Renderer* g_Renderer = NULL; //Global renderer
+Window g_Window; //Main window
+const int g_SCREEN_WIDTH = 960; //Screen size
+const int g_SCREEN_HEIGHT = 640;
+const Uint8 * g_keyboardState = NULL; //Keyboard state array
+
+//Global flags
+bool g_f_debug = false;
+//...
 
 //Scene textures
 Texture g_SceneTexture;
-
-//tamaño de la pantalla
-const int g_SCREEN_WIDTH = 960;
-const int g_SCREEN_HEIGHT = 640;
 
 //Límite FPS
 const int SCREEN_FPS = 60;
@@ -30,9 +34,6 @@ Texture g_TextTexture;
 
 //Globally used font
 TTF_Font *g_Font = NULL;
-
-//Main window
-Window g_Window;
 
 
 //Init SDL

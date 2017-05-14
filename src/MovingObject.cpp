@@ -56,6 +56,7 @@ int MovingObject::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 void MovingObject::render(Camera cam)
 {
 	GameObject::render(cam);
+	if (g_f_debug) renderDebug(cam);
 }
 
 void MovingObject::renderDebug(Camera cam)

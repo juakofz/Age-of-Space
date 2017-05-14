@@ -1,19 +1,31 @@
 # Age-of-Space
 
 Space RTS project as a way to get started in C++ and object-oriented programming. Development started as a student project at the tech university of Madrid.
+Initial development by @juakofz and @cheriperi.
 
 ## Current tasks (rework)
 - [x] Redo movement system
-- [ ] Redo keyboard imput system
-- [ ] Make movement feel more organic. Maybe add some randomness?
+- [x] Redo keyboard imput system
 - [ ] Redo explosions (implement particle system)
 - [ ] Make ships shoot again -> implement weapon objects
 - [ ] Redo projectiles
+
+## Less inmediate tasks
 - [ ] Re-implement lists and basic interactions
+- [ ] Make ships repel each other when too close
+- [ ] Make movement feel more organic. Maybe add some randomness?
+- [ ] Add UI features such as buttons, text, progress bars, etc.
+- [ ] Clean up img folder an implement proper ressource loading 
 
 ## Future tasks (dev)
 - [ ] Implement passive AI for ships
 - [ ] Complete task list
+
+## Known bugs
+- Viewports fail to initialise and render only background color
+- Right clicking on the main viewport makes last selection box shop up
+- Dragging the selection box slightly above the minimap crashes main viewport
+- Dragging the minimap box onto the main viewport crashes it
 
 ## Version History
 
@@ -131,3 +143,8 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 - New movement system that looks pretttty niiice
 - Added more debug rendering
 - Red screen bug keeps getting worse
+
+##### P 0.13.3
+- Improved keyboard imput management
+- Press F12 to toggle debug mode
+- Added ObjectManager class for object management

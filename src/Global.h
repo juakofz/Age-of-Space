@@ -18,15 +18,20 @@ class Window;
 //Textura del texto
 extern Texture g_TextTexture;
 
-//renderizado general
-extern SDL_Renderer* g_Renderer;
 
-//Tamaño de la pantalla
-extern Texture g_SceneTexture;
-extern const int g_SCREEN_WIDTH;
+extern SDL_Renderer* g_Renderer; //Global renderer
+extern Window g_Window; //Game window
+extern const int g_SCREEN_WIDTH; //Screen size
 extern const int g_SCREEN_HEIGHT;
+extern const Uint8 * g_keyboardState; //Keyboard state array
 
-//Límite FPS
+//Global flags
+extern bool g_f_debug;
+//...
+
+
+extern Texture g_SceneTexture;
+//FPS cap
 extern const int SCREEN_FPS;
 extern const int SCREEN_TICKS_PER_FRAME;
 
@@ -34,7 +39,6 @@ extern const int SCREEN_TICKS_PER_FRAME;
 extern bool textinput(std::string *inputText, bool renderText, SDL_Event e);
 extern void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int tamaño);
 extern bool loadText();
-
 extern Texture g_PromptTextTexture;
 extern Texture g_InputTextTexture;
 
@@ -47,8 +51,7 @@ extern bool init();
 //Frees media and shuts down SDL
 extern void close();
 
-//ventana del juego
-extern Window g_Window;
+
 
 //Areas
 enum AREAS

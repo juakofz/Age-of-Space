@@ -348,7 +348,7 @@ void Game::renderJuego()
 	test_ship->move();
 	test_ship2->move();
 	test_ship3->move();
-	//test_ship->renderDebug(cam);
+
 	test_ship->render(cam);
 	test_ship2->render(cam);
 	test_ship3->render(cam);
@@ -381,73 +381,42 @@ void Game::setNombre(std::string nombre)
 
 int Game::gameEvents(SDL_Event* e)
 {
+
 	//Test objects events; testing movement
 	test_ship->event(e, mouse.getMrect(), mouse.getMpos());
 	test_ship2->event(e, mouse.getMrect(), mouse.getMpos());
 	test_ship3->event(e, mouse.getMrect(), mouse.getMpos());
-	////eventos de los elementos del juego
-	//ast.event(e, mouse.getMrect(), mouse.getMpos());
-	//asteroides.event(e, mouse.getMrect(), mouse.getMpos());
-	//
 
-	//switch(naves.event(e, mouse.getMrect(), mouse.getMpos()))
-	//{
-	//	case 1:
-	//	{
-	//		int i=0, j=0;
-	//		do{
-	//			
-	//			if(naves.getSel(i))
-	//			{
+	//Keyboard events
+	if (e->type == SDL_KEYDOWN) 
+	{
+		//ESC: Exit game
+		if (e->key.keysym.sym == SDLK_ESCAPE)
+		{
+			return 1;
+		}
 
-	//				Proyectil* aux = new Proyectil(naves.getPlayer(i));
+		//F12: Toggle debug mode
+		if (e->key.keysym.sym == SDLK_F12)
+		{
+			g_f_debug = !g_f_debug;
+			cout << "Debug: " << g_f_debug << endl;
+		}
+	}
 
-	//				aux->SetTex(tex + 9);
-	//				aux->setSize(25);
-	//				//Vector2 aux_cen = naves.getCen(naves.getSel()-1);
-
-	//				aux->SetCen(naves.getPointyEnd(i).x, naves.getPointyEnd(i).y);
-	//				aux->moveTo(mouse.getMpos().x, mouse.getMpos().y);
-
-	//				proyectiles.agregar(aux);
-	//				j++;
-	//			}
-	//			i++;
-	//		}while(naves.getSels()>j);
-	//	}
-	//}
-
-
-	//proyectiles.event(e, mouse.getMrect(), mouse.getMpos());
-
-	////Impactos con naves
-	//int oro = Interacciones::impactoListas(naves, proyectiles);
-	//if(oro)
-	//{
-	//		jugador.cambiarRecursos(oro, 0);
-	//		act_barra = true;
-	//}
-
-	////Impactos con edificios
-	//static int vida_edif = edificio.getVida();
-	//edificio.event(e, mouse.getMrect(), mouse.getMpos());
-	//if(!Interacciones::impacto(edificio, proyectiles) || edificio.getVida()<=0)
-	//{
-	//	return 2;
-	//}
-
-	//else
-	//{
-	//		if(vida_edif != edificio.getVida()) act_vida = 1;
-	//		return 0;
-	//}
 	return 0;
 	
 }
 
-void Game::main_event()
+void Game::mainEvent()
 {
-	mouse.scroll(cam, map);
+	mouse.scroll(cam, map); //Camera scroll via mouse
+	cam.scroll(); //Camera scroll via keyboard
+
+	if (g_keyboardState != NULL)//Add keyboard shortcuts here
+	{	
+		//...
+	}
 }
 
 void Game::initMenu()

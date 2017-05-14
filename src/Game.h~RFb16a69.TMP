@@ -11,7 +11,6 @@
 #include "Player.h"
 #include "Map.h"
 #include "Ship.h"
-#include "ObjectManager.h"
 //#include "ListaAsteroides.h"
 //#include "ListaNaves.h"
 //#include "ListaProyectiles.h"
@@ -47,9 +46,6 @@ class Game
 	//ListaProyectiles proyectiles;
 	//Asteroid ast;
 
-	//Game objects
-	ObjectManager manager;
-
 	bool act_barra, act_vida;
 
 	Player player1;
@@ -80,7 +76,7 @@ public:
 	void RenderTotal(); //renderiza la pantalla de inicio
 	
 	//Eventos fuera de cola
-	void mainEvent();
+	void main_event();
 
 	//juego
 	void initjuego(); //inicializa los elementos del juego
