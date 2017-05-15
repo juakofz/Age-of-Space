@@ -1,8 +1,8 @@
 #include "Explosion.h"
 
-Texture * Explosion::tex = 0;
-
-float Explosion::scale=0.6;
+//Static variables
+Texture * Explosion::m_tex = 0;
+float Explosion::scale = 0.6;
 
 
 Explosion::Explosion()
@@ -15,60 +15,48 @@ Explosion::~Explosion()
 
 Explosion::Explosion(int x, int y, int size)
 {
-	//Posición
-	pos.x = x;
-	pos.y = y;
+	m_cen.x = x;
+	m_cen.y = y;
 
-	//Número de proyectiles
-	int p_num = size * scale;
+	m_number = size * scale; //Projectile number
 
-	//Crear array de proyectiles
-	Proyectil * proy = new Proyectil[p_num];
-	for (int i = 0; i < p_num; i++)
+	//Create projectiles
+	Projectile * proy = new Projectile[m_number];
+	for (int i = 0; i < m_number; i++)
 	{
-		//Textura
-		proy[i].SetTex(tex);
 
-		proy[i].setSize(20);
-		tex->setColor(255, 50, 0);
-
-		//Posición
-		proy[i].SetPos(x, y);
-		proy[i].SetMaxVel(3);
-
-
-		//Ángulo
-		float angle = (360 / p_num) * i + (rand() % 11 - 5);
+		proy[i].setTex(m_tex);
+		proy[i].scaleTo(10);
+		m_tex->setColor(rand()%255, rand() % 255, rand() % 255); //Random color!
 		
-		//Dirección
-		float dir_x = cos(M_PI * angle / 180);
-		float dir_y = sin(M_PI * angle / 180);
+		proy[i].setCen(x, y);
+		proy[i].setSpeed(3);
 
-		proy[i].SetDir(dir_x, dir_y);
-		
-		//Destino
+		float angle = (360 / m_number) * i + (rand() % 11 - 5); //Slightly random angle
+		proy[i].setAngle(angle);
+
+		//Destination
 		float reach = size * 0.05 * ((rand() % 100) / 5);
-		float dest_x = pos.x + dir_x * reach;
-		float dest_y = pos.y + dir_y * reach;
-		
-		proy[i].moveTo(dest_x, dest_y);
+		float dest_x = m_cen.x + proy[i].getDir().x * reach;
+		float dest_y = m_cen.y + proy[i].getDir().y * reach;
+		proy[i].setDest(dest_x, dest_y);
 
-		//Añadir a lista
-		l_proy.agregar(&proy[i]);
+		v_projectiles.add(&proy[i]); //Add to object vector
 	}
+}
+
+void Explosion::update()
+{
+	v_projectiles.move();
 }
 
 bool Explosion::render(Camera cam)
 {
-	if (l_proy.getSize())
-	{
-		l_proy.render(cam);
-		return 1;
-	}
-	else return 0;
+	update();
+	return false;
 }
 
 void Explosion::setTexture(Texture * t)
 {
-	tex = t;
+	m_tex = t;
 }

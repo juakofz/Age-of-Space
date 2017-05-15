@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector2.h"
-#include "ListaProyectiles.h"
+#include "MovingObjectVector.h"
+#include "Projectile.h"
 #include <cstdlib>
 
 class Explosion
@@ -9,19 +9,22 @@ class Explosion
 public:
 	Explosion();
 	Explosion(int x, int y, int size);
+	Explosion(Vector2 cen, int size);
 	~Explosion();
 
+	void update();
 	bool render(Camera cam);
 	
 	static void setTexture(Texture *t);
 
 private:
-	static Texture *tex;
-	int size;
+	static Texture * m_tex;
+	int m_size;
+	int m_number;
 
 	static float scale;
 
-	ListaProyectiles l_proy;
-	Vector2 pos;
+	MovingObjectVector v_projectiles;
+	Vector2 m_cen;
 };
 

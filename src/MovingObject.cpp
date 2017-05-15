@@ -105,6 +105,12 @@ void MovingObject::renderDebug(Camera cam)
 	}
 }
 
+bool MovingObject::move()
+{
+	setCen(m_cen + m_vel); //Just move straight
+	return false;
+}
+
 void MovingObject::stop()
 {
 	m_dest.x = m_cen.x;
@@ -135,16 +141,25 @@ Vector2 MovingObject::getDest()
 	return m_dest;
 }
 
-//Velocidad
-Vector2 MovingObject::GetVel()
+Vector2 MovingObject::getVel()
 {
 	return m_vel;
 }
 
-void MovingObject::SetVel(float x, float y)
+void MovingObject::setVel(float x, float y)
 {
 	m_vel.x = x;
 	m_vel.y = y;
+}
+
+float MovingObject::getSpeed()
+{
+	return m_speed;
+}
+
+void MovingObject::setSpeed(float s)
+{
+	m_speed = s;
 }
 
 Vector2 MovingObject::getDir()

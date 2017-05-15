@@ -1,17 +1,16 @@
-#include "ObjectManager.h"
+#include "ObjectVector.h"
 
 
-
-ObjectManager::ObjectManager()
+ObjectVector::ObjectVector()
 {
 }
 
 
-ObjectManager::~ObjectManager()
+ObjectVector::~ObjectVector()
 {
 }
 
-bool ObjectManager::in(int i)
+bool ObjectVector::in(int i)
 {
 	if (!objectVector.empty() && i <= objectVector.size())
 		return true;
@@ -19,12 +18,12 @@ bool ObjectManager::in(int i)
 		return false;
 }
 
-void ObjectManager::add(GameObject * object)
+void ObjectVector::add(GameObject * object)
 {
 	objectVector.push_back(object);
 }
 
-void ObjectManager::erase(int i)
+void ObjectVector::erase(int i)
 {
 	if (in(i))
 	{
@@ -33,7 +32,7 @@ void ObjectManager::erase(int i)
 	}
 }
 
-void ObjectManager::render(Camera cam)
+void ObjectVector::render(Camera cam)
 {
 	if (objectVector.empty()) return;
 	else
@@ -45,7 +44,7 @@ void ObjectManager::render(Camera cam)
 	}
 }
 
-void ObjectManager::event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
+void ObjectVector::event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
 {
 	if (!objectVector.empty()) //if list is not empty
 	{
@@ -56,7 +55,7 @@ void ObjectManager::event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
 	}
 }
 
-int ObjectManager::count()
+int ObjectVector::count()
 {
 	if (objectVector.empty())
 		return 0;
@@ -64,7 +63,7 @@ int ObjectManager::count()
 		return objectVector.size();
 }
 
-bool ObjectManager::getSel(int i)
+bool ObjectVector::getSel(int i)
 {
 	if (in(i))
 	{

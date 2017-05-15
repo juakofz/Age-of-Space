@@ -4,24 +4,24 @@
 
 using namespace std;
 
-class ObjectManager
+class ObjectVector
 {
 public:
-	ObjectManager();
-	~ObjectManager();
+	ObjectVector();
+	~ObjectVector();
 
 	bool in(int i);
 
 	void add(GameObject * object);
 	void erase(int i);
 
-	void render(Camera cam);
+	virtual void render(Camera cam);
 	void event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel);
 
 	int count();
 	bool getSel(int ind);
 
-private:
+protected:
 	vector<GameObject *> objectVector;
 };
 

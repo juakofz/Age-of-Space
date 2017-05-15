@@ -23,6 +23,7 @@
 /*
 Barra
 Camera
+Explosion
 Game
 GameObject
 Global
@@ -32,6 +33,7 @@ Mouse
 MovingObject
 ObjectManager
 Player
+Projectile
 ScreenArea
 Ship
 Texture

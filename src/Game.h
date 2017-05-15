@@ -11,7 +11,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Ship.h"
-#include "ObjectManager.h"
+#include "ObjectVector.h"
 //#include "ListaAsteroides.h"
 //#include "ListaNaves.h"
 //#include "ListaProyectiles.h"
@@ -48,7 +48,7 @@ class Game
 	//Asteroid ast;
 
 	//Game objects
-	ObjectManager manager;
+	ObjectVector manager;
 
 	bool act_barra, act_vida;
 

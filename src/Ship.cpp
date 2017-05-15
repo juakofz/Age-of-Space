@@ -190,25 +190,25 @@ Timer * Ship::getTimer()
 
 bool Ship::move() // -- testing new movement system --
 {
-	float m_slow_accel = m_max_accel / 2.0f;
-
-	//If ship is ging really slow
-	if (m_vel.length() < 1.0f)
-	{
-		m_accel = m_accel.aligned(m_dir);
-	}
+	float m_slow_accel = m_max_accel / 1.5f;
 
 	//If ship has a valid destination, go towards it
 	if (m_dest != m_cen)
 		m_accel = (m_dest - m_cen).normalize(m_max_accel); //update acceleration vector
 	else
 		m_accel.makeZero(); //If no valid destination, stop accelerating
-		
-	////If near destination, slow down
-	//if (abs(m_cen.distance(m_dest)) < 2 * m_size)
-	//	m_accel = m_accel.normalize(m_slow_accel);
-	//else
-	//	m_accel = m_accel.normalize(m_max_accel);
+	
+	//If ship is ging really slow
+	if (m_vel.length() < 1.0f)
+	{
+		m_accel = m_accel.aligned(m_dir);
+	}
+	
+	//If near destination, slow down
+	if (abs(m_cen.distance(m_dest)) < 2 * m_size)
+		m_accel = m_accel.normalize(m_slow_accel);
+	else
+		m_accel = m_accel.normalize(m_max_accel);
 
 	//Steering limit
 	if (abs(m_dir.angle(m_accel)) > m_steer_limit)

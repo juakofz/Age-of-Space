@@ -15,13 +15,17 @@ public:
 	virtual void renderDebug(Camera cam);
 
 	//Movement
-	virtual bool move() = 0;
+	virtual bool move();
 	void stop();
 	void moveStraight(int x, int y);
 
 	//Velocity
-	Vector2 GetVel();
-	void SetVel(float x, float y);
+	Vector2 getVel();
+	void setVel(float x, float y);
+
+	//Speed -- used for linear movement
+	float getSpeed();
+	void setSpeed(float s);
 
 	//Direction
 	Vector2 getDir();
@@ -47,5 +51,6 @@ protected:
 	Vector2 m_dir;
 	Vector2 m_dest;
 	float m_steer_limit;
+	float m_speed;
 };
 
