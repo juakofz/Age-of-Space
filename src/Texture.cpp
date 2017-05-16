@@ -117,11 +117,14 @@ bool Texture::loadText(std::string textureText, int size, SDL_Color textColor, i
 	return success;
 }
 
-
-//Modulación de color (tec)
 void Texture::setColor(Uint8 r, Uint8 g, Uint8 b) 
 {
 	SDL_SetTextureColorMod(texture, r, g, b);
+}
+
+void Texture::setColor(SDL_Color c)
+{
+	SDL_SetTextureColorMod(texture, c.r, c.g, c.b);
 }
 
 //Modo de blending (tec)

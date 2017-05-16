@@ -124,8 +124,8 @@ float Timer::getSecs()
 			time = SDL_GetTicks() - startTicks;
 		}
 	}
-
-	return time/1000;
+	float t = static_cast<float>(time);
+	return t/1000.0f;
 }
 
 bool Timer::isStarted()

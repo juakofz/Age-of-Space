@@ -14,14 +14,15 @@ public:
 
 	void add(GameObject * object);
 	void erase(int i);
+	void clear();
 
-	virtual void render(Camera cam);
+	void render(Camera cam);
 	void event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel);
 
 	int count();
 	bool getSel(int ind);
 
-protected:
-	vector<GameObject *> objectVector;
+private:
+	vector<GameObject *> v_objects;
 };
 

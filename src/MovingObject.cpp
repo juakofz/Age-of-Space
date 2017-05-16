@@ -152,6 +152,12 @@ void MovingObject::setVel(float x, float y)
 	m_vel.y = y;
 }
 
+void MovingObject::setVel(Vector2 v)
+{
+	m_vel = v;
+}
+
+
 float MovingObject::getSpeed()
 {
 	return m_speed;

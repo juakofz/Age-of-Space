@@ -32,39 +32,10 @@ Vector2 Vector2::operator + (Vector2 v)
 {
 	return Vector2(x + v.x, y + v.y);
 }
+
 Vector2 Vector2::operator - (Vector2 v)
 {
 	return Vector2(x - v.x, y - v.y);
-}
-Vector2 Vector2::operator = (Vector2 v)
-{
-	x = v.x;
-	y = v.y;
-	return *this;
-}
-Vector2 Vector2::operator += (Vector2 v)
-{
-	x += v.x;
-	y += v.y;
-	return *this;
-}
-Vector2 Vector2::operator -= (Vector2 v)
-{
-	x -= v.x;
-	y -= v.y;
-	return *this;
-}
-Vector2 Vector2::operator *= (float k)
-{
-	x *= k;
-	y *= k;
-	return *this;
-}
-Vector2 Vector2::operator = (SDL_Point p)
-{
-	x = static_cast<float>(p.x);
-	y = static_cast<float>(p.y);
-	return(Vector2(x, y));
 }
 
 Vector2 Vector2::operator * (float k)
@@ -72,11 +43,59 @@ Vector2 Vector2::operator * (float k)
 	return Vector2(k*x, k*y);
 }
 
+Vector2 Vector2::operator / (float k)
+{
+	return Vector2(k/x, k/y);
+}
+
+Vector2 Vector2::operator = (Vector2 v)
+{
+	x = v.x;
+	y = v.y;
+	return *this;
+}
+
+Vector2 Vector2::operator += (Vector2 v)
+{
+	x += v.x;
+	y += v.y;
+	return *this;
+}
+
+Vector2 Vector2::operator -= (Vector2 v)
+{
+	x -= v.x;
+	y -= v.y;
+	return *this;
+}
+
+Vector2 Vector2::operator *= (float k)
+{
+	x *= k;
+	y *= k;
+	return *this;
+}
+
+Vector2 Vector2::operator /= (float k)
+{
+	x /= k;
+	y /= k;
+	return *this;
+}
+
+Vector2 Vector2::operator = (SDL_Point p)
+{
+	x = static_cast<float>(p.x);
+	y = static_cast<float>(p.y);
+	return(Vector2(x, y));
+}
+
 bool Vector2::operator == (Vector2 v)
 {
 	if (x == v.y && y == v.y) return true;
 	else return false;
 }
+
 bool Vector2::operator != (Vector2 v)
 {
 	if (x != v.y || y != v.y) return true;
@@ -160,6 +179,12 @@ Vector2 Vector2::rotatedTo(float angle)
 {
 	Vector2 aux = toVector(angle).normalize(length());
 	return aux;
+}
+
+void Vector2::rotateTo(float angle)
+{
+	Vector2 aux = toVector(angle).normalize(length());
+	*this = aux;
 }
 
 Vector2 Vector2::aligned(Vector2 v)

@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "Ship.h"
 #include "ObjectVector.h"
+#include "Explosion.h"
 //#include "ListaAsteroides.h"
 //#include "ListaNaves.h"
 //#include "ListaProyectiles.h"
@@ -55,7 +56,7 @@ class Game
 	Player player1;
 
 	//texturas
-	Texture tex[15];
+	Texture g_tex[15];
 	Texture texOpciones[5];
 
 	SDL_Point posicion;
@@ -69,7 +70,7 @@ public:
 	~Game(void);
 
 	//carga las texturas
-	void cargarTexturas();
+	void loadTextures();
 
 	void InitViewPorts(); //inits viewports
 	void UpdateViewPorts(); //updates viewports when the screen is resized
@@ -116,4 +117,7 @@ public:
 	Ship * test_ship;
 	Ship * test_ship2;
 	Ship * test_ship3;
+
+	//Test explosion
+	Explosion * test_explosion;
 };

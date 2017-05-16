@@ -10,6 +10,7 @@
 #include "Window.h"
 #include "Mouse.h"
 
+
 using namespace std;
 
 
@@ -24,8 +25,6 @@ extern Window g_Window; //Game window
 extern const int g_SCREEN_WIDTH; //Screen size
 extern const int g_SCREEN_HEIGHT;
 extern const Uint8 * g_keyboardState; //Keyboard state array
-extern Texture g_tex[15]; //Game textures
-
 
 //Global flags
 extern bool g_f_debug;
@@ -36,6 +35,11 @@ extern Texture g_SceneTexture;
 //FPS cap
 extern const int SCREEN_FPS;
 extern const int SCREEN_TICKS_PER_FRAME;
+
+//Random number generation
+extern random_device g_rd;
+extern mt19937 g_mt;
+//extern uniform_int_distribution<int> g_randomColor(0, 255);
 
 //texto introducido por teclado
 extern bool textinput(std::string *inputText, bool renderText, SDL_Event e);
@@ -53,13 +57,6 @@ extern bool init();
 //Frees media and shuts down SDL
 extern void close();
 
-//Random number generation
-extern random_device g_rd;
-extern mt19937 g_mt;
-
-extern float g_rand_float(float from, float to);
-extern int g_rand_int(int from, int to);
-extern SDL_Color g_rand_solidcolor();
 
 
 //Areas

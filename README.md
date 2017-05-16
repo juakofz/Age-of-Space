@@ -6,9 +6,9 @@ Initial development by @juakofz and @cheriperi.
 ## Current tasks (rework)
 - [x] Redo movement system
 - [x] Redo keyboard imput system
-- [ ] Redo explosions (implement particle system)
+- [x] Redo explosions (implement particle system)
 - [ ] Make ships shoot again -> implement weapon objects
-- [ ] Redo projectiles
+- [x] Redo projectiles
 
 ## Less inmediate tasks
 - [ ] Re-implement lists and basic interactions

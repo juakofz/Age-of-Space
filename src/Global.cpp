@@ -6,6 +6,7 @@ Window g_Window; //Main window
 const int g_SCREEN_WIDTH = 960; //Screen size
 const int g_SCREEN_HEIGHT = 640;
 const Uint8 * g_keyboardState = NULL; //Keyboard state array
+Texture g_tex[15]; //Game textures
 
 //Global flags
 bool g_f_debug = false;
@@ -17,6 +18,10 @@ Texture g_SceneTexture;
 //Límite FPS
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+
+//Random number generation
+random_device g_rd;
+mt19937 g_mt(g_rd());
 
 //Starts up SDL and creates window
 bool init();
@@ -183,3 +188,28 @@ void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int
 		}
 	}
 }
+
+float g_rand_float(float from, float to)
+{
+	uniform_real_distribution<float> random(from, to);
+	float aux = random(g_rd);
+	return aux;
+}
+
+int g_rand_int(int from, int to)
+{
+	uniform_int_distribution<int> random(from, to);
+	int aux = random(g_rd);
+	return aux;
+}
+
+SDL_Color g_rand_solidcolor()
+{
+	uniform_int_distribution<int> random(0, 255);
+	SDL_Color aux;
+	aux.r = random(g_rd);
+	aux.g = random(g_rd);
+	aux.b = random(g_rd);
+	aux.a = 255;
+	return aux;
+} 

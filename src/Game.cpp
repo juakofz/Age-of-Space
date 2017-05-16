@@ -132,28 +132,28 @@ int Game::event(SDL_Event* e)
 	return f_quit;
 }
 
-void Game::cargarTexturas()
+void Game::loadTextures()
 {
-	tex[0].load("img/Nave.png");
-	tex[1].load("img/asteroide.png");
-	tex[2].load("img/edificio.png");
-	tex[3].load("img/markerW.png");
-	tex[4].load("img/markerW.png");
-	tex[5].load("img/Cursor1.png");
-	tex[6].load("img/new_background.png");
-	tex[7].load("img/grid.png");
-	tex[8].load("img/Nave.png");
-	tex[9].load("img/disparo.png");
-	tex[10].load("img/disparo.png");
+	g_tex[0].load("img/Nave.png");
+	g_tex[1].load("img/asteroide.png");
+	g_tex[2].load("img/edificio.png");
+	g_tex[3].load("img/markerW.png");
+	g_tex[4].load("img/markerW.png");
+	g_tex[5].load("img/Cursor1.png");
+	g_tex[6].load("img/new_background.png");
+	g_tex[7].load("img/grid.png");
+	g_tex[8].load("img/Nave.png");
+	g_tex[9].load("img/disparo.png");
+	g_tex[10].load("img/disparo.png");
 
-	tex[5].setColor(0, 255, 0); // Cursor Verde
-	tex[0].setColor(30, 210, 240); //Nave cian
-	tex[3].setColor(255, 100, 0); //Marcador naranja
-	tex[4].setColor(0, 255, 0); //Marcador verde
-	tex[8].setColor(210, 50, 50); //Nave roja
-	tex[9].setColor(0, 255, 0); //Disparo verde
-	tex[10].setColor(210, 50, 50); //disparo rojo
-	tex[7].setAlpha(40);
+	g_tex[5].setColor(0, 255, 0); // Cursor Verde
+	g_tex[0].setColor(30, 210, 240); //Nave cian
+	g_tex[3].setColor(255, 100, 0); //Marcador naranja
+	g_tex[4].setColor(0, 255, 0); //Marcador verde
+	g_tex[8].setColor(210, 50, 50); //Nave roja
+	g_tex[9].setColor(0, 255, 0); //Disparo verde
+	g_tex[10].setColor(210, 50, 50); //disparo rojo
+	g_tex[7].setAlpha(40);
 
 	texOpciones[0].load("img/edificio.png");
 	texOpciones[1].load("img/markerW.png");
@@ -209,7 +209,10 @@ void Game::RenderTotal()
 void Game::initjuego()
 {
 	//Cursor texture
-	mouse.setCursor(&tex[5]);
+	mouse.setCursor(&g_tex[5]);
+
+	//Explosion textures
+	Explosion::setTexture(g_tex + 10);
 
 	//Disparos
 	//Explosion::setTexture(tex + 10);
@@ -217,8 +220,8 @@ void Game::initjuego()
 
 	//Map
 	map.setSize(2000, 2000);
-	map.setBg(&tex[6]);
-	map.setGrid(&tex[7]);
+	map.setBg(&g_tex[6]);
+	map.setGrid(&g_tex[7]);
 
 	//Camera
 	cam.setCen(map.getSize().x / 2, map.getSize().y / 2);
@@ -250,16 +253,19 @@ void Game::initjuego()
 
 	//Test objects; testing movement
 	Vector2 aux{ 900.0f, 1000.0f};
-	test_ship = new Ship(tex, 20, &tex[3], aux);
+	test_ship = new Ship(g_tex, 20, &g_tex[3], aux);
 	test_ship->setDest(1000, 1000);
 
 	Vector2 aux2{ 1000.0f, 1000.0f };
-	test_ship2 = new Ship(tex, 20, &tex[3], aux2);
+	test_ship2 = new Ship(g_tex, 20, &g_tex[3], aux2);
 	test_ship2->setDest(1000, 1000);
 
 	Vector2 aux3{ 1100.0f, 1000.0f };
-	test_ship3 = new Ship(tex, 20, &tex[3], aux3);
+	test_ship3 = new Ship(g_tex, 20, &g_tex[3], aux3);
 	test_ship3->setDest(1000, 1000);
+
+	//Test explosion
+	test_explosion = new Explosion(1000, 1000, 10);
 
 	initBarra(1);
 }
@@ -353,6 +359,8 @@ void Game::renderJuego()
 	test_ship2->render(cam);
 	test_ship3->render(cam);
 
+	test_explosion->render(cam);
+
 	//if (cam.isVisible(ast.GetCen(), 20))
 	//	{
 	//		ast.render(cam);
@@ -387,6 +395,7 @@ int Game::gameEvents(SDL_Event* e)
 	test_ship2->event(e, mouse.getMrect(), mouse.getMpos());
 	test_ship3->event(e, mouse.getMrect(), mouse.getMpos());
 
+
 	//Keyboard events
 	if (e->type == SDL_KEYDOWN) 
 	{
@@ -396,8 +405,8 @@ int Game::gameEvents(SDL_Event* e)
 			return 1;
 		}
 
-		//F12: Toggle debug mode
-		if (e->key.keysym.sym == SDLK_F12)
+		//d: Toggle debug mode
+		if (e->key.keysym.sym == SDLK_d)
 		{
 			g_f_debug = !g_f_debug;
 			cout << "Debug: " << g_f_debug << endl;

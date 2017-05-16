@@ -30,6 +30,7 @@ public:
 
 	//Modulación de color
 	void setColor(Uint8 r, Uint8 g, Uint8 b);
+	void setColor(SDL_Color c);
 
 	//Modo de blending
 	void setBlendMode(SDL_BlendMode blending);
