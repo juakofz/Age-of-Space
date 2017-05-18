@@ -20,12 +20,10 @@ public:
 	Vector2 operator -  (Vector2 v);
 	Vector2 operator +  (Vector2 v);
 	Vector2 operator *  (float k);
-	Vector2 operator /  (float k);
 	Vector2 operator =  (Vector2 v);
 	Vector2 operator += (Vector2 v);
 	Vector2 operator -= (Vector2 v);
 	Vector2 operator *= (float k);
-	Vector2 operator /= (float k);
 	Vector2 operator =  (SDL_Point p);
 
 	bool operator == (Vector2 v);
@@ -44,7 +42,6 @@ public:
 	Vector2 normalize(float n = 1.0);
 	Vector2 normal(bool right = true);
 	Vector2 rotatedTo(float angle);
-	void rotateTo(float angle);
 	Vector2 aligned(Vector2 v);
 	Vector2 rotateBy(float angle);
 	void makeZero();

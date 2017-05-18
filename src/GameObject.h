@@ -51,6 +51,11 @@ public:
 	void setPlayer(int p);
 	int getPlayer();
 
+	//Health
+	void setHealth(float h);
+	float getHealth();
+	bool damage(float d);
+
 protected:
 
 	const int m_type;
@@ -69,6 +74,8 @@ protected:
 
 	int m_player; //Owner
 	bool m_selectable;
+
+	float m_health;
 
 };
 

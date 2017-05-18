@@ -11,7 +11,7 @@ public:
 	~MovingObject(void);
 
 	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
-	void render(Camera cam);
+	virtual void render(Camera cam);
 	virtual void renderDebug(Camera cam);
 
 	//Movement
@@ -22,7 +22,7 @@ public:
 	//Velocity
 	Vector2 getVel();
 	void setVel(float x, float y);
-	void setVel(Vector2 v);
+	void setVel(Vector2 vel);
 
 	//Speed -- used for linear movement
 	float getSpeed();
@@ -31,6 +31,7 @@ public:
 	//Direction
 	Vector2 getDir();
 	void setDir(float x, float y);
+	void setDir(Vector2 dir);
 
 	//Angle
 	float getAngle();
@@ -38,6 +39,7 @@ public:
 
 	//Destination
 	void setDest(float x, float y);
+	void setDest(Vector2 dest);
 	Vector2 getDest();
 	bool onPoint(Vector2 p);
 	bool onDest();

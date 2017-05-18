@@ -1,8 +1,9 @@
 #pragma once
-
-#include "MovingObjectVector.h"
+#include "ProjectileVector.h"
 #include "Projectile.h"
 #include <cstdlib>
+#include <vector>
+
 
 class Explosion
 {
@@ -12,19 +13,15 @@ public:
 	Explosion(Vector2 cen, int size);
 	~Explosion();
 
-	void update();
-	bool render(Camera cam);
-	
-	static void setTexture(Texture *t);
+	vector<Vector2> v_directions;
 
 private:
-	static Texture * m_tex;
-	int m_size;
+
+	Vector2 m_cen;
+
+	const float m_scale = 1.5f;
 	int m_number;
 
-	static float scale;
-
-	MovingObjectVector v_projectiles;
-	Vector2 m_cen;
+	
 };
 

@@ -11,8 +11,8 @@
 #include "Player.h"
 #include "Map.h"
 #include "Ship.h"
-#include "ObjectVector.h"
-#include "Explosion.h"
+#include "ObjectManager.h"
+#include "ProgressBar.h"
 //#include "ListaAsteroides.h"
 //#include "ListaNaves.h"
 //#include "ListaProyectiles.h"
@@ -49,14 +49,13 @@ class Game
 	//Asteroid ast;
 
 	//Game objects
-	ObjectVector manager;
+	ObjectManager manager;
 
 	bool act_barra, act_vida;
 
 	Player player1;
 
 	//texturas
-	Texture g_tex[15];
 	Texture texOpciones[5];
 
 	SDL_Point posicion;
@@ -70,7 +69,7 @@ public:
 	~Game(void);
 
 	//carga las texturas
-	void loadTextures();
+	void cargarTexturas();
 
 	void InitViewPorts(); //inits viewports
 	void UpdateViewPorts(); //updates viewports when the screen is resized
@@ -114,10 +113,5 @@ public:
 	void ataqueEnemigo();
 	
 	//Test objects; testing movement
-	Ship * test_ship;
-	Ship * test_ship2;
-	Ship * test_ship3;
-
-	//Test explosion
-	Explosion * test_explosion;
+	ProgressBar * test_bar;
 };

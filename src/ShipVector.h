@@ -1,27 +1,29 @@
 #pragma once
+#include "Ship.h"
 #include <vector>
-#include "MovingObject.h"
 
-class MovingObjectVector
+class ShipVector
 {
 public:
-	MovingObjectVector();
-	~MovingObjectVector();
-	
+	ShipVector();
+	~ShipVector();
+
 	bool in(int i);
 
-	void add(MovingObject * movingObject);
+	void add(Ship * ship);
 	void erase(int i);
-	void clear();
 
 	void render(Camera cam);
 	void event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel);
 	void move();
 
 	int count();
+
+	Vector2 getCen(int i);
+	float getSize(int i);
 	bool getSel(int ind);
 
-	
-private:
-	vector<MovingObject * > v_movingObjects;
+protected:
+	vector<Ship *> v_ship;
 };
+

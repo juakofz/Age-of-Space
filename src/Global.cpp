@@ -10,7 +10,10 @@ Texture g_tex[15]; //Game textures
 
 //Global flags
 bool g_f_debug = false;
-//...
+
+//Random number generation
+random_device g_rd;
+mt19937 g_mt(g_rd());
 
 //Scene textures
 Texture g_SceneTexture;
@@ -18,10 +21,6 @@ Texture g_SceneTexture;
 //Límite FPS
 const int SCREEN_FPS = 60;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
-
-//Random number generation
-random_device g_rd;
-mt19937 g_mt(g_rd());
 
 //Starts up SDL and creates window
 bool init();
@@ -189,6 +188,8 @@ void Textrender(std::string inputText, bool renderText, SDL_Color textColor, int
 	}
 }
 
+
+//Random number generation
 float g_rand_float(float from, float to)
 {
 	uniform_real_distribution<float> random(from, to);
@@ -212,4 +213,4 @@ SDL_Color g_rand_solidcolor()
 	aux.b = random(g_rd);
 	aux.a = 255;
 	return aux;
-} 
+}

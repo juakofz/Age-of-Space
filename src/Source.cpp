@@ -65,7 +65,7 @@ int main(int argc, char* args[])
 		bool f_quit = false; //main loop flag
 		bool f_total = true; //start screen flag
 		bool f_size = false; //screen resize flag
-		
+			
 		srand(SDL_GetTicks()); //Random seed
 
 		//FPS variables
@@ -86,8 +86,8 @@ int main(int argc, char* args[])
 		//main_coord.initGame();
 		
 		Game game;
-		game.loadTextures();
-		game.loadTextures();
+		game.cargarTexturas();
+		game.cargarTexturas();
 		game.InitViewPorts();
 		game.initjuego();
 		game.initMenu();

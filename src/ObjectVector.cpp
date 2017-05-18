@@ -8,13 +8,14 @@ ObjectVector::ObjectVector()
 
 ObjectVector::~ObjectVector()
 {
-	if(!v_objects.empty())
-		v_objects.clear();
+	//Clear vector if there is any element remaining
+	if (!objectVector.empty())
+		objectVector.clear();
 }
 
 bool ObjectVector::in(int i)
 {
-	if (!v_objects.empty() && i <= v_objects.size())
+	if (!objectVector.empty() && i <= objectVector.size())
 		return true;
 	else
 		return false;
@@ -22,60 +23,51 @@ bool ObjectVector::in(int i)
 
 void ObjectVector::add(GameObject * object)
 {
-	v_objects.push_back(object);
+	objectVector.push_back(object);
 }
 
 void ObjectVector::erase(int i)
 {
 	if (in(i))
-	{
-		//Remove and destroy object
-		v_objects.erase(v_objects.begin() + i);
-	}
+		objectVector.erase(objectVector.begin() + i); //Remove and destroy object
 }
-
-void ObjectVector::clear()
-{
-	v_objects.clear();
-}
-
 
 void ObjectVector::render(Camera cam)
 {
-	if (v_objects.empty()) return;
+	if (objectVector.empty()) return;
 	else
 	{
-		for (int i = 0; i < v_objects.size(); i++)
+		for (int i = 0; i < objectVector.size(); i++)
 		{
-			v_objects[i]->render(cam);
+			objectVector[i]->render(cam);
 		}
 	}
 }
 
 void ObjectVector::event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
 {
-	if (!v_objects.empty()) //if list is not empty
+	if (!objectVector.empty()) //if list is not empty
 	{
-		for (int i = 0; i < v_objects.size(); i++)
+		for (int i = 0; i < objectVector.size(); i++)
 		{
-			v_objects[i]->event(e, sel, xy_rel);
+			objectVector[i]->event(e, sel, xy_rel);
 		}
 	}
 }
 
 int ObjectVector::count()
 {
-	if (v_objects.empty())
+	if (objectVector.empty())
 		return 0;
 	else
-		return v_objects.size();
+		return objectVector.size();
 }
 
 bool ObjectVector::getSel(int i)
 {
 	if (in(i))
 	{
-		return v_objects[i]->getSel();
+		return objectVector[i]->getSel();
 	}
 	else return false;
 }

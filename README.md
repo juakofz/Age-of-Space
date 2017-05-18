@@ -4,11 +4,11 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 Initial development by @juakofz and @cheriperi.
 
 ## Current tasks (rework)
-- [x] Redo movement system
-- [x] Redo keyboard imput system
-- [x] Redo explosions (implement particle system)
-- [ ] Make ships shoot again -> implement weapon objects
 - [x] Redo projectiles
+- [x] Redo explosions
+- [ ] Add ship list
+- [ ] Add a nicer random number genetating system
+- [ ] Make ships shoot again
 
 ## Less inmediate tasks
 - [ ] Re-implement lists and basic interactions
@@ -22,6 +22,7 @@ Initial development by @juakofz and @cheriperi.
 - [ ] Complete task list
 
 ## Known bugs
+- Timers are not quite working
 - Viewports fail to initialise and render only background color
 - Right clicking on the main viewport makes last selection box shop up
 - Dragging the selection box slightly above the minimap crashes main viewport
@@ -148,3 +149,17 @@ Initial development by @juakofz and @cheriperi.
 - Improved keyboard imput management
 - Press F12 to toggle debug mode
 - Added ObjectManager class for object management
+
+##### P 0.13.4
+- Added ObjectManager, which will be both an object factory and manage every game object.
+- Added Projectile vector and dynamic projectile management
+- Added Explosion vector (WIP)
+- Debug key changed to "d"
+
+##### P 0.13.5
+- Added dynamic explosion management
+- Added different kinds of projectiles
+- Added dynamic ship management
+- Ships now die when hit by any projectile (including explosions). Health is being implemented
+- Added progress bars (for health bars ans such)
+- Added a better random number generating system

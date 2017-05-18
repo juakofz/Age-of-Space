@@ -12,6 +12,7 @@ class Ship:public MovingObject
 public:
 	
 	Ship();
+	Ship(int type, int player, Vector2 center);
 	Ship(Texture *texture, int siz, Texture *marktex, Vector2 cen, int player = 0);
 	~Ship();
 

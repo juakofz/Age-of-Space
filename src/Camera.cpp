@@ -19,13 +19,17 @@ void Camera::scroll()
 	int scroll = 10;
 	if (g_keyboardState != NULL)
 	{
-		if (g_keyboardState[SDL_SCANCODE_UP]) setCen(m_cen.x, m_cen.y - scroll);
+		if (g_keyboardState[SDL_SCANCODE_UP])
+			setCen(m_cen.x, m_cen.y - scroll);
 
-		if (g_keyboardState[SDL_SCANCODE_DOWN]) setCen(m_cen.x, m_cen.y + scroll);
+		if (g_keyboardState[SDL_SCANCODE_DOWN])
+			setCen(m_cen.x, m_cen.y + scroll);
 
-		if (g_keyboardState[SDL_SCANCODE_LEFT]) setCen(m_cen.x - scroll, m_cen.y);
+		if (g_keyboardState[SDL_SCANCODE_LEFT])
+			setCen(m_cen.x - scroll, m_cen.y);
 
-		if (g_keyboardState[SDL_SCANCODE_RIGHT]) setCen(m_cen.x + scroll, m_cen.y);
+		if (g_keyboardState[SDL_SCANCODE_RIGHT])
+			setCen(m_cen.x + scroll, m_cen.y);
 	}	
 
 }

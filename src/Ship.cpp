@@ -15,6 +15,30 @@ Ship::Ship():MovingObject(1, 1) // <- change this
 	m_target = 0;
 }
 
+Ship::Ship(int type, int player, Vector2 center):MovingObject(type, player)
+{
+	setup();
+
+	m_dir.x = 1;
+	m_dir.y = 0;
+	m_angle = 0;
+
+	m_state = 0;
+
+	f_sel = false;
+	m_sel_angle = 0;
+
+	setTex(&g_tex[0]);
+	scaleTo(15);
+	setMarker(&g_tex[3]);
+	
+	setCen(center);
+	setDest(center);
+	stop();
+
+	m_target = 0;
+}
+
 Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int player):MovingObject(1, player)
 {
 	setup();
@@ -58,6 +82,9 @@ void Ship::setup()
 	//Weapons
 	m_range = 150;
 	m_sight = 250;
+
+	//Health
+	m_health = 5.0f;
 
 	//Selection marker color
 	m_marker_color.r = 0xFF;

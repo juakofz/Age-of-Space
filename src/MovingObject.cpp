@@ -73,27 +73,34 @@ void MovingObject::renderDebug(Camera cam)
 		dest.y = m_dest.y - cam.getPos().y;
 		
 		//Velocity (red line)
-		SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
-		Vector2 vel_debug = m_vel.normalize(m_vel.length() * 50);
-		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
-						center.x + vel_debug.x, center.y + vel_debug.y);
+		if (m_vel.length() < 10.0f)
+		{
+			SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
+			Vector2 vel_debug = m_vel.normalize(m_vel.length() * 50);
+			SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+							   center.x + vel_debug.x, center.y + vel_debug.y);
+		}
 
 		//Acceleration (blue line)
-		SDL_SetRenderDrawColor(g_Renderer, 0, 0, 255, 150);
-		Vector2 accel_debug = m_accel.normalize(m_accel.length() * 100);
-		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
-						center.x + accel_debug.x, center.y + accel_debug.y);
+		if (m_accel.length() < 10.0f)
+		{
+			SDL_SetRenderDrawColor(g_Renderer, 0, 0, 255, 150);
+			Vector2 accel_debug = m_accel.normalize(m_accel.length() * 100);
+			SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+							   center.x + accel_debug.x, center.y + accel_debug.y);
+		}
 
 		//Direction (green line)
 		SDL_SetRenderDrawColor(g_Renderer, 0, 255, 0, 150);
+		Vector2 debug_dir = m_dir.normalize(20.0f);
 		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
-						center.x + 20 * m_dir.x, center.y + 20 * m_dir.y);
+						center.x + debug_dir.x, center.y + debug_dir.y);
 
 		//Direction normal (cyan line)
 		SDL_SetRenderDrawColor(g_Renderer, 0, 255, 255, 150);
-		Vector2 normal = m_dir.normal();
+		Vector2 normal = debug_dir.normal();
 		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
-			center.x + 20 * normal.x, center.y + 20 * normal.y);
+			center.x + normal.x, center.y + normal.y);
 
 		//Destination (red cross)
 		SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
@@ -113,8 +120,7 @@ bool MovingObject::move()
 
 void MovingObject::stop()
 {
-	m_dest.x = m_cen.x;
-	m_dest.y = m_cen.y;
+	setDest(m_cen);
 	m_vel.x = 0;
 	m_vel.y = 0;
 	m_accel.x = 0;
@@ -152,11 +158,10 @@ void MovingObject::setVel(float x, float y)
 	m_vel.y = y;
 }
 
-void MovingObject::setVel(Vector2 v)
+void MovingObject::setVel(Vector2 vel)
 {
-	m_vel = v;
+	m_vel = vel;
 }
-
 
 float MovingObject::getSpeed()
 {
@@ -181,6 +186,13 @@ void MovingObject::setDir(float x, float y)
 	m_angle = aux.angle();
 }
 
+void MovingObject::setDir(Vector2 dir)
+{
+	m_dir = dir;
+	m_angle = dir.angle();
+}
+
+
 float MovingObject::getAngle()
 {
 	return m_angle;
@@ -197,6 +209,12 @@ void MovingObject::setDest(float x, float y)
 	//Destino
 	m_dest.x = x;
 	m_dest.y = y;
+}
+
+void MovingObject::setDest(Vector2 dest)
+{
+	//Destino
+	m_dest = dest;
 }
 
 bool MovingObject::onPoint(Vector2 p)

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Global.h"
 #include "MovingObject.h"
 #include "Timer.h"
 
@@ -7,7 +8,7 @@ class Projectile :
 	public MovingObject
 {
 public:
-	Projectile(int p = 0);
+	Projectile(int type, int player, Vector2 origin, Vector2 dest);
 	~Projectile(void);
 
 	virtual bool move();

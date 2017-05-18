@@ -132,7 +132,7 @@ int Game::event(SDL_Event* e)
 	return f_quit;
 }
 
-void Game::loadTextures()
+void Game::cargarTexturas()
 {
 	g_tex[0].load("img/Nave.png");
 	g_tex[1].load("img/asteroide.png");
@@ -151,8 +151,8 @@ void Game::loadTextures()
 	g_tex[3].setColor(255, 100, 0); //Marcador naranja
 	g_tex[4].setColor(0, 255, 0); //Marcador verde
 	g_tex[8].setColor(210, 50, 50); //Nave roja
-	g_tex[9].setColor(0, 255, 0); //Disparo verde
-	g_tex[10].setColor(210, 50, 50); //disparo rojo
+	g_tex[9].setColor(0, 255, 255); //Cyan laser
+	g_tex[10].setColor(255, 0, 0); //Red laser
 	g_tex[7].setAlpha(40);
 
 	texOpciones[0].load("img/edificio.png");
@@ -211,9 +211,6 @@ void Game::initjuego()
 	//Cursor texture
 	mouse.setCursor(&g_tex[5]);
 
-	//Explosion textures
-	Explosion::setTexture(g_tex + 10);
-
 	//Disparos
 	//Explosion::setTexture(tex + 10);
 	//GameObject::setTextures(&tex[9]);
@@ -225,6 +222,9 @@ void Game::initjuego()
 
 	//Camera
 	cam.setCen(map.getSize().x / 2, map.getSize().y / 2);
+
+	//Object manager
+	manager = * new ObjectManager;
 
 	////inicializacion asteroide
 	//ast.SetTex(tex+1);
@@ -252,20 +252,8 @@ void Game::initjuego()
 	//}
 
 	//Test objects; testing movement
-	Vector2 aux{ 900.0f, 1000.0f};
-	test_ship = new Ship(g_tex, 20, &g_tex[3], aux);
-	test_ship->setDest(1000, 1000);
-
-	Vector2 aux2{ 1000.0f, 1000.0f };
-	test_ship2 = new Ship(g_tex, 20, &g_tex[3], aux2);
-	test_ship2->setDest(1000, 1000);
-
-	Vector2 aux3{ 1100.0f, 1000.0f };
-	test_ship3 = new Ship(g_tex, 20, &g_tex[3], aux3);
-	test_ship3->setDest(1000, 1000);
-
-	//Test explosion
-	test_explosion = new Explosion(1000, 1000, 10);
+	Vector2 aux_cen(1000, 980);
+	test_bar = new ProgressBar(0, aux_cen, 0.6f);
 
 	initBarra(1);
 }
@@ -351,15 +339,15 @@ void Game::renderJuego()
 	map.renderGrid(cam);
 
 	//Test objects
-	test_ship->move();
-	test_ship2->move();
-	test_ship3->move();
+	test_bar->render(cam);
 
-	test_ship->render(cam);
-	test_ship2->render(cam);
-	test_ship3->render(cam);
-
-	test_explosion->render(cam);
+	//Object manager
+	manager.projectileImpacts();
+	manager.moveProjectiles();
+	manager.renderProjectiles(cam);
+	manager.updateExplosions();
+	manager.moveShips();
+	manager.renderShips(cam);
 
 	//if (cam.isVisible(ast.GetCen(), 20))
 	//	{
@@ -389,12 +377,11 @@ void Game::setNombre(std::string nombre)
 
 int Game::gameEvents(SDL_Event* e)
 {
+	//Object manager events
+	manager.shipEvents(e, mouse.getMrect(), mouse.getMpos());
 
 	//Test objects events; testing movement
-	test_ship->event(e, mouse.getMrect(), mouse.getMpos());
-	test_ship2->event(e, mouse.getMrect(), mouse.getMpos());
-	test_ship3->event(e, mouse.getMrect(), mouse.getMpos());
-
+	//..
 
 	//Keyboard events
 	if (e->type == SDL_KEYDOWN) 
@@ -410,6 +397,29 @@ int Game::gameEvents(SDL_Event* e)
 		{
 			g_f_debug = !g_f_debug;
 			cout << "Debug: " << g_f_debug << endl;
+		}
+
+		//Debug creation key
+		if (e->key.keysym.sym == SDLK_z)
+		{
+			cout << "Debug projectile created! " << endl;
+			Vector2 debug_origin(1000, 1000), debug_dest(mouse.getMpos());
+			manager.createProjectile(1, 0, debug_origin, debug_dest);
+		}
+
+		//Debug creation key 2
+		if (e->key.keysym.sym == SDLK_x)
+		{
+			cout << "Debug explosion created! " << endl;
+			Vector2 debug_origin, debug_dest(mouse.getMpos());
+			manager.createExplosion(1000, 1000, 10);
+		}
+
+		//Debug creation key 3
+		if (e->key.keysym.sym == SDLK_c)
+		{
+			cout << "Debug ship created! " << endl;
+			manager.createShip(0, 1, mouse.getMpos());
 		}
 	}
 
@@ -524,6 +534,9 @@ void Game::renderMinimapa()
 	SDL_Rect mapRect = {margen, margen, w - 2 * margen, h - 2 * margen };
 	SDL_SetRenderDrawColor(g_Renderer, 0, 128, 255, 255);
 	SDL_RenderDrawRect(g_Renderer, &mapRect);
+
+	//Manager minimap render
+
 
 	//if (naves.getSize()) {
 	//	for (int i = (naves.getSize() - 1); i >= 0; i--)

@@ -173,3 +173,25 @@ int GameObject::getPlayer()
 {
 	return m_player;
 }
+
+
+void GameObject::setHealth(float h)
+{
+	if (h < 0) h = 0;
+	m_health = h;
+}
+
+float GameObject::getHealth()
+{
+	return m_health;
+}
+
+bool GameObject::damage(float d)
+{
+	if (d < 0) d = 0;
+	m_health -= d;
+	if (m_health < 0)
+		return true;
+	else
+		return false;
+}

@@ -1,23 +1,41 @@
 #include "Projectile.h"
 
 
-
-Projectile::Projectile(int p):MovingObject(3, false) //Non selectable
+Projectile::Projectile(int type, int player, Vector2 origin, Vector2 dest):MovingObject(3, false) //Non selectable
 {
-	m_dir.x = 1;
-	m_dir.y = 0;
-	m_angle = 0;
+	//Type 0: explosion projectile
+	if (type == 0)
+	{
+		Texture * aux_tex = &g_tex[10]; //Red laser texture
+		setTex(aux_tex);
 
-	m_dest = m_cen; //No destination
-	m_vel.makeZero(); //Stopped
-	m_tex = NULL; //No texture
-	m_player = p; //Owner
+		m_player = player; //Owner
+		scaleTo(10);
+		m_speed = 3.0f; //Constant speed
+		m_maxLifeTime = 2.0f; //2 secs life
+		m_lifeTime = 0.0f;
+		t_life.start(); //Start life timer
+		
+	}
 
-	m_speed = 1.0f;
+	//Type 1: small laser
+	if (type == 1)
+	{
+		Texture * aux_tex = &g_tex[9]; //Blue laser texture
+		setTex(aux_tex);
 
-	m_maxLifeTime = 2.0f; //2 secs
-	m_lifeTime = 0.0f;
-	t_life.start(); //Start life timer
+		m_player = player; //Owner
+		scaleTo(12);
+		m_speed = 5.0f; //Constant speed
+		m_maxLifeTime = 2.0f; //2 secs life
+		m_lifeTime = 0.0f;
+		t_life.start(); //Start life timer
+	}
+
+	setCen(origin); //Origin
+	setDest(dest); //Destination
+	setDir(dest - origin); //Direction and angle
+	setVel(m_dir.normalize(m_speed)); //Velocity
 }
 
 Projectile::~Projectile(void)
@@ -32,9 +50,7 @@ bool Projectile::move()
 	if (m_cen.distance(m_dest) < m_vel.length()) //If target has been reached
 		return true;
 	else
-	{
 		setCen(m_cen + m_vel);
-		return false;
-	}
-	
+
+	return false;
 }
