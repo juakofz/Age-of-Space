@@ -4,14 +4,13 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 Initial development by @juakofz and @cheriperi.
 
 ## Current tasks (rework)
-- [x] Redo projectiles
-- [x] Redo explosions
-- [ ] Add ship list
-- [ ] Add a nicer random number genetating system
+- [x] Add ship list
+- [x] Add a nicer random number genetating system
 - [ ] Make ships shoot again
+- [ ] Implement health correctly
 
 ## Less inmediate tasks
-- [ ] Re-implement lists and basic interactions
+- [x] Re-implement lists and basic interactions
 - [ ] Make ships repel each other when too close
 - [ ] Make movement feel more organic. Maybe add some randomness?
 - [ ] Add UI features such as buttons, text, progress bars, etc.
@@ -23,7 +22,8 @@ Initial development by @juakofz and @cheriperi.
 
 ## Known bugs
 - Timers are not quite working
-- Viewports fail to initialise and render only background color
+- Game closes when pressing the up arrow key
+- Viewports fail to initialise and renders only background color
 - Right clicking on the main viewport makes last selection box shop up
 - Dragging the selection box slightly above the minimap crashes main viewport
 - Dragging the minimap box onto the main viewport crashes it
