@@ -75,6 +75,8 @@ protected:
 	int m_player; //Owner
 	bool m_selectable;
 
+
+	float m_max_health;
 	float m_health;
 
 };

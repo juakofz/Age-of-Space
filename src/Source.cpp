@@ -102,20 +102,16 @@ int main(int argc, char* args[])
 			//Handle queue events
 			while(SDL_PollEvent(&e) != 0)
 			{
-				if(e.type == SDL_QUIT) f_quit = true; //quit via window event
-				if (game.event(&e)) f_quit = true; //quit via game event
+				if(e.type == SDL_QUIT)
+					f_quit = true; //quit via window event
+				if (game.event(&e))
+					f_quit = true; //quit via game event
 
 				f_size = g_Window.handleEvent(e); //Resize event
 
 				g_keyboardState = SDL_GetKeyboardState(NULL); //Uptade keyboard state
 
-				if (g_keyboardState != NULL) //Quit when pressing esc
-				{
-					if (g_keyboardState[SDL_SCANCODE_UP]) f_quit = true;
-				}
 			}
-
-
 
 			//Only draw when not minimized
 			if( !g_Window.isMinimized() )

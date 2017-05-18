@@ -22,7 +22,7 @@ Initial development by @juakofz and @cheriperi.
 
 ## Known bugs
 - Timers are not quite working
-- Game closes when pressing the up arrow key
+- Mouse box selection only works when selecting right and down
 - Viewports fail to initialise and renders only background color
 - Right clicking on the main viewport makes last selection box shop up
 - Dragging the selection box slightly above the minimap crashes main viewport
@@ -163,3 +163,7 @@ Initial development by @juakofz and @cheriperi.
 - Ships now die when hit by any projectile (including explosions). Health is being implemented
 - Added progress bars (for health bars ans such)
 - Added a better random number generating system
+
+##### P 0.13.4
+- Added health bar to ships
+_ Found more bugs

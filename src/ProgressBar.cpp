@@ -111,8 +111,8 @@ void ProgressBar::render(Camera cam)
 		//Update rects dimensions
 		if (m_progress == 0) //Only draw back rect
 		{
-			r_back.x = m_position.x;
-			r_back.y = m_position.y;
+			r_back.x = m_position.x - cam.getPos().x;
+			r_back.y = m_position.y - cam.getPos().y;
 			r_back.h = m_height;
 			r_back.w = m_width;
 			
@@ -121,8 +121,8 @@ void ProgressBar::render(Camera cam)
 		}	
 		else if (m_progress == 1) //Only draw front rect
 		{
-			r_front.x = m_position.x;
-			r_front.y = m_position.y;
+			r_front.x = m_position.x - cam.getPos().x;
+			r_front.y = m_position.y - cam.getPos().y;
 			r_front.h = m_height;
 			r_front.w = m_width;
 

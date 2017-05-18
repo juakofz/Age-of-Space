@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "MovingObject.h"
 #include "Timer.h"
+#include "ProgressBar.h"
 
 class Texture;
 
@@ -52,11 +53,14 @@ public:
 	bool onTarget(float err = 5.0);
 	float targetDist();
 
+	void render(Camera cam);
+
 private:
 
 	void setup();
 
 	GameObject * m_target;
+	ProgressBar * b_health;
 
 	int m_state;
 	float m_sight;
