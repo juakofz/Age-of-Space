@@ -5,6 +5,7 @@
 #include "MovingObject.h"
 #include "Timer.h"
 #include "ProgressBar.h"
+#include "StationVector.h"
 
 class Texture;
 
@@ -71,4 +72,7 @@ private:
 	SDL_Color m_marker_color;
 	float m_sel_radius;
 	Texture m_sel_circle;
+
+	//Stations
+	StationVector v_stations;
 };

@@ -12,7 +12,7 @@ Explosion::Explosion(int x, int y, int size)
 	{
 		float interval = 360 / m_number;
 		float angle = interval * i + g_rand_float(-interval/2, interval/2); //Slightly random angle
-		float reach = size * 0.5 * ((rand() % 100) / 5 + 1); //Destination
+		float reach = size * 2.0 * (1 + g_rand_float(-0.25, 0.25)); //Destination
 		Vector2 dest = m_cen + Vector2::toVector(angle, reach);
 		v_directions.push_back(dest);
 	}

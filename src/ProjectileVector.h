@@ -13,6 +13,7 @@ public:
 	void add(Projectile * projectile);
 	void erase(int i);
 	int count();
+	Projectile * get(int i);
 
 	Vector2 getCen(int i);
 	float getSize(int i);

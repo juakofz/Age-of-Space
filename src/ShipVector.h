@@ -16,8 +16,10 @@ public:
 	void render(Camera cam);
 	void event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel);
 	void move();
+	bool damage(int i, float damage);
 
 	int count();
+	Ship * get(int i);
 
 	Vector2 getCen(int i);
 	float getSize(int i);

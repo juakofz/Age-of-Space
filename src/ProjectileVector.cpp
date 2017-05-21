@@ -41,6 +41,17 @@ int ProjectileVector::count()
 		return v_projectile.size();
 }
 
+Projectile * ProjectileVector::get(int i)
+{
+	if (in(i))
+	{
+		Projectile * aux_proj = v_projectile[i];
+		return aux_proj;
+	}
+	else
+		return NULL;
+}
+
 Vector2 ProjectileVector::getCen(int i)
 {
 	Vector2 aux;

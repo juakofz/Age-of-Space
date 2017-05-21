@@ -3,6 +3,8 @@
 #include "ExplosionVector.h"
 #include "ShipVector.h"
 
+#include "Interactions.h"
+
 #include "Camera.h"
 
 class ObjectManager

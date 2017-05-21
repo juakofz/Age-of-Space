@@ -6,7 +6,7 @@ class ProgressBar
 {
 public:
 	ProgressBar();
-	ProgressBar(int type, Vector2 cen, float prog = 1.0f);
+	ProgressBar(int type, Vector2 cen, float prog);
 	~ProgressBar();
 
 	void setDim(float w, float h);

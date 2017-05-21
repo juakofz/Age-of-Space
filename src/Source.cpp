@@ -104,6 +104,7 @@ int main(int argc, char* args[])
 			{
 				if(e.type == SDL_QUIT)
 					f_quit = true; //quit via window event
+
 				if (game.event(&e))
 					f_quit = true; //quit via game event
 
@@ -112,6 +113,8 @@ int main(int argc, char* args[])
 				g_keyboardState = SDL_GetKeyboardState(NULL); //Uptade keyboard state
 
 			}
+
+
 
 			//Only draw when not minimized
 			if( !g_Window.isMinimized() )

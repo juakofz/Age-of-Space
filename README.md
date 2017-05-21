@@ -4,17 +4,20 @@ Space RTS project as a way to get started in C++ and object-oriented programming
 Initial development by @juakofz and @cheriperi.
 
 ## Current tasks (rework)
-- [x] Add ship list
-- [x] Add a nicer random number genetating system
+- [x] Implement health correctly
 - [ ] Make ships shoot again
-- [ ] Implement health correctly
+- [ ] Make ships repel each other when too close
 
 ## Less inmediate tasks
 - [x] Re-implement lists and basic interactions
-- [ ] Make ships repel each other when too close
-- [ ] Make movement feel more organic. Maybe add some randomness?
-- [ ] Add UI features such as buttons, text, progress bars, etc.
-- [ ] Clean up img folder an implement proper ressource loading 
+- [ ] Make movement feel more... organic?
+- [ ] Add UI features such as buttons, text, etc.
+- [ ] Improve debug mode
+- [ ] Clean up img folder and implement proper ressource 
+loading
+- [ ] Add support for animations
+- [ ] Add ship destruction animation
+
 
 ## Future tasks (dev)
 - [ ] Implement passive AI for ships
@@ -22,11 +25,8 @@ Initial development by @juakofz and @cheriperi.
 
 ## Known bugs
 - Timers are not quite working
-- Mouse box selection only works when selecting right and down
-- Viewports fail to initialise and renders only background color
-- Right clicking on the main viewport makes last selection box shop up
-- Dragging the selection box slightly above the minimap crashes main viewport
-- Dragging the minimap box onto the main viewport crashes it
+- Viewports sometimes fail to initialise and renders only background color until alt-tabbing out and in again (probably fixed)
+- Mouse events get locked on last position when changing screen area
 
 ## Version History
 
@@ -151,7 +151,7 @@ Initial development by @juakofz and @cheriperi.
 - Added ObjectManager class for object management
 
 ##### P 0.13.4
-- Added ObjectManager, which will be both an object factory and manage every game object.
+- Added ObjectManager, which will be both an object factory and game object manager
 - Added Projectile vector and dynamic projectile management
 - Added Explosion vector (WIP)
 - Debug key changed to "d"
@@ -164,6 +164,8 @@ Initial development by @juakofz and @cheriperi.
 - Added progress bars (for health bars ans such)
 - Added a better random number generating system
 
-##### P 0.13.4
-- Added health bar to ships
-_ Found more bugs
+##### P 0.13.6
+- Added good health and damage management
+- Health bars added to debug mode
+- Bug fixing
+- Laid groundwork for weapon systems (lists n' stuff)

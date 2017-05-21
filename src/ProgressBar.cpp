@@ -24,7 +24,7 @@ ProgressBar::ProgressBar(int type, Vector2 cen, float prog)
 {
 	//Default type
 	m_width = 20;
-	m_height = 3;
+	m_height = 2;
 
 	setCen(cen);
 

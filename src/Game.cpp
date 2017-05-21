@@ -87,7 +87,7 @@ int Game::event(SDL_Event* e)
 	}
 
 	//Lower part of the screen
-	if (my >= game_area.getHeight())
+	if (my >= game_area.down())
 	{
 		//Orders area
 		if (mx <= orders_area.right())
@@ -402,7 +402,7 @@ int Game::gameEvents(SDL_Event* e)
 		//Debug creation key
 		if (e->key.keysym.sym == SDLK_z)
 		{
-			cout << "Debug projectile created! " << endl;
+			//cout << "Debug projectile created! " << endl;
 			Vector2 debug_origin(1000, 1000), debug_dest(mouse.getMpos());
 			manager.createProjectile(1, 0, debug_origin, debug_dest);
 		}
@@ -410,7 +410,7 @@ int Game::gameEvents(SDL_Event* e)
 		//Debug creation key 2
 		if (e->key.keysym.sym == SDLK_x)
 		{
-			cout << "Debug explosion created! " << endl;
+			//cout << "Debug explosion created! " << endl;
 			Vector2 debug_origin, debug_dest(mouse.getMpos());
 			manager.createExplosion(1000, 1000, 10);
 		}
@@ -418,7 +418,7 @@ int Game::gameEvents(SDL_Event* e)
 		//Debug creation key 3
 		if (e->key.keysym.sym == SDLK_c)
 		{
-			cout << "Debug ship created! " << endl;
+			//cout << "Debug ship created! " << endl;
 			manager.createShip(0, 1, mouse.getMpos());
 		}
 	}
@@ -584,19 +584,26 @@ void Game::renderMinimapa()
 
 void Game::eventMinimapa(SDL_Event* e)
 {
-	int margen = 10;
+	int map_margin = 10;
 
-	//Dentro en x
-	if ((mouse.getR_pos().x >= margen) || (mouse.getR_pos().x >= map_area.getWidth() + margen))
+	//Inside margin (x)
+	if ((mouse.getR_pos().x > map_margin) || (mouse.getR_pos().x < map_area.getWidth() + map_margin))
 	{
-		//Dentro en y
-		if ((mouse.getR_pos().y >= margen) || (mouse.getR_pos().y >= map_area.getHeight() + margen))
+		//Inside margin (y)
+		if ((mouse.getR_pos().y > map_margin) || (mouse.getR_pos().y < map_area.getHeight() + map_margin))
 		{
 			SDL_Point p;
-			p.x = ((mouse.getR_pos().x - margen) * map.getSize().x) / (map_area.getWidth() - 2 * margen);
-			p.y = ((mouse.getR_pos().y - margen) * map.getSize().y) / (map_area.getHeight() - 2 * margen);
+			p.x = ((mouse.getR_pos().x - map_margin) * map.getSize().x) / (map_area.getWidth() - 2 * map_margin);
+			p.y = ((mouse.getR_pos().y - map_margin) * map.getSize().y) / (map_area.getHeight() - 2 * map_margin);
 			
-			//Movimiento de cámara
+			//Half fix
+			if (p.x < 0) p.x = 0;
+			if (p.x > map.getSize().x) p.x = map.getSize().x;
+			if (p.y < 0) p.y = 0;
+			if (p.y > map.getSize().y) p.y = map.getSize().y;
+
+
+			//Move camera
 			if (e->button.button == SDL_BUTTON_LEFT)
 			{
 				cam.setCen(p.x, p.y);

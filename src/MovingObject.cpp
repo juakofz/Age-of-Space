@@ -72,14 +72,21 @@ void MovingObject::renderDebug(Camera cam)
 		dest.x = m_dest.x - cam.getPos().x;
 		dest.y = m_dest.y - cam.getPos().y;
 		
+		float max_length = 100.0f;
+
 		//Velocity (red line)
-		if (m_vel.length() < 10.0f)
-		{
-			SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
-			Vector2 vel_debug = m_vel.normalize(m_vel.length() * 50);
-			SDL_RenderDrawLine(g_Renderer, center.x, center.y,
-							   center.x + vel_debug.x, center.y + vel_debug.y);
-		}
+		float aux_length;
+
+		if (m_vel.length() * 20 < max_length)
+			aux_length = m_vel.length() * 20;
+		else
+			aux_length = max_length;
+
+		Vector2 vel_debug = m_vel.normalize(aux_length);
+
+		SDL_SetRenderDrawColor(g_Renderer, 255, 0, 0, 150);
+		SDL_RenderDrawLine(g_Renderer, center.x, center.y,
+							center.x + vel_debug.x, center.y + vel_debug.y);
 
 		//Acceleration (blue line)
 		if (m_accel.length() < 10.0f)

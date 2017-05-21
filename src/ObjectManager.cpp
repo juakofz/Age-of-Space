@@ -82,10 +82,10 @@ void ObjectManager::renderShips(Camera cam)
 
 
 //Interactions
-bool ObjectManager::collision(Vector2 cen1, float rad1, Vector2 cen2, float rad2)
+bool ObjectManager::collision(Vector2 cen1, float size1, Vector2 cen2, float size2)
 {
 	float aux_dist = cen1.distance(cen2);
-	if (aux_dist < rad1 + rad2)
+	if (aux_dist < (size1 + size2) / 2)
 		return true;
 	else
 		return false;
@@ -102,16 +102,19 @@ void ObjectManager::projectileImpacts()
 				bool f_impact = collision(v_projectiles->getCen(i), v_projectiles->getSize(i),
 					v_ships->getCen(j), v_ships->getSize(j));
 				if (f_impact)
-				{
-					cout << "Bang!" << endl;
-					
-					v_projectiles->erase(i); //Delete projectile
-					i--;
+				{					
 
 					//Damage ship
-					createExplosion(v_ships->getCen(j).x, v_ships->getCen(j).y, 10);
-					v_ships->erase(j);
-					j--;
+					float aux_dmg = Interactions::calculateDamage(v_ships->get(j), v_projectiles->get(i));
+					if (v_ships->damage(j, aux_dmg)) //If ship was destroyed
+					{
+						createExplosion(v_ships->getCen(j).x, v_ships->getCen(j).y, 10);
+						v_ships->erase(j);
+						j--;
+					}
+
+					v_projectiles->erase(i); //Delete projectile
+					i--;
 				}
 			}
 		}

@@ -37,9 +37,8 @@ Ship::Ship(int type, int player, Vector2 center):MovingObject(type, player)
 	stop();
 
 	m_target = 0;
-	
-	center.y -= m_size;
-	b_health = new ProgressBar(1, center, 1);
+	center.y += m_size;
+	b_health = new ProgressBar(0, center, m_health / m_max_health);
 }
 
 Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int player):MovingObject(1, player)
@@ -87,7 +86,7 @@ void Ship::setup()
 	m_sight = 250;
 
 	//Health
-	m_health = m_max_health = 5.0f;
+	m_max_health = m_health = 5.0f;
 
 	//Selection marker color
 	m_marker_color.r = 0xFF;
@@ -257,6 +256,8 @@ bool Ship::move() // -- testing new movement system --
 	m_vel = m_vel * m_friction; //reduce by friction factor
 	setCen(m_cen + m_vel); //update position
 	setAngle(m_vel.angle()); //update angle
+	
+
 	return false;
 }
 
@@ -307,13 +308,9 @@ float Ship::targetDist()
 void Ship::render(Camera cam)
 {
 	MovingObject::render(cam);
-
 	if (f_sel || g_f_debug)
 	{
-		SDL_Point center;
-		center.x = m_cen.x;
-		center.y = m_cen.y - m_size;
-		b_health->setCen(center); //Update health bar position
+		b_health->setCen(m_cen.x, m_cen.y - m_size); //Update health bar
 		b_health->setProgress(m_health / m_max_health);
 		b_health->render(cam);
 	}

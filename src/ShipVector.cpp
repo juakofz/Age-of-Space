@@ -67,12 +67,32 @@ void ShipVector::move()
 	}
 }
 
+bool ShipVector::damage(int i, float damage)
+{
+	if (in(i))
+	{
+		if (v_ship[i]->damage(damage))
+			return true;
+	}
+	return false;
+}
 int ShipVector::count()
 {
 	if (v_ship.empty())
 		return 0;
 	else
 		return v_ship.size();
+}
+
+Ship * ShipVector::get(int i)
+{
+	if (in(i))
+	{
+		Ship * aux_ship = v_ship[i];
+		return aux_ship;
+	}
+	else
+		return NULL;
 }
 
 Vector2 ShipVector::getCen(int i)
