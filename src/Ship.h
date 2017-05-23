@@ -4,6 +4,9 @@
 #include "Camera.h"
 #include "MovingObject.h"
 #include "Timer.h"
+#include "ProgressBar.h"
+#include "StationVector.h"
+#include "Weapon.h"
 
 class Texture;
 
@@ -32,6 +35,7 @@ public:
 	bool inSight(GameObject *s);
 	bool inSight();
 
+	void update();
 	bool attack();
 	Vector2 shoot();
 
@@ -52,11 +56,14 @@ public:
 	bool onTarget(float err = 5.0);
 	float targetDist();
 
+	void render(Camera cam);
+
 private:
 
 	void setup();
 
 	GameObject * m_target;
+	ProgressBar * b_health;
 
 	int m_state;
 	float m_sight;
@@ -67,4 +74,7 @@ private:
 	SDL_Color m_marker_color;
 	float m_sel_radius;
 	Texture m_sel_circle;
+
+	//Stations
+	StationVector * v_stations;
 };

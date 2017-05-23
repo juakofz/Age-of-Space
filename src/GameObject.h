@@ -75,7 +75,15 @@ protected:
 	int m_player; //Owner
 	bool m_selectable;
 
+	//Health
+	float m_max_health;
 	float m_health;
 
+	//Shields
+	float m_max_shields;
+	float m_shields;
+
+	//Armor
+	float m_armor;
 };
 

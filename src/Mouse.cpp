@@ -14,6 +14,7 @@ Mouse::~Mouse()
 void Mouse::setCursor(Texture * c)
 {
 	cursor = c;
+	f_active = false;
 }
 
 void Mouse::update(SDL_Event *e, int area,  bool sel)
@@ -21,7 +22,7 @@ void Mouse::update(SDL_Event *e, int area,  bool sel)
 	if (sel && (e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP))
 	{
 		//Check if left button is being pressed
-		if (e->button.state == SDL_PRESSED) f_active = true;
+		if (e->button.state == SDL_PRESSED && e->button.button == SDL_BUTTON_LEFT) f_active = true;
 		else f_active = false;
 	}
 	

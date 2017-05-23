@@ -73,3 +73,21 @@ enum AREAS
 	WINDOW = 5,
 	AREA_NUMBER = 6
 };
+
+enum SIZES
+{
+	SIZE_TINY = 10,
+	SIZE_SMALL = 15,
+	SIZE_MEDIUM = 20,
+	SIZE_LARGE = 30,
+	SIZE_HUGE = 50
+};
+
+enum OBJECT_TYPES
+{
+	ERROR = -1,
+	NONE = 0,
+	SHIP = 1,
+	WEAPON_LASER = 10,
+	WEAPON_MINILASER = 11,
+};

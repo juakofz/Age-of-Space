@@ -25,6 +25,7 @@ public:
 	Vector2 operator -= (Vector2 v);
 	Vector2 operator *= (float k);
 	Vector2 operator =  (SDL_Point p);
+	Vector2 operator - ();
 
 	bool operator == (Vector2 v);
 	bool operator != (Vector2 v);

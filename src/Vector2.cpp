@@ -67,6 +67,14 @@ Vector2 Vector2::operator = (SDL_Point p)
 	return(Vector2(x, y));
 }
 
+Vector2 Vector2::operator - ()
+{
+	Vector2 v;
+	v.x = -x;
+	v.y = -y;
+	return v;
+}
+
 Vector2 Vector2::operator * (float k)
 {
 	return Vector2(k*x, k*y);

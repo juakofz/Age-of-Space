@@ -49,7 +49,11 @@ class Game
 	//Asteroid ast;
 
 	//Game objects
-	ObjectManager manager;
+	ShipVector v_ships;
+	ProjectileVector v_projectiles;
+	ExplosionVector v_explosions;
+
+	ObjectManager * manager;
 
 	bool act_barra, act_vida;
 
@@ -65,8 +69,8 @@ class Game
 
 public:
 
-	Game(void);
-	~Game(void);
+	Game();
+	~Game();
 
 	//carga las texturas
 	void cargarTexturas();
@@ -113,5 +117,5 @@ public:
 	void ataqueEnemigo();
 	
 	//Test objects; testing movement
-	ProgressBar * test_bar;
+	//...
 };

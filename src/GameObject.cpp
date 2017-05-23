@@ -190,7 +190,7 @@ bool GameObject::damage(float d)
 {
 	if (d < 0) d = 0;
 	m_health -= d;
-	if (m_health < 0)
+	if (m_health <= 0)
 		return true;
 	else
 		return false;

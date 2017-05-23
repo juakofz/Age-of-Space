@@ -23,6 +23,7 @@ public:
 	Vector2 getVel();
 	void setVel(float x, float y);
 	void setVel(Vector2 vel);
+	void addVel(Vector2 vel);
 
 	//Speed -- used for linear movement
 	float getSpeed();

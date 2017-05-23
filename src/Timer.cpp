@@ -121,7 +121,8 @@ float Timer::getSecs()
 		else
 		{
 			//Return the current time minus the start time
-			time = SDL_GetTicks() - startTicks;
+			Uint32 aux_t = SDL_GetTicks();
+			time = aux_t - startTicks;
 		}
 	}
 

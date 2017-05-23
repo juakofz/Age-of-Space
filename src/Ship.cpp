@@ -28,15 +28,14 @@ Ship::Ship(int type, int player, Vector2 center):MovingObject(type, player)
 	f_sel = false;
 	m_sel_angle = 0;
 
-	setTex(&g_tex[0]);
-	scaleTo(15);
-	setMarker(&g_tex[3]);
-	
+
 	setCen(center);
 	setDest(center);
 	stop();
 
 	m_target = 0;
+	center.y += m_size;
+	b_health = new ProgressBar(0, center, m_health / m_max_health);
 }
 
 Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int player):MovingObject(1, player)
@@ -79,12 +78,8 @@ void Ship::setup()
 	m_steer_limit = 30;
 	m_state = 0;
 
-	//Weapons
-	m_range = 150;
+	m_max_health = m_health = 5.0f; //Health
 	m_sight = 250;
-
-	//Health
-	m_health = 5.0f;
 
 	//Selection marker color
 	m_marker_color.r = 0xFF;
@@ -93,6 +88,16 @@ void Ship::setup()
 	m_marker_color.a = 0x00;
 
 	f_follow_mouse = false; //for funsies
+
+	//Weapons
+	v_stations = new StationVector;
+	Weapon * w_laser = new Weapon(WEAPON_LASER, this);
+	v_stations->add(w_laser);
+
+	//Textures
+	setTex(&g_tex[0]);
+	scaleTo(SIZE_SMALL);
+	setMarker(&g_tex[3]);
 }
 
 Ship::~Ship()
@@ -175,6 +180,11 @@ bool Ship::inSight()
 	return inSight(m_target);
 }
 
+void Ship::update()
+{
+	if (v_stations->count() > 0)
+		v_stations->update();
+}
 
 bool Ship::attack()
 {
@@ -254,6 +264,7 @@ bool Ship::move() // -- testing new movement system --
 	m_vel = m_vel * m_friction; //reduce by friction factor
 	setCen(m_cen + m_vel); //update position
 	setAngle(m_vel.angle()); //update angle
+	
 
 	return false;
 }
@@ -300,4 +311,15 @@ float Ship::targetDist()
 {
 	if (!m_target) return m_cen.distance(m_dest);
 	return m_cen.distance(m_target->getCen());
+}
+
+void Ship::render(Camera cam)
+{
+	MovingObject::render(cam);
+	if (f_sel || g_f_debug)
+	{
+		b_health->setCen(m_cen.x, m_cen.y - m_size); //Update health bar
+		b_health->setProgress(m_health / m_max_health);
+		b_health->render(cam);
+	}
 }

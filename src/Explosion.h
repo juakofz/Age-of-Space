@@ -19,7 +19,7 @@ private:
 
 	Vector2 m_cen;
 
-	const float m_scale = 1.5f;
+	const float m_scale = 1.0f;
 	int m_number;
 
 	

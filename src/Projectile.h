@@ -11,6 +11,8 @@ public:
 	Projectile(int type, int player, Vector2 origin, Vector2 dest);
 	~Projectile(void);
 
+	float getDmg();
+
 	virtual bool move();
 
 protected:

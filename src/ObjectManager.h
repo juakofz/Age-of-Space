@@ -3,16 +3,31 @@
 #include "ExplosionVector.h"
 #include "ShipVector.h"
 
+#include "Interactions.h"
+
 #include "Camera.h"
 
 class ObjectManager
 {
 public:
-	ObjectManager();
+
 	~ObjectManager();
+
+
+	//Singleton
+	static ObjectManager * s_instance;
+
+	static ObjectManager * getInstance()
+	{
+		if (!s_instance)
+			s_instance = new ObjectManager;
+		return s_instance;
+	};
+
 
 	//Projectiles
 	void createProjectile(int type, int player, Vector2 origin, Vector2 dest);
+	//static Projectile * createProjectile(Station * station);
 	void moveProjectiles();
 	void renderProjectiles(Camera cam);
 
@@ -29,11 +44,16 @@ public:
 	//Interactions
 	static bool collision(Vector2 cen1, float rad1, Vector2 cen2, float rad2);
 	void projectileImpacts();
+	void shipOverlap();
 
 	//Minimap rendering
 	void renderMinimap();
 
 private:
+
+	ObjectManager();
+	ObjectManager(ShipVector * ships, ProjectileVector * projectiles, ExplosionVector * explosions);
+
 	ProjectileVector * v_projectiles;
 	ExplosionVector * v_explosions;
 	ShipVector * v_ships;
