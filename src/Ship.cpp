@@ -81,6 +81,12 @@ void Ship::setup()
 	m_max_health = m_health = 5.0f; //Health
 	m_sight = 250;
 
+<<<<<<< HEAD
+=======
+	//Health
+	m_max_health = m_health = 5.0f;
+
+>>>>>>> origin/rework
 	//Selection marker color
 	m_marker_color.r = 0xFF;
 	m_marker_color.g = 0x00;

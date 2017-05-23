@@ -17,7 +17,10 @@ public:
 	void event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel);
 	void update();
 	void move();
+<<<<<<< HEAD
 	void repel(int i, int j);
+=======
+>>>>>>> origin/rework
 	bool damage(int i, float damage);
 
 	int count();

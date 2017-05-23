@@ -2,12 +2,17 @@
 
 
 
+<<<<<<< HEAD
 Weapon::Weapon(int type, GameObject * owner)
 {
 	m_projectile_type = type;
 	m_owner = owner;
 	setup();
 	t_fire.start();
+=======
+Weapon::Weapon()
+{
+>>>>>>> origin/rework
 }
 
 
@@ -15,6 +20,7 @@ Weapon::~Weapon()
 {
 }
 
+<<<<<<< HEAD
 void Weapon::setup()
 {
 	switch (m_projectile_type)
@@ -39,4 +45,16 @@ bool Weapon::update()
 		return true;
 		//ObjectManager * aux_manager = ObjectManager::getInstance();
 	}
+=======
+
+bool Weapon::update()
+{
+	return false;
+}
+
+bool Weapon::update(Ship * owner)
+{
+	//Non predictive shooting
+	return false;
+>>>>>>> origin/rework
 }

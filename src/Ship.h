@@ -6,7 +6,10 @@
 #include "Timer.h"
 #include "ProgressBar.h"
 #include "StationVector.h"
+<<<<<<< HEAD
 #include "Weapon.h"
+=======
+>>>>>>> origin/rework
 
 class Texture;
 
@@ -76,5 +79,9 @@ private:
 	Texture m_sel_circle;
 
 	//Stations
+<<<<<<< HEAD
 	StationVector * v_stations;
+=======
+	StationVector v_stations;
+>>>>>>> origin/rework
 };

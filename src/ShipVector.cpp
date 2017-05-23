@@ -78,6 +78,7 @@ void ShipVector::move()
 	}
 }
 
+<<<<<<< HEAD
 void ShipVector::repel(int i, int j)
 {
 	if (in(i) && in(j))
@@ -90,6 +91,8 @@ void ShipVector::repel(int i, int j)
 	}
 }
 
+=======
+>>>>>>> origin/rework
 bool ShipVector::damage(int i, float damage)
 {
 	if (in(i))

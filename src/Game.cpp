@@ -422,7 +422,11 @@ int Game::gameEvents(SDL_Event* e)
 		if (e->key.keysym.sym == SDLK_c)
 		{
 			//cout << "Debug ship created! " << endl;
+<<<<<<< HEAD
 			manager->createShip(0, 1, mouse.getMpos());
+=======
+			manager.createShip(0, 1, mouse.getMpos());
+>>>>>>> origin/rework
 		}
 	}
 
