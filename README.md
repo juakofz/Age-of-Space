@@ -169,7 +169,7 @@ loading
 - Health bars added to debug mode
 - Bug fixing
 - Laid groundwork for weapon systems (lists n' stuff)
-<<<<<<< HEAD
+
 
 ##### P 0.13.7
 - Added weapons to ships, although they don't shoot yet
@@ -177,5 +177,3 @@ loading
 - Added some enums for types and sizes
 - Objectmanager made into a singleton (this may not be necessary)
 - Added a request list for object creation. Not yet fully implementeded
-=======
->>>>>>> origin/rework
