@@ -6,10 +6,9 @@
 #include "Timer.h"
 #include "ProgressBar.h"
 #include "StationVector.h"
-<<<<<<< HEAD
+#include "CommandList.h"
 #include "Weapon.h"
-=======
->>>>>>> origin/rework
+
 
 class Texture;
 
@@ -39,7 +38,10 @@ public:
 	bool inSight();
 
 	void update();
+
+	//Attack
 	bool attack();
+	void setObjective();
 	Vector2 shoot();
 
 	int getState();
@@ -63,7 +65,7 @@ public:
 
 private:
 
-	void setup();
+	void setup(int player);
 
 	GameObject * m_target;
 	ProgressBar * b_health;
@@ -79,9 +81,9 @@ private:
 	Texture m_sel_circle;
 
 	//Stations
-<<<<<<< HEAD
 	StationVector * v_stations;
-=======
-	StationVector v_stations;
->>>>>>> origin/rework
+	//Commands
+	CommandList l_commands;
+	Command m_command;
+
 };

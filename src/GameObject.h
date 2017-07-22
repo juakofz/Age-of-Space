@@ -4,20 +4,22 @@
 #include "Camera.h"
 #include "Global.h"
 
+
 class GameObject
 {
 public:
 
-	GameObject(int type, int player);
-	GameObject(int type); //For unselectable objects
+	GameObject(int type, int subtype, int player);
 	virtual ~GameObject();
 
-	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel) = 0;
+	virtual int event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel);
 
 	//Selection
 	void select();
 	void deselect();
+	
 	bool getSel();
+
 	bool clickOn(SDL_Point pos);
 	bool isInside(SDL_Rect rect);
 
@@ -35,13 +37,24 @@ public:
 	virtual void setCen(float x, float y);
 	virtual void setCen(Vector2 c);
 
+	//Objective
+	Vector2 getObjective();
+	virtual void setObjective(float x, float y);
+	virtual void setObjective(Vector2 c);
+
+	//Movement
+	virtual bool move();
+	virtual void update();
+	virtual void addVel(Vector2 v);
+
 	//Size
 	void scaleTo(int s);
 	int getSize();
 	Vector2 getDim();
 
-
+	//Type
 	int getType();
+	int getSubType();
 
 	//Textures
 	void setTex(Texture *t);
@@ -55,10 +68,13 @@ public:
 	void setHealth(float h);
 	float getHealth();
 	bool damage(float d);
+	bool isAlive();
+	void kill();
 
 protected:
 
-	const int m_type;
+	const int m_type;	//Object type: ship, projectile...
+	const int m_subtype;		//Object subtype: figter, missile, transport...
 
 	Texture *m_marker, *m_tex;
 
@@ -67,6 +83,7 @@ protected:
 	int m_height;
 	int m_size;
 	Vector2 m_cen;
+	Vector2 m_objective;
 
 	float m_angle;
 	bool f_sel = false;
@@ -76,6 +93,7 @@ protected:
 	bool m_selectable;
 
 	//Health
+	bool f_alive;
 	float m_max_health;
 	float m_health;
 

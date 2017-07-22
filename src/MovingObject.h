@@ -7,8 +7,8 @@ class MovingObject :
 {
 public:
 
-	MovingObject(int type, int player);
-	~MovingObject(void);
+	MovingObject(int type, int subtype, int player);
+	~MovingObject();
 
 	int event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m);
 	virtual void render(Camera cam);

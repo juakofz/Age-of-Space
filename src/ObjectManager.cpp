@@ -5,44 +5,86 @@ ObjectManager * ObjectManager::s_instance = 0;
 
 ObjectManager::ObjectManager()
 {
-	v_ships = new ShipVector;
-	v_projectiles = new ProjectileVector;
-	v_explosions = new ExplosionVector;
+	v_requests = RequestList::getInstance();
+
+	v_explosions = new T_Vector<Explosion>;
+	v_objects = new ObjectVector;
+	
+	SDL_Rect map{ 0, 0, g_MAP_WIDTH, g_MAP_HEIGHT };
+
+	qt_interactions = * new Quadtree(0, map);
 }
 
-ObjectManager::ObjectManager(ShipVector * ships, ProjectileVector * projectiles,
-								ExplosionVector * explosions)
-{
-	v_projectiles = projectiles;
-	v_explosions = explosions;
-	v_ships = ships;
-}
 
 
 ObjectManager::~ObjectManager()
 {
 }
 
+//--------------------------------------------------------------------------------------//
+
+//General
+
+void ObjectManager::handleRequests()
+{
+	while (v_requests->check()) 
+	{
+		m_request = v_requests->popRequest(); //Extract request
+		
+		switch (m_request.type) //Create objects
+		{
+		case WEAPON_LASER:
+			createProjectile(m_request.type, m_request.player, m_request.center, m_request.dest);
+			break;
+
+		case WEAPON_MINILASER:
+			createProjectile(m_request.type, m_request.player, m_request.center, m_request.dest);
+			break;
+
+		default:
+			break;
+		}
+	} 
+}
+
+
+void ObjectManager::update()
+{
+	kill(); //Delete dead entities
+
+	if (v_objects->check()) //Regenerate quadtree
+	{
+		qt_interactions.generate(v_objects);
+		vv_quadvectors.clear();
+		vv_quadvectors = qt_interactions.retrieve();
+	}
+}
+
+void ObjectManager::kill()
+{
+	if (v_objects->check())
+	{
+		for (int i = 0; i < v_objects->size(); i++)
+		{
+			if (!v_objects->get(i)->isAlive())
+			{
+				v_objects->erase(i);
+				i--;
+			}
+		}
+	}
+}
+
+//--------------------------------------------------------------------------------------//
 
 //Projectiles
 void ObjectManager::createProjectile(int type, int player, Vector2 origin, Vector2 dest)
 {
 	Projectile * aux_proj = new Projectile(type, player, origin, dest);
-	v_projectiles->add(aux_proj);
+	v_objects->add(aux_proj);
 }
 
-
-void ObjectManager::moveProjectiles()
-{
-	v_projectiles->move();
-}
-
-
-void ObjectManager::renderProjectiles(Camera cam)
-{
-	v_projectiles->render(cam);
-}
-
+//--------------------------------------------------------------------------------------//
 
 //Explosions
 void ObjectManager::createExplosion(int x, int y, int size)
@@ -61,99 +103,180 @@ void ObjectManager::createExplosion(int x, int y, int size)
 
 void ObjectManager::updateExplosions()
 {
-	v_explosions->update();
+	//v_explosions->update();
 }
 
+//--------------------------------------------------------------------------------------//
 
 //Ships
 void ObjectManager::createShip(int type, int player, Vector2 center)
 {
 	Ship * aux_ship = new Ship(type, player, center);
-	v_ships->add(aux_ship);
+	v_objects->add(aux_ship);
 }
+
 
 void ObjectManager::shipEvents(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
 {
-	v_ships->event(e, sel, xy_rel);
+	v_objects->event(e, sel, xy_rel);
 }
 
 
-void ObjectManager::moveShips()
+void ObjectManager::move()
 {
-	v_ships->move();
+	v_objects->update();
 	shipOverlap();
-	v_ships->update();
+	kill();	
+	v_objects->move();
 }
 
 
-void ObjectManager::renderShips(Camera cam)
+void ObjectManager::render(Camera cam)
 {
-	v_ships->render(cam);
+	v_objects->render(cam);
+	if(g_f_debug)
+		qt_interactions.render_debug(cam);
 }
 
+//--------------------------------------------------------------------------------------//
 
-//Interactions
+//Interactions -- move to interactions class
 bool ObjectManager::collision(Vector2 cen1, float size1, Vector2 cen2, float size2)
 {
 	float aux_dist = cen1.distance(cen2);
-	if (aux_dist < (size1 + size2) / 2)
+	if (aux_dist < size1 || aux_dist < size2)
 		return true;
 	else
 		return false;
 }
 
+bool ObjectManager::collision(GameObject * obj1, GameObject *obj2)
+{
+	Vector2 cen1 = obj1->getCen();
+	Vector2 cen2 = obj2->getCen();
+
+	float size1 = obj1->getSize();
+	float size2 = obj2->getSize();
+
+	float aux_dist = cen1.distance(cen2);
+	if (aux_dist < size1 || aux_dist < size2)
+		return true;
+	else
+		return false;
+
+}
+
+
 void ObjectManager::projectileImpacts()
 {
-	if (v_projectiles->count() > 0 && v_ships->count() > 0)
+	if (vv_quadvectors.empty()) return;
+
+	//For every object vector
+	for (int n_vec = 0; n_vec < vv_quadvectors.size(); n_vec++)
 	{
-		for (int i = 0; i < v_projectiles->count(); i++) //For every projectile
+		//If it's not empty
+		if (vv_quadvectors[n_vec].check())
 		{
-			for (int j = 0; j < v_ships->count(); j++) //Check every ship
+			//For every element
+			for (int n_proj = 0; n_proj < vv_quadvectors[n_vec].size(); n_proj++) 
 			{
-				bool f_impact = collision(v_projectiles->getCen(i), v_projectiles->getSize(i),
-					v_ships->getCen(j), v_ships->getSize(j));
-				if (f_impact)
-				{					
-
-					//Damage ship
-					float aux_dmg = Interactions::calculateDamage(v_ships->get(j), v_projectiles->get(i));
-					if (v_ships->damage(j, aux_dmg)) //If ship was destroyed
+				//if alive projectile
+				if (vv_quadvectors[n_vec].get(n_proj)->getType() == TYPE_PROJECTILE && vv_quadvectors[n_vec].get(n_proj)->isAlive())
+				{
+					//For every other element
+					for (int n_ship = 0; n_ship < vv_quadvectors[n_vec].size(); n_ship++)
 					{
-						createExplosion(v_ships->getCen(j).x, v_ships->getCen(j).y, 10);
-						v_ships->erase(j);
-						j--;
-					}
+						//if alive ship
+						if (vv_quadvectors[n_vec].get(n_ship)->getType() == TYPE_SHIP&& vv_quadvectors[n_vec].get(n_ship)->isAlive())
+						{
+							//If ennemies
+							if (vv_quadvectors[n_vec].get(n_proj)->getPlayer() != vv_quadvectors[n_vec].get(n_ship)->getPlayer())
+							{ 
+								//IF collision happens
+								if (collision(vv_quadvectors[n_vec].get(n_proj), vv_quadvectors[n_vec].get(n_ship)))
+								{
+									//Damage ship
+									float aux_dmg = Interactions::calculateDamage(vv_quadvectors[n_vec].get(n_ship), vv_quadvectors[n_vec].get(n_proj));
+									if (vv_quadvectors[n_vec].get(n_ship)->damage(aux_dmg)) //If ship was destroyed
+									{
+										//Create explosion										
+										createExplosion(vv_quadvectors[n_vec].get(n_ship)->getCen().x, vv_quadvectors[n_vec].get(n_ship)->getCen().y, 10);
+										vv_quadvectors[n_vec].get(n_ship)->kill();//Set as dead
+									}
 
-					v_projectiles->erase(i); //Delete projectile
-					i--;
+									vv_quadvectors[n_vec].get(n_proj)->kill(); //Set as dead
+
+								}
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 }
 
+//Can be combined with the other check loop
 void ObjectManager::shipOverlap()
 {
-	if (v_ships->count() > 0)
+	if (vv_quadvectors.empty()) return;
+	
+	//For every vector
+	for (int v = 0; v < vv_quadvectors.size(); v++)
 	{
-		for (int i = 0; i < v_ships->count(); i++)
+		//If not empty
+		if (vv_quadvectors[v].check())
 		{
-			for (int j = i + 1; j < v_ships->count(); j++)
+			//For every element
+			for (int i = 0; i < vv_quadvectors[v].size(); i++)
 			{
-					if (collision(v_ships->getCen(i), v_ships->getSize(i),
-								  v_ships->getCen(j), v_ships->getSize(j)))
-						v_ships->repel(i, j);
+				//For every other element
+				for (int j = i + 1; j < vv_quadvectors[v].size(); j++)
+				{
+					//Collision
+					if (collision(vv_quadvectors[v].getCen(i), vv_quadvectors[v].getSize(i),
+						vv_quadvectors[v].getCen(j), vv_quadvectors[v].getSize(j)))
+					{
+						//Collide
+						shipRepel(vv_quadvectors[v].get(i), vv_quadvectors[v].get(j));
+					}			
+				}
 			}
 		}
 	}
 }
 
+
+void ObjectManager::shipRepel(GameObject * s1, GameObject * s2)
+{
+	if (s1->getType() == TYPE_SHIP && s2->getType() == TYPE_SHIP)
+	{
+		Vector2 aux_repulsion = s1->getCen() - s2->getCen();
+		if (aux_repulsion.length() < 0.001) //For perfect overlapping, repulsion might be 0
+			aux_repulsion = (0, 1); 
+		float repel_force = 0.05f;
+
+		s1->addVel(aux_repulsion.normalize(repel_force)); //Repel ship i
+		s2->addVel(-aux_repulsion.normalize(repel_force)); //Repel ship j in opposite direction
+	}
+}
+
+//--------------------------------------------------------------------------------------//
+
 //Minimap
 void ObjectManager::renderMinimap()
 {
-	//if (naves.getSize()) {
-	//	for (int i = (naves.getSize() - 1); i >= 0; i--)
+	//if (v_objects->check())
+	//{
+	//	//for (int i = (v_objects->getSize() - 1); i >= 0; i--)
+	//	for (int i = 0; i < v_objects->getSize(); i ++)
 	//	{
+	//		if (v_objects->getType() == TYPE_SHIP)
+	//		{
+
+	//		}
+
+
 	//		Vector2 p = naves.getCen(i);
 	//		Vector2 rp;
 	//		rp.x = (p.x / map.getSize().x) * (w - 2 * margen) + margen;

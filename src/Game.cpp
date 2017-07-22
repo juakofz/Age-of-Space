@@ -216,7 +216,7 @@ void Game::initjuego()
 	//GameObject::setTextures(&tex[9]);
 
 	//Map
-	map.setSize(2000, 2000);
+	map.setSize(g_MAP_WIDTH, g_MAP_WIDTH);
 	map.setBg(&g_tex[6]);
 	map.setGrid(&g_tex[7]);
 
@@ -224,9 +224,6 @@ void Game::initjuego()
 	cam.setCen(map.getSize().x / 2, map.getSize().y / 2);
 
 	//Lists
-	v_ships = * new ShipVector;
-	v_projectiles = * new ProjectileVector;
-	v_explosions = *new ExplosionVector;
 
 	//manager = *new ObjectManager(&v_ships, &v_projectiles, &v_explosions);
 
@@ -257,6 +254,11 @@ void Game::initjuego()
 
 	//Test objects; testing movement
 	Vector2 aux_cen(1000, 980);
+	manager->createShip(SHIP_FIGHTER, 1, Vector2(450,450));
+	manager->createShip(SHIP_FIGHTER, 1, Vector2(300, 300));
+	manager->createShip(SHIP_FIGHTER, 1, Vector2(400, 50));
+	manager->createShip(SHIP_FIGHTER, 1, Vector2(50, 900));
+
 
 	initBarra(1);
 }
@@ -345,12 +347,12 @@ void Game::renderJuego()
 	//...
 
 	//Object manager
+	manager->update();
+	manager->handleRequests();
 	manager->projectileImpacts();
-	manager->moveProjectiles();
-	manager->renderProjectiles(cam);
 	manager->updateExplosions();
-	manager->moveShips();
-	manager->renderShips(cam);
+	manager->move();
+	manager->render(cam);
 
 	//if (cam.isVisible(ast.GetCen(), 20))
 	//	{
@@ -419,14 +421,27 @@ int Game::gameEvents(SDL_Event* e)
 		}
 
 		//Debug creation key 3
-		if (e->key.keysym.sym == SDLK_c)
+		if (e->key.keysym.sym == SDLK_c) //Player 1 ship
 		{
 			//cout << "Debug ship created! " << endl;
-<<<<<<< HEAD
-			manager->createShip(0, 1, mouse.getMpos());
-=======
-			manager.createShip(0, 1, mouse.getMpos());
->>>>>>> origin/rework
+
+			manager->createShip(SHIP_FIGHTER, 1, mouse.getMpos());
+		}
+
+		//Debug creation key 4
+		if (e->key.keysym.sym == SDLK_v) //Player 2 ship
+		{
+			//cout << "Debug ship created! " << endl;
+
+			manager->createShip(SHIP_FIGHTER, 2, mouse.getMpos());
+		}
+
+		//Debug creation key 5
+		if (e->key.keysym.sym == SDLK_b) //Big player 1 ship
+		{
+			//cout << "Debug ship created! " << endl;
+
+			manager->createShip(BIG_SHIP, 1, mouse.getMpos());
 		}
 	}
 

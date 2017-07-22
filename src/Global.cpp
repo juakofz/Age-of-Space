@@ -5,6 +5,8 @@ SDL_Renderer* g_Renderer = NULL; //Global renderer
 Window g_Window; //Main window
 const int g_SCREEN_WIDTH = 960; //Screen size
 const int g_SCREEN_HEIGHT = 640;
+const int g_MAP_WIDTH = 2000; //Map size
+const int g_MAP_HEIGHT = 2000;
 const Uint8 * g_keyboardState = NULL; //Keyboard state array
 Texture g_tex[15]; //Game textures
 

@@ -1,73 +1,121 @@
 #include "ObjectVector.h"
 
 
-ObjectVector::ObjectVector()
+
+Vector2 ObjectVector::getCen(int ind)
 {
+	if (in(ind))
+	{
+		return v_elements[ind]->getCen();
+	}
+	else return Vector2::zero();
 }
 
 
-ObjectVector::~ObjectVector()
+float ObjectVector::getSize(int ind)
 {
-	//Clear vector if there is any element remaining
-	if (!objectVector.empty())
-		objectVector.clear();
+	if (in(ind))
+	{
+		return v_elements[ind]->getSize();
+	}
+	else return 0.0f;
 }
 
-bool ObjectVector::in(int i)
+
+bool ObjectVector::getSel(int ind)
 {
-	if (!objectVector.empty() && i <= objectVector.size())
-		return true;
-	else
-		return false;
+	if (in(ind))
+	{
+		return v_elements[ind]->getSel();
+	}
+	else return false;
 }
 
-void ObjectVector::add(GameObject * object)
+
+int ObjectVector::getPlayer(int ind)
 {
-	objectVector.push_back(object);
+	if (in(ind))
+	{
+		return v_elements[ind]->getPlayer();
+	}
+	else return 0;
 }
 
-void ObjectVector::erase(int i)
+int ObjectVector::getType(int ind)
 {
-	if (in(i))
-		objectVector.erase(objectVector.begin() + i); //Remove and destroy object
+	if (in(ind))
+	{
+		return v_elements[ind]->getType();
+	}
+	else return 0;
 }
+
 
 void ObjectVector::render(Camera cam)
 {
-	if (objectVector.empty()) return;
+	if (v_elements.empty()) return;
 	else
 	{
-		for (int i = 0; i < objectVector.size(); i++)
+		for (int i = 0; i < v_elements.size(); i++)
 		{
-			objectVector[i]->render(cam);
+			v_elements[i]->render(cam);
 		}
 	}
 }
+
 
 void ObjectVector::event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
 {
-	if (!objectVector.empty()) //if list is not empty
+	if (!v_elements.empty()) //if list is not empty
 	{
-		for (int i = 0; i < objectVector.size(); i++)
+		for (int i = 0; i < v_elements.size(); i++)
 		{
-			objectVector[i]->event(e, sel, xy_rel);
+			v_elements[i]->event(e, sel, xy_rel);
 		}
 	}
 }
 
-int ObjectVector::count()
+
+void ObjectVector::update()
 {
-	if (objectVector.empty())
-		return 0;
-	else
-		return objectVector.size();
+	if (!v_elements.empty()) //if list is not empty
+	{
+		for (int i = 0; i < v_elements.size(); i++)
+		{
+			v_elements[i]->update();
+		}
+	}
 }
 
-bool ObjectVector::getSel(int i)
+
+void ObjectVector::move()
 {
-	if (in(i))
+	if (!v_elements.empty()) //if list is not empty
 	{
-		return objectVector[i]->getSel();
+		for (int i = 0; i < v_elements.size(); i++)
+		{
+			
+			bool f_dead = v_elements[i]->move();
+
+			if (v_elements[i]->getType() == TYPE_PROJECTILE && f_dead)
+			{
+				erase(i);
+			}
+		}
 	}
-	else return false;
+}
+
+
+void ObjectVector::repel(int ind, Vector2 dir)
+{
+	if (v_elements[ind]->getType() == TYPE_SHIP)
+	{
+		//cout << "Repel" << endl;
+	}
+}
+
+
+bool ObjectVector::damage(int ind, float damage)
+{
+	return false;
 }

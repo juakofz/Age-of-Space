@@ -8,7 +8,7 @@
 class Explosion
 {
 public:
-	Explosion();
+
 	Explosion(int x, int y, int size);
 	Explosion(Vector2 cen, int size);
 	~Explosion();

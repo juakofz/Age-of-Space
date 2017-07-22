@@ -1,27 +1,28 @@
 #pragma once
-#include <vector>
+#include "T_Vector.h"
 #include "GameObject.h"
 
 using namespace std;
 
-class ObjectVector
+class ObjectVector: public T_Vector<GameObject>
 {
 public:
-	ObjectVector();
-	~ObjectVector();
+	
+	//Get
+	Vector2 getCen(int ind);
+	float getSize(int ind);
+	bool getSel(int ind);
+	int getPlayer(int ind);
+	int getType(int ind);
 
-	bool in(int i);
-
-	void add(GameObject * object);
-	void erase(int i);
-
-	virtual void render(Camera cam);
+	void render(Camera cam);
 	void event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel);
 
-	int count();
-	bool getSel(int ind);
+	void update();
+	void move();
 
-protected:
-	vector<GameObject *> objectVector;
+	void repel(int ind, Vector2 dir);
+	bool damage(int ind, float damage);
+
 };
 

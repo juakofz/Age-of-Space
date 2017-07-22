@@ -1,7 +1,7 @@
 #include "MovingObject.h"
 
 
-MovingObject::MovingObject(int type, int player):GameObject(type, player)
+MovingObject::MovingObject(int type, int subtype, int player):GameObject(type, subtype, player)
 {
 	//No rotation
 	m_dir.x = 1;

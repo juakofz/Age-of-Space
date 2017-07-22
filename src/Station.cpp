@@ -13,7 +13,7 @@ Station::~Station()
 
 int Station::getType()
 {
-	return m_type;
+	return m_subtype;
 }
 
 bool Station::damage(float d)

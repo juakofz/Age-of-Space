@@ -1,17 +1,30 @@
 #pragma once
 #include "Vector2.h"
+#include "Global.h"
 #include <vector>
 
 struct Request
 {
 	int type;
+	int player;
 	Vector2 center;
+	Vector2 dest;
 };
 
 class RequestList
 {
 public:
-	RequestList();
+
+	//Singleton
+	static RequestList * s_instance;
+
+	static RequestList * getInstance()
+	{
+		if (!s_instance)
+			s_instance = new RequestList;
+		return s_instance;
+	};
+
 	~RequestList();
 
 	bool check();
@@ -22,6 +35,7 @@ public:
 	Request popRequest();
 
 private:
-	std::vector<Request *> v_requests;
+	RequestList();
+	std::vector<Request> v_requests;
 };
 

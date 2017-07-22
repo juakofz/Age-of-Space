@@ -10,142 +10,117 @@ ShipVector::ShipVector()
 ShipVector::~ShipVector()
 {
 	//Clear vector if there is any element remaining
-	if (!v_ship.empty())
-		v_ship.clear();
-}
-
-bool ShipVector::in(int i)
-{
-	if (!v_ship.empty() && i <= v_ship.size())
-		return true;
-	else
-		return false;
-}
-
-void ShipVector::add(Ship * ship)
-{
-	v_ship.push_back(ship);
-}
-
-void ShipVector::erase(int i)
-{
-	if (in(i))
-		v_ship.erase(v_ship.begin() + i); //Remove and destroy object
+	if (!v_elements.empty())
+		v_elements.clear();
 }
 
 void ShipVector::render(Camera cam)
 {
-	if (v_ship.empty()) return;
+	if (v_elements.empty()) return;
 	else
 	{
-		for (int i = 0; i < v_ship.size(); i++)
+		for (int i = 0; i < v_elements.size(); i++)
 		{
-			v_ship[i]->render(cam);
+			v_elements[i]->render(cam);
 		}
 	}
 }
 
 void ShipVector::event(SDL_Event * e, SDL_Rect sel, SDL_Point xy_rel)
 {
-	if (!v_ship.empty()) //if list is not empty
+	if (!v_elements.empty()) //if list is not empty
 	{
-		for (int i = 0; i < v_ship.size(); i++)
+		for (int i = 0; i < v_elements.size(); i++)
 		{
-			v_ship[i]->event(e, sel, xy_rel);
+			v_elements[i]->event(e, sel, xy_rel);
 		}
 	}
 }
 
 void ShipVector::update()
 {
-	if (!v_ship.empty()) //if list is not empty
+	if (!v_elements.empty()) //if list is not empty
 	{
-		for (int i = 0; i < v_ship.size(); i++)
+		for (int i = 0; i < v_elements.size(); i++)
 		{
-			v_ship[i]->update();
+			v_elements[i]->update();
 		}
 	}
 }
 
 void ShipVector::move()
 {
-	if (!v_ship.empty()) //if list is not empty
+	if (!v_elements.empty()) //if list is not empty
 	{
-		for (int i = 0; i < v_ship.size(); i++)
+		for (int i = 0; i < v_elements.size(); i++)
 		{
-			v_ship[i]->move();
+			v_elements[i]->move();
 		}
 	}
 }
 
-<<<<<<< HEAD
+
+
 void ShipVector::repel(int i, int j)
 {
 	if (in(i) && in(j))
 	{
-		Vector2 aux_repulsion = v_ship[i]->getCen() - v_ship[j]->getCen();
+		Vector2 aux_repulsion = v_elements[i]->getCen() - v_elements[j]->getCen();
+		if (aux_repulsion.length() < 0.001 )
+			aux_repulsion = (0, 1);
 		float repel_force = 0.03f;
 
-		v_ship[i]->addVel(aux_repulsion.normalize(repel_force)); //Repel ship i
-		v_ship[j]->addVel(- aux_repulsion.normalize(repel_force)); //Repel ship j in opposite direction
+		v_elements[i]->addVel(aux_repulsion.normalize(repel_force)); //Repel ship i
+		v_elements[j]->addVel(- aux_repulsion.normalize(repel_force)); //Repel ship j in opposite direction
 	}
 }
 
-=======
->>>>>>> origin/rework
+
 bool ShipVector::damage(int i, float damage)
 {
 	if (in(i))
 	{
-		if (v_ship[i]->damage(damage))
+		if (v_elements[i]->damage(damage))
 			return true;
 	}
 	return false;
 }
-int ShipVector::count()
-{
-	if (v_ship.empty())
-		return 0;
-	else
-		return v_ship.size();
-}
 
-Ship * ShipVector::get(int i)
-{
-	if (in(i))
-	{
-		Ship * aux_ship = v_ship[i];
-		return aux_ship;
-	}
-	else
-		return NULL;
-}
 
-Vector2 ShipVector::getCen(int i)
+Vector2 ShipVector::getCen(int ind)
 {
 	Vector2 aux;
-	if (!in(i))
+	if (!in(ind))
 		return aux; //Zero
 	else
 	{
-		aux = v_ship[i]->getCen();
+		aux = v_elements[ind]->getCen();
 		return aux;
 	}
 }
 
-float ShipVector::getSize(int i)
+float ShipVector::getSize(int ind)
 {
-	if (!in(i))
+	if (!in(ind))
 		return 0;
 	else
-		return v_ship[i]->getSize();
+		return v_elements[ind]->getSize();
 }
 
-bool ShipVector::getSel(int i)
+bool ShipVector::getSel(int ind)
 {
-	if (in(i))
+	if (in(ind))
 	{
-		return v_ship[i]->getSel();
+		return v_elements[ind]->getSel();
+	}
+	else return false;
+}
+
+int ShipVector::getPlayer(int ind)
+{
+	if (in(ind))
+	{
+		return v_elements[ind]->getPlayer();
 	}
 	else return false;
 }

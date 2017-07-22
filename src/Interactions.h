@@ -12,6 +12,7 @@ public:
 	~Interactions();
 
 	static float calculateDamage(Ship * ship, Projectile * proj);
+	static float calculateDamage(GameObject * ship, GameObject * proj);
 	static float calculateDamage(Station * station, Projectile * proj);
 };
 

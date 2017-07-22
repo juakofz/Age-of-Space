@@ -4,9 +4,9 @@
 
 using namespace std;
 
-Ship::Ship():MovingObject(1, 1) // <- change this
+Ship::Ship():MovingObject(TYPE_SHIP, SHIP_FIGHTER, 1) // <- change this
 {
-	setup();
+	setup(1);
 
 	f_sel = false;
 	m_sel_angle = 0;
@@ -15,9 +15,9 @@ Ship::Ship():MovingObject(1, 1) // <- change this
 	m_target = 0;
 }
 
-Ship::Ship(int type, int player, Vector2 center):MovingObject(type, player)
+Ship::Ship(int subtype, int player, Vector2 center):MovingObject(TYPE_SHIP, subtype, player)
 {
-	setup();
+	setup(player);
 
 	m_dir.x = 1;
 	m_dir.y = 0;
@@ -38,9 +38,9 @@ Ship::Ship(int type, int player, Vector2 center):MovingObject(type, player)
 	b_health = new ProgressBar(0, center, m_health / m_max_health);
 }
 
-Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int player):MovingObject(1, player)
+Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int player):MovingObject(TYPE_SHIP, SHIP_FIGHTER, player)
 {
-	setup();
+	setup(player);
 
 	m_dir.x = 1;
 	m_dir.y = 0;
@@ -70,40 +70,81 @@ Ship::Ship(Texture *texture, int size, Texture *marktex, Vector2 cen2, int playe
 	stop();
 }
 
-void Ship::setup()
+void Ship::setup(int player)
 {
-	//Movement
-	m_max_accel = 0.2f;
-	m_friction = 0.9f;
-	m_steer_limit = 30;
-	m_state = 0;
-
-	m_max_health = m_health = 5.0f; //Health
-	m_sight = 250;
-
-<<<<<<< HEAD
-=======
-	//Health
-	m_max_health = m_health = 5.0f;
-
->>>>>>> origin/rework
 	//Selection marker color
-	m_marker_color.r = 0xFF;
-	m_marker_color.g = 0x00;
+	m_marker_color.r = 0x00;
+	m_marker_color.g = 0xFF;
 	m_marker_color.b = 0x00;
 	m_marker_color.a = 0x00;
 
-	f_follow_mouse = false; //for funsies
+	switch (m_subtype)
+	{
+	case SHIP_FIGHTER:
+	{
+		//Movement
+		m_max_accel = 0.2f;
+		m_friction = 0.9f;
+		m_steer_limit = 30;
+		m_state = 0;
+		m_sight = 250;
 
-	//Weapons
-	v_stations = new StationVector;
-	Weapon * w_laser = new Weapon(WEAPON_LASER, this);
-	v_stations->add(w_laser);
+		//Health
+		m_max_health = m_health = 5.0f;
 
-	//Textures
-	setTex(&g_tex[0]);
-	scaleTo(SIZE_SMALL);
-	setMarker(&g_tex[3]);
+		f_follow_mouse = false; //for funsies
+
+		//Weapons
+		v_stations = new StationVector;
+		Weapon * w_minilaser = new Weapon(WEAPON_MINILASER, this);
+		v_stations->add(w_minilaser);
+
+		//Textures
+		if (player == 1)
+			setTex(&g_tex[0]); //Blue
+		else
+			setTex(&g_tex[8]); //Red
+
+		scaleTo(SIZE_SMALL);
+		setMarker(&g_tex[3]);
+
+		break;
+	}
+
+	case BIG_SHIP:
+	{
+		//Movement
+		m_max_accel = 0.15f;
+		m_friction = 0.9f;
+		m_steer_limit = 20;
+		m_state = 0;
+		m_sight = 400;
+
+		//Health
+		m_max_health = m_health = 20.0f;
+		
+		f_follow_mouse = false; //for funsies
+
+		//Weapons
+		v_stations = new StationVector;
+		Weapon * w_laser = new Weapon(WEAPON_LASER, this);
+		v_stations->add(w_laser);
+
+		//Textures
+		if (player == 1)
+			setTex(&g_tex[0]); //Blue
+		else
+			setTex(&g_tex[8]); //Red
+
+		scaleTo(SIZE_MEDIUM);
+		setMarker(&g_tex[3]);
+		break;
+	}
+
+	default:
+		break;
+	}
+	
 }
 
 Ship::~Ship()
@@ -124,13 +165,33 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 	//Right click
 	if ((e->type == SDL_MOUSEBUTTONDOWN) && (e->button.button == SDL_BUTTON_RIGHT) && (f_sel))
 	{
-		setDest(m.x, m.y);
+
+		//Generate move command
+		Command com = { MOVE_TO, Vector2(m.x, m.y) };
+
+		//Add to list if shift is pressed
+		if (g_keyboardState[SDL_SCANCODE_LSHIFT] || g_keyboardState[SDL_SCANCODE_RSHIFT])
+		{
+			l_commands.addCommand(com);
+		}
+
+		//Clear list if not pressed
+		else
+		{
+			l_commands.replace(com);
+		}
+
+		//setDest(m.x, m.y);
 		setState(1);
 		accion = 1;
 	}
 
 	if (f_follow_mouse)
 	{
+		//Generate move command
+		Command com = { MOVE_TO, Vector2(m.x, m.y) };
+		l_commands.replace(com);
+
 		setDest(m.x, m.y);
 	}
 
@@ -188,8 +249,60 @@ bool Ship::inSight()
 
 void Ship::update()
 {
+	//Check for new commands
+	if (l_commands.check())
+	{
+		m_command = l_commands.firstCommand();
+	}
+
+	bool f_done = false;
+
+	//Follow command
+	switch (m_command.type)
+	{
+
+		case NO_COMMAND:
+		{
+
+			break;
+		}
+	
+		//Move command
+		case MOVE_TO:
+		{
+			setDest(m_command.dest);
+
+			if (abs(m_cen.distance(m_dest)) < 2 * m_size)
+			{
+				f_done = true;
+			}
+			break;
+		}
+
+		default:
+			break;
+	}
+
+	//If command is done, get next command
+	if (f_done)
+	{
+		l_commands.popFirst();
+	}
+
+	
+	//Shoot
+	setObjective();
+
 	if (v_stations->count() > 0)
 		v_stations->update();
+}
+
+void Ship::setObjective()
+{
+	//Shoot straight
+	float dist = 200;
+	Vector2 dist_aux = m_dir.normalize(dist);
+	m_objective = m_cen + dist_aux;
 }
 
 bool Ship::attack()

@@ -1,36 +1,26 @@
 #pragma once
 #include "Station.h"
-<<<<<<< HEAD
 #include "Timer.h"
-//#include "ObjectManager.h"
+#include "RequestList.h"
 
-//class ObjectManager;
-=======
+class GameObject;
 
-
->>>>>>> origin/rework
 
 class Weapon : public Station
 {
 public:
-<<<<<<< HEAD
 	Weapon(int type, GameObject * owner);
 	~Weapon();
 
 	void setup();
 	bool update();
-	bool update(Ship * owner);
+	bool update(GameObject * owner);
 
 private:
 	int m_projectile_type;
 	float m_firerate;
 	Timer t_fire;
-=======
-	Weapon();
-	~Weapon();
-
-	bool update();
-	bool update(Ship * owner);
->>>>>>> origin/rework
+	GameObject * m_owner;
+	RequestList * v_requests;
 };
 

@@ -1,6 +1,6 @@
 #include "RequestList.h"
 
-
+RequestList * RequestList::s_instance = 0;
 
 RequestList::RequestList()
 {
@@ -42,7 +42,9 @@ void RequestList::clear()
 
 void RequestList::addRequest(Request req)
 {
-	v_requests.push_back(&req);
+	v_requests.push_back(req);
+	//v_requests.emplace_back(& req);
+	//if (g_f_debug) cout << "Added req, now " << v_requests.size() << endl;
 }
 
 
@@ -50,17 +52,18 @@ Request RequestList::popRequest()
 {
 	if (v_requests.empty())
 	{
-		Vector2 zero;
-		Request aux = { 0, zero };
+		Request aux = { NONE, 0, Vector2::zero() };
+		//if (g_f_debug) cout << "No reqs to pop" << endl;
 		return aux;
+		
 	}
 
 	else
 	{
-		int last = v_requests.size();
-		Request aux = * v_requests[last];
+		int last = v_requests.size() - 1;
+		Request aux = v_requests[last];
 		v_requests.pop_back();
+		//if (g_f_debug) cout << "Popped req, now " << v_requests.size() << endl;
 		return aux;
 	}
 }
-

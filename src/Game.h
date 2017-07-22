@@ -51,7 +51,9 @@ class Game
 	//Game objects
 	ShipVector v_ships;
 	ProjectileVector v_projectiles;
-	ExplosionVector v_explosions;
+	T_Vector<Explosion> v_explosions;
+
+	ObjectVector v_objects; //+test+
 
 	ObjectManager * manager;
 

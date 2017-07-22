@@ -48,6 +48,7 @@ public:
 	void makeZero();
 
 	static Vector2 toVector(float angle, float length = 1.0F);
+	static Vector2 zero();
 
 };
 

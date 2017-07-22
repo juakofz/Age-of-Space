@@ -37,7 +37,7 @@ void StationVector::erase(int i)
 		v_station.erase(v_station.begin() + i); //Remove and destroy object
 }
 
-<<<<<<< HEAD
+
 void StationVector::update()
 {
 	if (v_station.empty()) return;
@@ -50,19 +50,6 @@ void StationVector::update()
 	}
 }
 
-void StationVector::update(GameObject * owner)
-{
-	if (v_station.empty()) return;
-	else
-	{
-		for (int i = 0; i < v_station.size(); i++)
-		{
-			v_station[i]->update();
-		}
-	}
-}
-=======
->>>>>>> origin/rework
 
 void StationVector::render(Camera cam)
 {

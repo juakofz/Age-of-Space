@@ -24,6 +24,8 @@ extern SDL_Renderer* g_Renderer; //Global renderer
 extern Window g_Window; //Game window
 extern const int g_SCREEN_WIDTH; //Screen size
 extern const int g_SCREEN_HEIGHT;
+extern const int g_MAP_WIDTH; //Map size
+extern const int g_MAP_HEIGHT;
 extern const Uint8 * g_keyboardState; //Keyboard state array
 extern Texture g_tex[15]; //Game textures
 
@@ -78,16 +80,25 @@ enum SIZES
 {
 	SIZE_TINY = 10,
 	SIZE_SMALL = 15,
-	SIZE_MEDIUM = 20,
-	SIZE_LARGE = 30,
-	SIZE_HUGE = 50
+	SIZE_MEDIUM = 30,
+	SIZE_LARGE = 50,
+	SIZE_HUGE = 100
 };
 
-enum OBJECT_TYPES
+enum object_types
+{
+	NO_TYPE,
+	TYPE_SHIP,
+	TYPE_PROJECTILE,
+	TYPE_BUILDING
+};
+
+enum OBJECT_SUBTYPES
 {
 	ERROR = -1,
 	NONE = 0,
-	SHIP = 1,
-	WEAPON_LASER = 10,
-	WEAPON_MINILASER = 11,
+	SHIP_FIGHTER,
+	BIG_SHIP,
+	WEAPON_LASER,
+	WEAPON_MINILASER,
 };

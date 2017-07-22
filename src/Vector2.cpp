@@ -201,3 +201,9 @@ Vector2 Vector2::toVector(float angle, float scale)
 	aux = aux.normalize(scale);
 	return aux;
 }
+
+Vector2 Vector2::zero()
+{
+	Vector2 aux;
+	return aux;
+}

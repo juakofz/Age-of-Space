@@ -1,19 +1,24 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int type, int player):m_type(type)
+GameObject::GameObject(int type, int subtype, int player = 0):m_type(type) , m_subtype(subtype)
 {
-	m_selectable = true;
-	m_player = player;
-}
+	if (m_type == TYPE_PROJECTILE)
+		m_selectable = false;
+	else
+		m_selectable = true;
 
-GameObject::GameObject(int type):m_type(type)
-{
-	m_selectable = false;
-	m_player = 0;
+	m_player = player;
+	m_sel_angle = 0;
+	f_alive = true;
 }
 
 GameObject::~GameObject()
 {
+}
+
+int GameObject::event(SDL_Event* e, SDL_Rect selection, SDL_Point xyrel)
+{
+	return 0;
 }
 
 void GameObject::select()
@@ -93,10 +98,41 @@ void GameObject::setCen(Vector2 c)
 	m_pos.y = m_cen.y - m_tex->getDim().y / 2;
 }
 
-//void GameObject::giveCen(Vector2 &dest)
-//{
-//	dest = cen;
-//}
+Vector2 GameObject::getObjective()
+{
+	return m_objective;
+}
+
+
+void GameObject::setObjective(float x, float y)
+{
+	m_objective.x = x;
+	m_objective.y = y;
+	m_pos.x = m_objective.x - m_tex->getDim().x / 2;
+	m_pos.y = m_objective.y - m_tex->getDim().y / 2;
+}
+
+void GameObject::setObjective(Vector2 c)
+{
+	m_objective.x = c.x;
+	m_objective.y = c.y;
+	m_pos.x = m_objective.x - m_tex->getDim().x / 2;
+	m_pos.y = m_objective.y - m_tex->getDim().y / 2;
+}
+
+bool GameObject::move()
+{
+	return false;
+}
+
+void GameObject::update()
+{
+}
+
+void GameObject::addVel(Vector2 v)
+{
+}
+
 
 void GameObject::setTex(Texture *t)
 {
@@ -106,10 +142,12 @@ void GameObject::setTex(Texture *t)
 	m_size = t->getDiag();
 }
 
+
 void GameObject::setMarker(Texture *t)
 {
 	m_marker = t;
 }
+
 
 bool GameObject::getSel()
 {
@@ -164,6 +202,11 @@ int GameObject::getType()
 	return m_type;
 }
 
+int GameObject::getSubType()
+{
+	return m_subtype;
+}
+
 void GameObject::setPlayer(int p)
 {
 	m_player = p;
@@ -191,7 +234,23 @@ bool GameObject::damage(float d)
 	if (d < 0) d = 0;
 	m_health -= d;
 	if (m_health <= 0)
-		return true;
+	{
+		f_alive = false;
+		return true;	
+	}
 	else
 		return false;
 }
+
+bool GameObject::isAlive()
+{
+	return f_alive;
+}
+
+
+void GameObject::kill()
+{
+	f_alive = false;
+}
+
+
