@@ -404,6 +404,13 @@ int Game::gameEvents(SDL_Event* e)
 			cout << "Debug: " << g_f_debug << endl;
 		}
 
+
+		//delete/supr : delete selected object
+		if (e->key.keysym.sym == SDLK_DELETE)
+		{
+			manager->deleteOne();
+		}
+
 		//Debug creation key
 		if (e->key.keysym.sym == SDLK_z)
 		{

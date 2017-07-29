@@ -172,10 +172,6 @@ loading
 - Health bars added to debug mode
 - Bug fixing
 - Laid groundwork for weapon systems (lists n' stuff)
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/rework
 
 #### P 0.13.7
 - Added weapons to ships, although they don't shoot yet
@@ -183,7 +179,6 @@ loading
 - Added some enums for types and sizes
 - Objectmanager made into a singleton (this may not be necessary)
 - Added a request list for object creation. Not yet fully implementeded
-<<<<<<< HEAD
 
 #### P 0.13.8
 - Request system implemented for improved object creation and management
@@ -191,5 +186,7 @@ loading
 - Created and implemented template for managing object vectors
 - Implemented order list for ships, and movement orders. They can now take and follow succesive orders while pressing shift. 
 - Added quadtree system for improved performance in collision detection
-=======
->>>>>>> origin/rework
+
+#### P 0.13.9
+- Individual ships can be deleted by pressing delete while selected
+- Groups of ships can be deleted by pressing delete and shift while selected

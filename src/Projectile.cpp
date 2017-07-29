@@ -42,7 +42,7 @@ Projectile::Projectile(int subtype, int player, Vector2 origin, Vector2 dest):Mo
 		m_player = player; //Owner
 		scaleTo(10);
 		m_speed = 3.0f; //Constant speed
-		m_dmg = 0.2f; //Damage
+		m_dmg = 0.1f; //Damage
 		m_maxLifeTime = 2.0f; //2 secs life
 		m_lifeTime = 0.0f;
 		t_life.start(); //Start life timer
