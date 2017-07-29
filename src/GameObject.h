@@ -17,7 +17,6 @@ public:
 	//Selection
 	void select();
 	void deselect();
-	
 	bool getSel();
 
 	bool clickOn(SDL_Point pos);

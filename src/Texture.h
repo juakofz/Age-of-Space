@@ -29,7 +29,7 @@ public:
 	void free();
 
 	//Modulación de color
-	void setColor(Uint8 r, Uint8 g, Uint8 b);
+	void setColor(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0);
 
 	//Modo de blending
 	void setBlendMode(SDL_BlendMode blending);

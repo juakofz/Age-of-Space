@@ -63,6 +63,8 @@ extern bool init();
 extern void close();
 
 
+
+//Areas
 enum AREAS
 {
 	TOP_BAR = 0,
@@ -99,14 +101,4 @@ enum OBJECT_SUBTYPES
 	BIG_SHIP,
 	WEAPON_LASER,
 	WEAPON_MINILASER,
-};
-
-enum COMMAND_TYPES
-{
-	NO_COMMAND,
-	MOVE_TO,
-	FOLLOW,
-	ATTACK,
-	GUARD,
-	DIE
 };

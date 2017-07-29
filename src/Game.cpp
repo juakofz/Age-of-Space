@@ -7,6 +7,11 @@ bool Game::atacar=false;
 Game::Game()
 {
 	manager = ObjectManager::getInstance();
+
+
+	//+test+
+	Vector2 dim{ 30, 30 }, pos{ 300, 100};
+	but = new Button(dim, pos);
 }
 
 Game::~Game()
@@ -20,6 +25,8 @@ int Game::event(SDL_Event* e)
 	int mx, my;
 	SDL_GetMouseState(&mx, &my); //get absolute mouse position
 	
+
+
 	//Top bar area
 	if (my <= top_bar.down())
 	{
@@ -129,6 +136,8 @@ int Game::event(SDL_Event* e)
 			mouse.update(e, MAP, false);
 		}
 	}
+
+
 	return f_quit;
 }
 
@@ -145,6 +154,10 @@ void Game::cargarTexturas()
 	g_tex[8].load("img/Nave.png");
 	g_tex[9].load("img/disparo.png");
 	g_tex[10].load("img/disparo.png");
+	g_tex[11].load("img/buttonA.png");
+	g_tex[12].load("img/buttonB.png");
+	g_tex[13].load("img/energy.png");
+
 
 	g_tex[5].setColor(0, 255, 0); // Cursor Verde
 	g_tex[0].setColor(30, 210, 240); //Nave cian
@@ -197,7 +210,9 @@ void Game::RenderViewPorts()
 	renderJuego();
 	renderMinimapa();
 	window_area.Set();
+	but->render();
 	mouse.render();
+	
 }
 
 void Game::RenderTotal()
@@ -386,7 +401,10 @@ int Game::gameEvents(SDL_Event* e)
 	manager->shipEvents(e, mouse.getMrect(), mouse.getMpos());
 
 	//Test objects events; testing movement
-	//..
+	if (but->event(e, mouse.getPos()))
+	{
+		manager->createShip(SHIP_FIGHTER, 1, cam.getCen());
+	}
 
 	//Keyboard events
 	if (e->type == SDL_KEYDOWN) 
@@ -402,13 +420,6 @@ int Game::gameEvents(SDL_Event* e)
 		{
 			g_f_debug = !g_f_debug;
 			cout << "Debug: " << g_f_debug << endl;
-		}
-
-
-		//delete/supr : delete selected object
-		if (e->key.keysym.sym == SDLK_DELETE)
-		{
-			manager->deleteOne();
 		}
 
 		//Debug creation key
