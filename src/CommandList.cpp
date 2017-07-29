@@ -68,7 +68,7 @@ void CommandList::popFirst()
 }
 
 
-void CommandList::replaceAll(Command com)
+void CommandList::replace(Command com)
 {
 	clear();
 	addCommand(com);
