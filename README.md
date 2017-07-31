@@ -190,3 +190,4 @@ loading
 #### P 0.13.9
 - Individual ships can be deleted by pressing delete while selected
 - Groups of ships can be deleted by pressing delete and shift while selected
+- Added clickable buttons for use in the UI

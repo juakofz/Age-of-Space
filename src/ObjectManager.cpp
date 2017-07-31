@@ -60,6 +60,30 @@ void ObjectManager::update()
 	}
 }
 
+void ObjectManager::deleteOne()
+{
+	if (v_objects->check())
+	{
+		for (int i = 0; i < v_objects->size(); i++)
+		{
+			//If object is selected
+			if (v_objects->get(i)->getSel())
+			{
+				//If object is alive
+				if (v_objects->get(i)->isAlive())
+				{
+					v_objects->get(i)->kill();
+
+					if (!(g_keyboardState[SDL_SCANCODE_LSHIFT] || g_keyboardState[SDL_SCANCODE_RSHIFT]))
+					{
+						return;
+					}
+				}
+			}
+		}
+	}
+}
+
 void ObjectManager::kill()
 {
 	if (v_objects->check())
@@ -68,6 +92,10 @@ void ObjectManager::kill()
 		{
 			if (!v_objects->get(i)->isAlive())
 			{
+				if (v_objects->get(i)->getType() == TYPE_SHIP)
+				{
+					createExplosion(v_objects->get(i)->getCen().x, v_objects->get(i)->getCen().y, v_objects->get(i)->getSize());
+				}
 				v_objects->erase(i);
 				i--;
 			}
@@ -200,7 +228,7 @@ void ObjectManager::projectileImpacts()
 									if (vv_quadvectors[n_vec].get(n_ship)->damage(aux_dmg)) //If ship was destroyed
 									{
 										//Create explosion										
-										createExplosion(vv_quadvectors[n_vec].get(n_ship)->getCen().x, vv_quadvectors[n_vec].get(n_ship)->getCen().y, 10);
+										//createExplosion(vv_quadvectors[n_vec].get(n_ship)->getCen().x, vv_quadvectors[n_vec].get(n_ship)->getCen().y, 10);
 										vv_quadvectors[n_vec].get(n_ship)->kill();//Set as dead
 									}
 

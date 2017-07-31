@@ -30,6 +30,7 @@ public:
 	//General
 	void handleRequests(); //Handle object creation requests
 	void update(); //Update manager
+	void deleteOne(); //Delete one selected object
 	void kill(); //Remove dead objects from vectors
 
 	//Projectiles

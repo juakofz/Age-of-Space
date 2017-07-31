@@ -178,7 +178,7 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 		//Clear list if not pressed
 		else
 		{
-			l_commands.replace(com);
+			l_commands.replaceAll(com);
 		}
 
 		//setDest(m.x, m.y);
@@ -190,7 +190,7 @@ int Ship::event(SDL_Event* e, SDL_Rect m_sel, SDL_Point m)
 	{
 		//Generate move command
 		Command com = { MOVE_TO, Vector2(m.x, m.y) };
-		l_commands.replace(com);
+		l_commands.replaceAll(com);
 
 		setDest(m.x, m.y);
 	}

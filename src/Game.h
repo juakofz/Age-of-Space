@@ -13,8 +13,6 @@
 #include "Ship.h"
 #include "ObjectManager.h"
 #include "ProgressBar.h"
-#include "Button.h"
-
 //#include "ListaAsteroides.h"
 //#include "ListaNaves.h"
 //#include "ListaProyectiles.h"
@@ -39,6 +37,17 @@ class Game
 	Map map; //Map
 	Camera cam; //Camara
 
+	////Controlador
+	//Controller control;
+
+	////elementos del juego
+	//Edificio edificio;
+	//ListaAsteroides asteroides;
+	//ListaNaves naves;
+	//ListaObjetos objetos_prueba;
+	//ListaProyectiles proyectiles;
+	//Asteroid ast;
+
 	//Game objects
 	ShipVector v_ships;
 	ProjectileVector v_projectiles;
@@ -59,9 +68,6 @@ class Game
 
 	static int ataques;
 	static bool atacar;
-
-	//+test+
-	Button * but;
 
 public:
 
